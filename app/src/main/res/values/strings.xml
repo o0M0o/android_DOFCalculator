@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">DOFCalculator</string>
+    <string name="hint_device_add">添加摄影设备</string>
+    <string name="hint_device_select">选择摄影设备</string>
+    <string name="label_device">设备</string>
+    <string name="hint_camera_name">请输入相机名</string>
+    <string name="tv_sensor_size">传感器尺寸</string>
+    <string name="tv_sensor_pixel_count">传感器像素数量</string>
+    <string name="hint_lens_name">请输入镜头名</string>
+    <string name="hint_lens_max_focal">请输入最大焦距</string>
+    <string name="hint_lens_min_focal">请输入最小焦距</string>
+    <string name="cn_giveup">放弃</string>
+    <string name="cn_save">保存</string>
+
+    <string name="sz_warn">警告</string>
+    <string name="error_need_device_name">请输入设备名</string>
+
+    <string name="error_need_camera_name">请输入相机名</string>
+    <string name="error_need_camera_sensor_size">请选择相机传感器尺寸</string>
+    <string name="error_need_camera_sensor_pixel_count">请选择相机传感器像素数</string>
+
+    <string name="error_need_lens_name">请输入镜头名</string>
+    <string name="error_need_min_focal">请输入镜头最小焦距</string>
+    <string name="error_need_max_focal">请输入镜头最大焦距</string>
+    <string name="error_focal_range_mess">镜头最大焦距小于最小焦距</string>
+    <string name="hint_device_name">请输入设备名</string>
 </resources>

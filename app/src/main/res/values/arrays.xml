@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sensor_size">
+        <item>135全画幅</item>
+        <item>APS</item>
+        <item>1//3</item>
+        <item>1//4</item>
+        <item>1//8</item>
+    </string-array>
+
+    <string-array name="sensor_pixel_count">
+        <item>2400万</item>
+        <item>1600万</item>
+        <item>1200万</item>
+        <item>800万</item>
+    </string-array>
+</resources>
