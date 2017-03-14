@@ -21,7 +21,6 @@ import java.lang.reflect.Array;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
@@ -32,7 +31,7 @@ import wxm.dofcalculator.ui.base.IFFrgEdit;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
- * first frg for app
+ * frg for device add
  * Created by wxm on 2017/3/11.
  */
 public class FrgDeviceAdd
@@ -95,7 +94,7 @@ public class FrgDeviceAdd
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgUsrAdd";
+        LOG_TAG = "FrgDeviceAdd";
         View rootView = layoutInflater.inflate(R.layout.frg_device_add, viewGroup, false);
         ButterKnife.bind(this, rootView);
         return rootView;
@@ -296,7 +295,7 @@ public class FrgDeviceAdd
 
         li.setName(mETLensName.getText().toString());
         li.setMinFocal(Integer.valueOf(mETLensMinFocal.getText().toString()));
-        li.setMinFocal(Integer.valueOf(mETLensMaxFocal.getText().toString()));
+        li.setMaxFocal(Integer.valueOf(mETLensMaxFocal.getText().toString()));
         return li;
     }
 

@@ -24,4 +24,5 @@
     <string name="error_need_max_focal">请输入镜头最大焦距</string>
     <string name="error_focal_range_mess">镜头最大焦距小于最小焦距</string>
     <string name="hint_device_name">请输入设备名</string>
+    <string name="hint_sure">确定</string>
 </resources>

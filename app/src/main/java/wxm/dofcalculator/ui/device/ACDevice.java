@@ -45,6 +45,10 @@ public class ACDevice extends BaseAppCompatActivity {
                 mFGHolder = new FrgDeviceAdd();
                 break;
 
+            case VAL_DEVICE_SELECTED :
+                mFGHolder = new FrgDeviceSelect();
+                break;
+
             case VAL_NULL :
         }
     }
@@ -59,8 +63,10 @@ public class ACDevice extends BaseAppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.device_edit, menu);
+        if(VAL_DEVICE_ADD == mInvokeType) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.device_edit, menu);
+        }
         return true;
     }
 
