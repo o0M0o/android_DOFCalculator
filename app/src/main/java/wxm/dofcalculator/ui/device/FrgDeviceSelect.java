@@ -2,7 +2,11 @@ package wxm.dofcalculator.ui.device;
 
 import android.bluetooth.BluetoothClass;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +14,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,9 +31,12 @@ import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
+import wxm.dofcalculator.db.DBDataChangeEvent;
 import wxm.dofcalculator.define.CameraItem;
 import wxm.dofcalculator.define.DeviceItem;
+import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
+import wxm.dofcalculator.ui.calculator.ACCalculator;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
@@ -35,6 +46,7 @@ import wxm.dofcalculator.utility.ContextUtil;
 public class FrgDeviceSelect
         extends FrgUtilityBase  {
     private final static String  KEY_DEVICE_NAME = "device_name";
+    private final static String  KEY_DEVICE_ID   = "device_id";
     private final static String  KEY_CAMERA_INFO = "camera_info";
     private final static String  KEY_LENS_INFO   = "lens_info";
 
@@ -44,6 +56,23 @@ public class FrgDeviceSelect
     @BindView(R.id.bt_sure)
     Button      mBUSure;
 
+    @BindView(R.id.bt_delete)
+    Button      mBUDelete;
+
+
+    @Override
+    protected void enterActivity()  {
+        super.enterActivity();
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void leaveActivity()  {
+        EventBus.getDefault().unregister(this);
+
+        super.leaveActivity();
+    }
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
@@ -56,25 +85,51 @@ public class FrgDeviceSelect
     @Override
     protected void initUiComponent(View view) {
         mBUSure.setVisibility(View.GONE);
+        mBUDelete.setVisibility(View.GONE);
 
         AdapterDevice ap = new AdapterDevice(getActivity(), getAllDeviceInfo(),
                 new String[]{}, new int[]{});
         mLVDevice.setAdapter(ap);
         ap.notifyDataSetChanged();
 
-        mLVDevice.setOnItemClickListener((parent, view1, position, id) -> {
-            boolean os = view1.isSelected();
-            for(int i = 0; i < mLVDevice.getChildCount(); ++i)  {
-                mLVDevice.getChildAt(i).setSelected(false);
+        mBUSure.setOnClickListener(v -> {
+            int id = ap.getSelectDeviceID();
+            if(GlobalDef.INT_INVAILED_ID != id) {
+                DeviceItem di = ContextUtil.getDUDevice().getData(id);
+                Intent it = new Intent(getActivity(), ACCalculator.class);
+                it.putExtra(ACCalculator.KEY_DEVICE_ID, di.getID());
+                startActivity(it);
             }
+        });
 
-            view1.setSelected(!os);
-            mBUSure.setVisibility(!os ? View.VISIBLE : View.GONE);
+        mBUDelete.setOnClickListener(v -> {
+            int id = ap.getSelectDeviceID();
+            if(GlobalDef.INT_INVAILED_ID != id) {
+                DeviceItem di = ContextUtil.getDUDevice().getData(id);
+                String al_del = String.format(Locale.CHINA,
+                                    "是否删除设备'%s'", di.getName());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(al_del).setTitle("警告")
+                        .setPositiveButton("确认", (dialog, which) -> ContextUtil.getDUDevice().removeData(id))
+                        .setNegativeButton("取消", (dlg, which) -> {});
+                AlertDialog dlg = builder.create();
+                dlg.show();
+            }
         });
     }
 
     @Override
     protected void loadUI() {
+    }
+
+    /**
+     * 过滤视图事件
+     * @param event     事件
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFilterShowEvent(DBDataChangeEvent event) {
+        initUiComponent(getView());
     }
 
     /**
@@ -89,6 +144,7 @@ public class FrgDeviceSelect
             LensItem   li = di.getLens();
 
             HashMap<String, String> hm = new HashMap<>();
+            hm.put(KEY_DEVICE_ID, String.valueOf(di.getID()));
             hm.put(KEY_DEVICE_NAME, di.getName());
             hm.put(KEY_CAMERA_INFO,
                     String.format(Locale.CHINA, "%s,%d万像素",
@@ -143,6 +199,21 @@ public class FrgDeviceSelect
      */
     public class AdapterDevice extends SimpleAdapter {
         private final static String LOG_TAG = "AdapterDevice";
+        private View.OnClickListener mCLItem = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean os = v.isSelected();
+                for(int i = 0; i < mLVDevice.getChildCount(); ++i)  {
+                    View v_c = mLVDevice.getChildAt(i);
+                    if(v != v_c)
+                        mLVDevice.getChildAt(i).setSelected(false);
+                }
+
+                v.setSelected(!os);
+                mBUSure.setVisibility(!os ? View.VISIBLE : View.GONE);
+                mBUDelete.setVisibility(!os ? View.VISIBLE : View.GONE);
+            }
+        };
 
 
         public AdapterDevice(Context context, List<? extends Map<String, ?>> data,
@@ -165,12 +236,34 @@ public class FrgDeviceSelect
         public View getView(int position, View convertView, ViewGroup parent) {
             FastViewHolder vh = FastViewHolder.get(getContext(), convertView,
                     R.layout.lv_device);
+            View rv = vh.getConvertView();
+            rv.setOnClickListener(mCLItem);
 
             Map<String, String> hm = UtilFun.cast_t(getItem(position));
             vh.setText(R.id.tv_device_name, hm.get(KEY_DEVICE_NAME));
             vh.setText(R.id.tv_camera, hm.get(KEY_CAMERA_INFO));
             vh.setText(R.id.tv_lens, hm.get(KEY_LENS_INFO));
-            return vh.getConvertView();
+            return rv;
+        }
+
+        /**
+         * 返回选中设备的ID
+         * @return  若有选中设备返回其ID,否则返回 INT_INVAILED_ID
+         */
+        public int getSelectDeviceID()  {
+            int hot_pos = -1;
+            for(int i = 0; i < mLVDevice.getChildCount(); ++i)  {
+                if(mLVDevice.getChildAt(i).isSelected())    {
+                    hot_pos = i;
+                    break;
+                }
+            }
+
+            if(-1 == hot_pos)
+                return GlobalDef.INT_INVAILED_ID;
+
+            Map<String, String> hm = UtilFun.cast_t(getItem(hot_pos));
+            return Integer.valueOf(hm.get(KEY_DEVICE_ID));
         }
     }
 }
