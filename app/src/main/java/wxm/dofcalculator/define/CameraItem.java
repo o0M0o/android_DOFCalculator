@@ -80,6 +80,14 @@ public class CameraItem
         pixelCount = pc;
     }
 
+    /**
+     * 获取像素点面积，单位平方毫米
+     * @return   area for one pixel
+     */
+    public BigDecimal getPixelArea()    {
+        return new BigDecimal("0.003");
+    }
+
     @Override
     public int hashCode()   {
         return getName().hashCode() + getID()

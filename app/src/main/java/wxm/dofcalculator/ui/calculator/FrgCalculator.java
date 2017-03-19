@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Locale;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -50,6 +51,16 @@ public class FrgCalculator extends FrgUtilityBase {
 
     @BindView(R.id.tv_lens_focal_val)
     TextView    mTVLensFocal;
+
+    // result ui
+    @BindView(R.id.tv_front_focal_val)
+    TextView    mTVFrontFocal;
+
+    @BindView(R.id.tv_back_focal_val)
+    TextView    mTVBackFocal;
+
+    @BindView(R.id.tv_total_focal_val)
+    TextView    mTVTotalFocal;
 
     private DeviceItem mDICurDevice;
 
@@ -108,6 +119,8 @@ public class FrgCalculator extends FrgUtilityBase {
                     onObjDistanc(seekBar);
                     break;
             }
+
+            updateResultUI();
         }
 
 
@@ -171,8 +184,55 @@ public class FrgCalculator extends FrgUtilityBase {
 
     @Override
     protected void loadUI() {
+        updateResultUI();
     }
 
+
+    /**
+     * 更新结果UI
+     */
+    protected void updateResultUI() {
+        int lf_hot = mNMLensFocal.floorEntry(mSBLensFocal.getProgress()).getValue();
+        String la_hot = mNMLensAperture.floorEntry(mSBLensAperture.getProgress()).getValue();
+        BigDecimal od_hot = mNMObjectDistance.floorEntry(mSBObjectDistance.getProgress()).getValue();
+
+        BigDecimal aperture = new BigDecimal(la_hot.substring(la_hot.indexOf("/") + 1));
+        BigDecimal focal = new BigDecimal(lf_hot);
+
+        //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
+        BigDecimal ff = new BigDecimal(lf_hot * lf_hot);
+        BigDecimal ac = aperture.multiply(mDICurDevice.getCamera().getPixelArea());
+        BigDecimal hyperFocal =  ff.divide(ac, RoundingMode.CEILING)
+                                    .add(new BigDecimal(lf_hot));
+
+        // change to unit mm
+        BigDecimal od_mm = od_hot.multiply(new BigDecimal(1000));
+
+        // dofNear = ((hyperFocal - focal) * distance) / (hyperFocal + distance - (2*focal));
+        BigDecimal dofNear_f = hyperFocal.subtract(focal).multiply(od_mm);
+        BigDecimal dofNear_b = hyperFocal.add(od_mm).subtract(focal.add(focal));
+        BigDecimal dofNear = dofNear_f.divide(dofNear_b, RoundingMode.CEILING);
+
+        // Prevent 'divide by zero' when calculating far distance.
+        BigDecimal dofFar;
+        if(Math.abs(hyperFocal.subtract(od_mm).floatValue()) <= 0.00001)    {
+            dofFar = new BigDecimal(10000000);
+        } else  {
+            BigDecimal f = hyperFocal.subtract(focal).multiply(od_mm);
+            BigDecimal b = hyperFocal.subtract(od_mm);
+            dofFar = f.divide(b, RoundingMode.CEILING);
+        }
+
+        // change to unit m
+        dofNear = dofNear.divide(new BigDecimal(1000), RoundingMode.CEILING);
+        dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
+        BigDecimal dofTotal = dofFar.subtract(dofNear);
+
+        // updat ui
+        mTVFrontFocal.setText(String.format(Locale.CHINA, "%.02f米", dofNear.floatValue()));
+        mTVBackFocal.setText(String.format(Locale.CHINA, "%.02f米", dofFar.floatValue()));
+        mTVTotalFocal.setText(String.format(Locale.CHINA, "%.02f米", dofTotal.floatValue()));
+    }
 
     /**
      * 更新lens focal
