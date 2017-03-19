@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SeekbarVW">
+        <attr name="szTag" format="string" />
+        <attr name="szVal" format="string" />
+    </declare-styleable>
+</resources>

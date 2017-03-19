@@ -43,7 +43,7 @@ public class ACCalculator extends BaseAppCompatActivity {
 
         Bundle arg = new Bundle();
         arg.putInt(KEY_DEVICE_ID, d_id);
-        mFGHolder = new FrgCalculator();
+        mFGHolder = new FrgCalculatorNew();
         mFGHolder.setArguments(arg);
     }
 
