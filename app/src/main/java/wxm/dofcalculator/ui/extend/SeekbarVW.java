@@ -22,6 +22,9 @@ public class SeekbarVW extends ConstraintLayout {
     protected TextView  mTVVal;
     protected SeekBar   mSBBar;
 
+    protected TextView  mTVMinTag;
+    protected TextView  mTVMaxTag;
+
     public SeekbarVW(Context context) {
         super(context);
         initUIComponent();
@@ -39,10 +42,18 @@ public class SeekbarVW extends ConstraintLayout {
         sz_tag = UtilFun.StringIsNullOrEmpty(sz_tag) ? "tag" : sz_tag;
 
         String sz_val = array.getString(R.styleable.SeekbarVW_szVal);
-        sz_val = UtilFun.StringIsNullOrEmpty(sz_val) ? "tag" : sz_val;
+        sz_val = UtilFun.StringIsNullOrEmpty(sz_val) ? "val" : sz_val;
+
+        String sz_min = array.getString(R.styleable.SeekbarVW_szMinTag);
+        sz_min = UtilFun.StringIsNullOrEmpty(sz_min) ? "min" : sz_min;
+
+        String sz_max = array.getString(R.styleable.SeekbarVW_szMaxTag);
+        sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "max" : sz_max;
 
         mTVTag.setText(sz_tag);
         mTVVal.setText(sz_val);
+        mTVMinTag.setText(sz_min);
+        mTVMaxTag.setText(sz_max);
 
         array.recycle();
     }
@@ -70,6 +81,26 @@ public class SeekbarVW extends ConstraintLayout {
         requestLayout();
     }
 
+    /**
+     * 设置最小tag
+     * @param tag   for tag
+     */
+    public void setMinTag(String tag)   {
+        mTVMinTag.setText(tag);
+        invalidate();
+        requestLayout();
+    }
+
+    /**
+     * 设置最大tag
+     * @param tag   for tag
+     */
+    public void setMaxTag(String tag)   {
+        mTVMaxTag.setText(tag);
+        invalidate();
+        requestLayout();
+    }
+
 
     /**
      * 初始化UI元件
@@ -80,5 +111,8 @@ public class SeekbarVW extends ConstraintLayout {
         mTVTag = UtilFun.cast_t(findViewById(R.id.tv_tag));
         mTVVal = UtilFun.cast_t(findViewById(R.id.tv_val));
         mSBBar = UtilFun.cast_t(findViewById(R.id.sb_bar));
+
+        mTVMinTag = UtilFun.cast_t(findViewById(R.id.tv_min_tag));
+        mTVMaxTag = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
     }
 }

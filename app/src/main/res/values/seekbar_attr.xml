@@ -3,5 +3,8 @@
     <declare-styleable name="SeekbarVW">
         <attr name="szTag" format="string" />
         <attr name="szVal" format="string" />
+
+        <attr name="szMinTag" format="string" />
+        <attr name="szMaxTag" format="string" />
     </declare-styleable>
 </resources>
