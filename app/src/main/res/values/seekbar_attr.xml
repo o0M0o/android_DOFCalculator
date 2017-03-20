@@ -5,6 +5,8 @@
         <attr name="szVal" format="string" />
 
         <attr name="szMinTag" format="string" />
+        <attr name="szMiddle1Tag" format="string" />
+        <attr name="szMiddle2Tag" format="string" />
         <attr name="szMaxTag" format="string" />
     </declare-styleable>
 </resources>

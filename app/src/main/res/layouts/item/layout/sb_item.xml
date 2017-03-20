@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tv_lens_focal"
         android:textColor="@color/text_fit"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteX="0dp" />
@@ -32,21 +32,45 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_lens_focal"
-        android:layout_marginStart="58dp"
+        android:layout_marginStart="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_min_tag"
             android:text="35mm"
             android:layout_marginStart="2dp"
             android:layout_marginBottom="4dp"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/sb_bar"
+            app:layout_constraintBottom_toTopOf="@+id/sb_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_middle1_tag"
+            android:text="50mm"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="4dp"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_min_tag"
+            app:layout_constraintEnd_toEndOf="@+id/tv_middle2_tag"
+            app:layout_constraintBottom_toTopOf="@+id/sb_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_middle2_tag"
+            android:text="75mm"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="4dp"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_middle1_tag"
+            app:layout_constraintEnd_toEndOf="@+id/tv_max_tag"
             app:layout_constraintBottom_toTopOf="@+id/sb_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -56,7 +80,7 @@
             android:text="155mm"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="4dp"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/sb_bar"
             app:layout_constraintBottom_toTopOf="@+id/sb_bar"
             android:layout_width="wrap_content"

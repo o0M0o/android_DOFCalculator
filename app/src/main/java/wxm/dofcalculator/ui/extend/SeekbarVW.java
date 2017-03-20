@@ -25,6 +25,8 @@ public class SeekbarVW extends ConstraintLayout {
     protected SeekBar   mSBBar;
 
     protected TextView  mTVMinTag;
+    protected TextView  mTVMiddle1Tag;
+    protected TextView  mTVMiddle2Tag;
     protected TextView  mTVMaxTag;
 
     protected NavigableMap<Integer, String>     mNMSBData = null;
@@ -50,14 +52,22 @@ public class SeekbarVW extends ConstraintLayout {
         sz_val = UtilFun.StringIsNullOrEmpty(sz_val) ? "val" : sz_val;
 
         String sz_min = array.getString(R.styleable.SeekbarVW_szMinTag);
-        sz_min = UtilFun.StringIsNullOrEmpty(sz_min) ? "min" : sz_min;
+        sz_min = UtilFun.StringIsNullOrEmpty(sz_min) ? "0" : sz_min;
+
+        String sz_middle1 = array.getString(R.styleable.SeekbarVW_szMiddle1Tag);
+        sz_middle1 = UtilFun.StringIsNullOrEmpty(sz_middle1) ? "1/3" : sz_middle1;
+
+        String sz_middle2 = array.getString(R.styleable.SeekbarVW_szMiddle2Tag);
+        sz_middle2 = UtilFun.StringIsNullOrEmpty(sz_middle2) ? "2/3" : sz_middle2;
 
         String sz_max = array.getString(R.styleable.SeekbarVW_szMaxTag);
-        sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "max" : sz_max;
+        sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "1" : sz_max;
 
         mTVTag.setText(sz_tag);
         mTVVal.setText(sz_val);
         mTVMinTag.setText(sz_min);
+        mTVMiddle1Tag.setText(sz_middle1);
+        mTVMiddle2Tag.setText(sz_middle2);
         mTVMaxTag.setText(sz_max);
 
         array.recycle();
@@ -93,6 +103,8 @@ public class SeekbarVW extends ConstraintLayout {
         mNMSBData = nm_data;
 
         mTVMinTag.setText(mNMSBData.floorEntry(0).getValue());
+        mTVMiddle1Tag.setText(mNMSBData.floorEntry(30).getValue());
+        mTVMiddle2Tag.setText(mNMSBData.floorEntry(70).getValue());
         mTVMaxTag.setText(mNMSBData.floorEntry(100).getValue());
 
         String sz_h = mNMSBData.floorEntry(mSBBar.getProgress()).getValue();
@@ -119,6 +131,8 @@ public class SeekbarVW extends ConstraintLayout {
         mSBBar = UtilFun.cast_t(findViewById(R.id.sb_bar));
 
         mTVMinTag = UtilFun.cast_t(findViewById(R.id.tv_min_tag));
+        mTVMiddle1Tag = UtilFun.cast_t(findViewById(R.id.tv_middle1_tag));
+        mTVMiddle2Tag = UtilFun.cast_t(findViewById(R.id.tv_middle2_tag));
         mTVMaxTag = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
 
         mSBBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -138,13 +152,13 @@ public class SeekbarVW extends ConstraintLayout {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(null != mSBCLExtend) {
-                    mSBCLExtend.onStopTrackingTouch(seekBar);
-                }
-
                 if(null != mNMSBData)   {
                     String sz_h = mNMSBData.floorEntry(seekBar.getProgress()).getValue();
                     mTVVal.setText(sz_h);
+                }
+
+                if(null != mSBCLExtend) {
+                    mSBCLExtend.onStopTrackingTouch(seekBar);
                 }
             }
         });

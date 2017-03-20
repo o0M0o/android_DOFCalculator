@@ -117,7 +117,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:szMinTag="35mm"
-            app:szMaxTag="160mm"
+            app:szMiddle1Tag="50mm"
+            app:szMiddle2Tag="75mm"
+            app:szMaxTag="155mm"
             app:szTag="@string/tv_lens_focal"
             app:szVal="50mm" />
 
@@ -131,6 +133,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/esb_lens_focal"
             app:szMinTag="F/1.2"
+            app:szMiddle1Tag="F/12"
+            app:szMiddle2Tag="F/24"
             app:szMaxTag="F/64"
             app:szTag="@string/tv_lens_aperture"
             app:szVal="F/1.2" />
@@ -145,6 +149,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/esb_lens_aperture"
             app:szMinTag="0.0m"
+            app:szMiddle1Tag="1.5m"
+            app:szMiddle2Tag="25m"
             app:szMaxTag="1000m"
             app:szTag="@string/tv_object_distance"
             app:szVal="1.5m" />
