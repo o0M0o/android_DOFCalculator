@@ -10,6 +10,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
+import java.util.NavigableMap;
+
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 
@@ -24,6 +26,9 @@ public class SeekbarVW extends ConstraintLayout {
 
     protected TextView  mTVMinTag;
     protected TextView  mTVMaxTag;
+
+    protected NavigableMap<Integer, String>     mNMSBData = null;
+    protected SeekBar.OnSeekBarChangeListener   mSBCLExtend = null;
 
     public SeekbarVW(Context context) {
         super(context);
@@ -71,34 +76,35 @@ public class SeekbarVW extends ConstraintLayout {
         return mSBBar;
     }
 
+
     /**
-     * 设置当前seekbar值
-     * @param val   当前值
+     * 获取当前seekbar的值
+     * @return  当前值
      */
-    public void setCurVal(String val)   {
-        mTVVal.setText(val);
-        invalidate();
-        requestLayout();
+    public String getCurVal()   {
+        return mTVVal.getText().toString();
     }
 
     /**
-     * 设置最小tag
-     * @param tag   for tag
+     * 设置seekbar的数据
+     * @param nm_data   数据
      */
-    public void setMinTag(String tag)   {
-        mTVMinTag.setText(tag);
-        invalidate();
-        requestLayout();
+    public void setSeekbarMap(NavigableMap<Integer, String> nm_data)    {
+        mNMSBData = nm_data;
+
+        mTVMinTag.setText(mNMSBData.floorEntry(0).getValue());
+        mTVMaxTag.setText(mNMSBData.floorEntry(100).getValue());
+
+        String sz_h = mNMSBData.floorEntry(mSBBar.getProgress()).getValue();
+        mTVVal.setText(sz_h);
     }
 
     /**
-     * 设置最大tag
-     * @param tag   for tag
+     * 设置seekbar的扩展监听器
+     * @param sl        扩展监听器
      */
-    public void setMaxTag(String tag)   {
-        mTVMaxTag.setText(tag);
-        invalidate();
-        requestLayout();
+    public void setSeekbarExtendListner(SeekBar.OnSeekBarChangeListener sl) {
+        mSBCLExtend = sl;
     }
 
 
@@ -114,5 +120,33 @@ public class SeekbarVW extends ConstraintLayout {
 
         mTVMinTag = UtilFun.cast_t(findViewById(R.id.tv_min_tag));
         mTVMaxTag = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
+
+        mSBBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(null != mSBCLExtend) {
+                    mSBCLExtend.onProgressChanged(seekBar, progress, fromUser);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if(null != mSBCLExtend) {
+                    mSBCLExtend.onStartTrackingTouch(seekBar);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(null != mSBCLExtend) {
+                    mSBCLExtend.onStopTrackingTouch(seekBar);
+                }
+
+                if(null != mNMSBData)   {
+                    String sz_h = mNMSBData.floorEntry(seekBar.getProgress()).getValue();
+                    mTVVal.setText(sz_h);
+                }
+            }
+        });
     }
 }

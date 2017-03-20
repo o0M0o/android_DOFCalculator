@@ -34,10 +34,6 @@ public class FrgCalculator extends FrgUtilityBase {
     private final static int    TAG_LENS_APERTURE   = 2;
     private final static int    TAG_OBJECT_DISTANCE = 3;
 
-    private SeekBar     mSBLensFocal;
-    private SeekBar     mSBLensAperture;
-    private SeekBar     mSBObjectDistance;
-
     // seekbar ui
     @BindView(R.id.esb_lens_focal)
     SeekbarVW   mESBLensFocal;
@@ -60,8 +56,8 @@ public class FrgCalculator extends FrgUtilityBase {
 
     private DeviceItem mDICurDevice;
 
-    private final static NavigableMap<Integer, Integer> mNMLensFocal = new TreeMap<>();
-    private final static NavigableMap<Integer, BigDecimal> mNMObjectDistance = new TreeMap<>();
+    private final static NavigableMap<Integer, String> mNMLensFocal = new TreeMap<>();
+    private final static NavigableMap<Integer, String> mNMObjectDistance = new TreeMap<>();
     private final static NavigableMap<Integer, String> mNMLensAperture = new TreeMap<>();
     static {
         // for lens aperture
@@ -80,14 +76,14 @@ public class FrgCalculator extends FrgUtilityBase {
         mNMLensAperture.put(100, "F/64");
 
         // for object distance
-        mNMObjectDistance.put(0, BigDecimal.ZERO);
-        mNMObjectDistance.put(15, BigDecimal.valueOf(0.1));
-        mNMObjectDistance.put(30, BigDecimal.valueOf(1.5));
-        mNMObjectDistance.put(45, BigDecimal.valueOf(2));
-        mNMObjectDistance.put(60, BigDecimal.valueOf(3));
-        mNMObjectDistance.put(75, BigDecimal.valueOf(5));
-        mNMObjectDistance.put(90, BigDecimal.valueOf(10));
-        mNMObjectDistance.put(100, BigDecimal.valueOf(25));
+        mNMObjectDistance.put(0, "0m");
+        mNMObjectDistance.put(15, "0.1m");
+        mNMObjectDistance.put(30, "1.5m");
+        mNMObjectDistance.put(45, "2m");
+        mNMObjectDistance.put(60, "3m");
+        mNMObjectDistance.put(75, "5m");
+        mNMObjectDistance.put(90, "10m");
+        mNMObjectDistance.put(100, "25m");
     }
 
 
@@ -102,49 +98,7 @@ public class FrgCalculator extends FrgUtilityBase {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            switch ((int)seekBar.getTag())    {
-                case TAG_LENS_FOCAL         :
-                    onLensFocal(seekBar);
-                    break;
-
-                case TAG_LENS_APERTURE      :
-                    onLensAperture(seekBar);
-                    break;
-
-                case TAG_OBJECT_DISTANCE    :
-                    onObjDistanc(seekBar);
-                    break;
-            }
-
             updateResultUI();
-        }
-
-
-        /**
-         * 处理lens focal
-         * @param sb  for seekbar
-         */
-        private void onLensFocal(SeekBar sb) {
-            int p = sb.getProgress();
-            updateLensFocal(p);
-        }
-
-        /**
-         * 处理lens aperture
-         * @param sb  for seekbar
-         */
-        private void onLensAperture(SeekBar sb)    {
-            int p = sb.getProgress();
-            updateLensAperture(p);
-        }
-
-        /**
-         * 处理lens aperture
-         * @param sb  for seekbar
-         */
-        private void onObjDistanc(SeekBar sb)    {
-            int p = sb.getProgress();
-            updateObjectDistance(p);
         }
     };
 
@@ -168,45 +122,20 @@ public class FrgCalculator extends FrgUtilityBase {
 
     @Override
     protected void initUiComponent(View view) {
-        // for min/max tag
-        int f_min = mNMLensFocal.floorEntry(0).getValue();
-        String sz_f_min = String.format(Locale.CHINA, "%dmm", f_min);
+        // for data
+        mESBLensFocal.setSeekbarMap(mNMLensFocal);
+        mESBLensAperture.setSeekbarMap(mNMLensAperture);
+        mESBObjectDistance.setSeekbarMap(mNMObjectDistance);
 
-        int f_max = mNMLensFocal.floorEntry(100).getValue();
-        String sz_f_max = String.format(Locale.CHINA, "%dmm", f_max);
-        mESBLensFocal.setMinTag(sz_f_min);
-        mESBLensFocal.setMaxTag(sz_f_max);
-
-        String fa_min = mNMLensAperture.floorEntry(0).getValue();
-        String fa_max = mNMLensAperture.floorEntry(100).getValue();
-        mESBLensAperture.setMinTag(fa_min);
-        mESBLensAperture.setMaxTag(fa_max);
-
-        BigDecimal d_min = mNMObjectDistance.floorEntry(0).getValue();
-        String sz_min = String.format(Locale.CHINA, "%.02fm", d_min.floatValue());
-
-        BigDecimal d_max = mNMObjectDistance.floorEntry(100).getValue();
-        String sz_max = String.format(Locale.CHINA, "%.02fm", d_max.floatValue());
-        mESBObjectDistance.setMinTag(sz_min);
-        mESBObjectDistance.setMaxTag(sz_max);
+        // for extend listner
+        mESBLensFocal.setSeekbarExtendListner(mSBChangeListener);
+        mESBLensAperture.setSeekbarExtendListner(mSBChangeListener);
+        mESBObjectDistance.setSeekbarExtendListner(mSBChangeListener);
 
         // for seekbar
-        mSBLensFocal = mESBLensFocal.getSeekBar();
-        mSBLensAperture = mESBLensAperture.getSeekBar();
-        mSBObjectDistance = mESBObjectDistance.getSeekBar();
-
-        mSBLensFocal.setTag(TAG_LENS_FOCAL);
-        mSBLensAperture.setTag(TAG_LENS_APERTURE);
-        mSBObjectDistance.setTag(TAG_OBJECT_DISTANCE);
-
-        mSBLensAperture.setOnSeekBarChangeListener(mSBChangeListener);
-        mSBLensFocal.setOnSeekBarChangeListener(mSBChangeListener);
-        mSBObjectDistance.setOnSeekBarChangeListener(mSBChangeListener);
-
-        // init show
-        updateLensFocal(0);
-        updateLensAperture(0);
-        updateObjectDistance(0);
+        mESBLensFocal.getSeekBar().setTag(TAG_LENS_FOCAL);
+        mESBLensAperture.getSeekBar().setTag(TAG_LENS_APERTURE);
+        mESBObjectDistance.getSeekBar().setTag(TAG_OBJECT_DISTANCE);
     }
 
     @Override
@@ -219,9 +148,12 @@ public class FrgCalculator extends FrgUtilityBase {
      * 更新结果UI
      */
     protected void updateResultUI() {
-        int lf_hot = mNMLensFocal.floorEntry(mSBLensFocal.getProgress()).getValue();
-        String la_hot = mNMLensAperture.floorEntry(mSBLensAperture.getProgress()).getValue();
-        BigDecimal od_hot = mNMObjectDistance.floorEntry(mSBObjectDistance.getProgress()).getValue();
+        String sz_lf_hot = mESBLensFocal.getCurVal();
+        String sz_od_hot = mESBObjectDistance.getCurVal();
+        String la_hot = mESBLensAperture.getCurVal();
+
+        int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
+        BigDecimal od_hot = new BigDecimal(sz_od_hot.substring(0, sz_od_hot.indexOf("m")));
 
         BigDecimal aperture = new BigDecimal(la_hot.substring(la_hot.indexOf("/") + 1));
         BigDecimal focal = new BigDecimal(lf_hot);
@@ -261,35 +193,6 @@ public class FrgCalculator extends FrgUtilityBase {
         mTVTotalFocal.setText(String.format(Locale.CHINA, "%.02f米", dofTotal.floatValue()));
     }
 
-    /**
-     * 更新lens focal
-     * @param progress  进度
-     */
-    private void updateLensFocal(int progress)   {
-        int f_hot = mNMLensFocal.floorEntry(progress).getValue();
-        String sz_hot = String.format(Locale.CHINA, "%dmm", f_hot);
-        mESBLensFocal.setCurVal(sz_hot);
-    }
-
-    /**
-     * 更新lens aperture
-     * @param progress  进度
-     */
-    private void updateLensAperture(int progress)   {
-        String sz_hot = mNMLensAperture.floorEntry(progress).getValue();
-        mESBLensAperture.setCurVal(sz_hot);
-    }
-
-    /**
-     * 更新object distance
-     * @param progress  进度
-     */
-    private void updateObjectDistance(int progress)   {
-        BigDecimal d_hot = mNMObjectDistance.floorEntry(progress).getValue();
-        String sz_hot = String.format(Locale.CHINA, "%.02fm", d_hot.floatValue());
-        mESBObjectDistance.setCurVal(sz_hot);
-    }
-
 
     /**
      * 初始化镜头焦距步进值
@@ -302,7 +205,7 @@ public class FrgCalculator extends FrgUtilityBase {
         int step_count = 10;
         int step_focal = (maxFocal - minFocal)/ step_count;
         for(int i = 0; i < step_count; ++i) {
-            mNMLensFocal.put(step_val * i, minFocal + step_focal * i);
+            mNMLensFocal.put(step_val * i, Integer.toString(minFocal + step_focal * i) + "mm");
         }
     }
 }
