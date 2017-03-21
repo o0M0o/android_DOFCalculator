@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,7 +24,10 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
-import wxm.dofcalculator.ui.extend.SeekbarVW;
+import wxm.dofcalculator.ui.calculator.extend.DOFVW;
+import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
+import wxm.dofcalculator.ui.calculator.extend.SeekbarChangedEvent;
+import wxm.dofcalculator.ui.calculator.extend.SeekbarVW;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
@@ -44,15 +50,8 @@ public class FrgCalculator extends FrgUtilityBase {
     @BindView(R.id.esb_object_distance)
     SeekbarVW   mESBObjectDistance;
 
-    // result ui
-    @BindView(R.id.tv_front_focal_val)
-    TextView    mTVFrontFocal;
-
-    @BindView(R.id.tv_back_focal_val)
-    TextView    mTVBackFocal;
-
-    @BindView(R.id.tv_total_focal_val)
-    TextView    mTVTotalFocal;
+    @BindView(R.id.evw_dof)
+    DOFVW       mEVWDOf;
 
     private DeviceItem mDICurDevice;
 
@@ -77,30 +76,39 @@ public class FrgCalculator extends FrgUtilityBase {
 
         // for object distance
         mNMObjectDistance.put(0, "0m");
-        mNMObjectDistance.put(15, "0.1m");
-        mNMObjectDistance.put(30, "1.5m");
-        mNMObjectDistance.put(45, "2m");
-        mNMObjectDistance.put(60, "3m");
-        mNMObjectDistance.put(75, "5m");
-        mNMObjectDistance.put(90, "10m");
-        mNMObjectDistance.put(100, "25m");
+        mNMObjectDistance.put(10, "0.4m");
+        mNMObjectDistance.put(20, "6m");
+        mNMObjectDistance.put(30, "8m");
+        mNMObjectDistance.put(40, "12m");
+        mNMObjectDistance.put(50, "20m");
+        mNMObjectDistance.put(60, "30m");
+        mNMObjectDistance.put(70, "40m");
+        mNMObjectDistance.put(80, "50m");
+        mNMObjectDistance.put(90, "75m");
+        mNMObjectDistance.put(100, "100m");
     }
 
+    @Override
+    protected void enterActivity()  {
+        super.enterActivity();
+        EventBus.getDefault().register(this);
+    }
 
-    private SeekBar.OnSeekBarChangeListener mSBChangeListener = new SeekBar.OnSeekBarChangeListener()   {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        }
+    @Override
+    protected void leaveActivity()  {
+        EventBus.getDefault().unregister(this);
+        super.leaveActivity();
+    }
 
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
+    /**
+     * SeekBar变化处理器
+     * @param event     事件参数
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSeekBarChangeEvent(SeekbarChangedEvent event) {
+        updateResultUI();
+    }
 
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            updateResultUI();
-        }
-    };
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
@@ -126,11 +134,6 @@ public class FrgCalculator extends FrgUtilityBase {
         mESBLensFocal.setSeekbarMap(mNMLensFocal);
         mESBLensAperture.setSeekbarMap(mNMLensAperture);
         mESBObjectDistance.setSeekbarMap(mNMObjectDistance);
-
-        // for extend listner
-        mESBLensFocal.setSeekbarExtendListner(mSBChangeListener);
-        mESBLensAperture.setSeekbarExtendListner(mSBChangeListener);
-        mESBObjectDistance.setSeekbarExtendListner(mSBChangeListener);
 
         // for seekbar
         mESBLensFocal.getSeekBar().setTag(TAG_LENS_FOCAL);
@@ -188,9 +191,8 @@ public class FrgCalculator extends FrgUtilityBase {
         BigDecimal dofTotal = dofFar.subtract(dofNear);
 
         // updat ui
-        mTVFrontFocal.setText(String.format(Locale.CHINA, "%.02f米", dofNear.floatValue()));
-        mTVBackFocal.setText(String.format(Locale.CHINA, "%.02f米", dofFar.floatValue()));
-        mTVTotalFocal.setText(String.format(Locale.CHINA, "%.02f米", dofTotal.floatValue()));
+        EventBus.getDefault().post(new DofChangedEvent(
+                            dofNear.floatValue(), od_hot.floatValue(), dofFar.floatValue()));
     }
 
 

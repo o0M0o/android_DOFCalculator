@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.extend;
+package wxm.dofcalculator.ui.calculator.extend;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.NavigableMap;
 
@@ -124,7 +126,7 @@ public class SeekbarVW extends ConstraintLayout {
      * 初始化UI元件
      */
     private void initUIComponent()  {
-        LayoutInflater.from(getContext()).inflate(R.layout.sb_item, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.vw_seekbar, this);
 
         mTVTag = UtilFun.cast_t(findViewById(R.id.tv_tag));
         mTVVal = UtilFun.cast_t(findViewById(R.id.tv_val));
@@ -160,6 +162,8 @@ public class SeekbarVW extends ConstraintLayout {
                 if(null != mSBCLExtend) {
                     mSBCLExtend.onStopTrackingTouch(seekBar);
                 }
+
+                EventBus.getDefault().post(new SeekbarChangedEvent((int)seekBar.getTag()));
             }
         });
     }

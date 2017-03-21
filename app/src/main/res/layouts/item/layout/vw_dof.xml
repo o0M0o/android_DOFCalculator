@@ -7,75 +7,190 @@
     android:padding="4dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_vw"
-        android:background="@color/white"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cl_meter"
+        android:id="@+id/cl_dof_info"
         android:layout_width="0dp"
-        android:layout_height="160dp">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- for front dof -->
+        <TextView
+            android:id="@+id/tv_front_dof_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="前景深"
+            android:textColor="@color/text_fit"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_front_dof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="5m"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_front_dof_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- for object distance -->
+        <TextView
+            android:id="@+id/tv_objecet_distance_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:text="物距"
+            android:textColor="@color/text_fit"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_objecet_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="7m"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_objecet_distance_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- for back dof -->
+        <TextView
+            android:id="@+id/tv_back_dof_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="240dp"
+            android:text="后景深"
+            android:textColor="@color/text_fit"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_back_dof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="9m"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_back_dof_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_vw"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/cl_meter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_dof_info"
+        tools:layout_editor_absoluteX="0dp">
+
+        <View
+            android:id="@+id/vw_front_dof"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            android:background="@color/aliceblue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/vw_back_dof"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            android:background="@color/lightsalmon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vw_front_dof"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_meter"
-        android:background="@color/white"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/tv_min_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="2dp"
             android:text="0m"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="6dp" />
 
         <TextView
             android:id="@+id/tv_middle1_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="2dp"
-            android:text="50m"
+            android:text="25m"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_middle2_tag"
-            app:layout_constraintStart_toStartOf="@+id/tv_min_tag" />
+            app:layout_constraintStart_toStartOf="@+id/tv_min_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="122dp" />
 
         <TextView
             android:id="@+id/tv_middle2_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="2dp"
-            android:text="75m"
+            android:text="50m"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_max_tag"
-            app:layout_constraintStart_toStartOf="@+id/tv_middle1_tag" />
+            app:layout_constraintStart_toStartOf="@+id/tv_min_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="239dp" />
+
+        <TextView
+            android:id="@+id/tv_middle3_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="75m"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_max_tag"
+            app:layout_constraintStart_toStartOf="@+id/tv_middle2_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="239dp" />
 
         <TextView
             android:id="@+id/tv_max_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="2dp"
             android:text="100m"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="353dp" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

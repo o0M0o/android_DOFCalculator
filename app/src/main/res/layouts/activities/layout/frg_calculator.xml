@@ -6,97 +6,14 @@
     android:layout_height="match_parent"
     tools:context="wxm.dofcalculator.ui.calculator.ACCalculator">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_calculator_result"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/cl_adjust_para"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <wxm.dofcalculator.ui.calculator.extend.DOFVW
+        android:id="@+id/evw_dof"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/cl_calculator_result_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <!-- front focal -->
-            <TextView
-                android:id="@+id/tv_front_focal_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="前景深"
-                android:textColor="@color/text_fit"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_front_focal_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="7.84米"
-                app:layout_constraintBottom_toBottomOf="@id/tv_front_focal_tag"
-                app:layout_constraintStart_toEndOf="@id/tv_front_focal_tag"
-                app:layout_constraintTop_toTopOf="@id/tv_front_focal_tag" />
-
-            <!-- back focal -->
-            <TextView
-                android:id="@+id/tv_back_focal_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="6dp"
-                android:text="后景深"
-                android:textColor="@color/text_fit"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_front_focal_tag" />
-
-            <TextView
-                android:id="@+id/tv_back_focal_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="17.84米"
-                app:layout_constraintBottom_toBottomOf="@id/tv_back_focal_tag"
-                app:layout_constraintStart_toEndOf="@id/tv_back_focal_tag"
-                app:layout_constraintStart_toStartOf="@id/tv_front_focal_val"
-                app:layout_constraintTop_toTopOf="@id/tv_back_focal_tag" />
-
-
-            <!-- back focal -->
-            <TextView
-                android:id="@+id/tv_total_focal_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="6dp"
-                android:text="总景深"
-                android:textColor="@color/text_fit"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_back_focal_tag" />
-
-            <TextView
-                android:id="@+id/tv_total_focal_val"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10.00米"
-                app:layout_constraintBottom_toBottomOf="@id/tv_total_focal_tag"
-                app:layout_constraintStart_toEndOf="@id/tv_back_focal_tag"
-                app:layout_constraintStart_toStartOf="@id/tv_front_focal_val"
-                app:layout_constraintTop_toTopOf="@id/tv_total_focal_tag" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintBottom_toTopOf="@+id/cl_adjust_para"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_adjust_para"
@@ -106,10 +23,11 @@
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="4dp">
 
         <!-- for lens focal -->
-        <wxm.dofcalculator.ui.extend.SeekbarVW
+        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
             android:id="@+id/esb_lens_focal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -121,38 +39,41 @@
             app:szMiddle2Tag="75mm"
             app:szMaxTag="155mm"
             app:szTag="@string/tv_lens_focal"
-            app:szVal="50mm" />
+            app:szVal="50mm"
+            tools:layout_editor_absoluteX="4dp" />
 
         <!-- for lens aperture -->
-        <wxm.dofcalculator.ui.extend.SeekbarVW
+        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
             android:id="@+id/esb_lens_aperture"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/esb_lens_focal"
+            app:layout_constraintTop_toBottomOf="@+id/esb_lens_focal"
             app:szMinTag="F/1.2"
             app:szMiddle1Tag="F/12"
             app:szMiddle2Tag="F/24"
             app:szMaxTag="F/64"
             app:szTag="@string/tv_lens_aperture"
-            app:szVal="F/1.2" />
+            app:szVal="F/1.2"
+            tools:layout_editor_absoluteX="4dp" />
 
         <!-- for object distance -->
-        <wxm.dofcalculator.ui.extend.SeekbarVW
+        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
             android:id="@+id/esb_object_distance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/esb_lens_aperture"
+            app:layout_constraintTop_toBottomOf="@+id/esb_lens_aperture"
             app:szMinTag="0.0m"
             app:szMiddle1Tag="1.5m"
             app:szMiddle2Tag="25m"
             app:szMaxTag="1000m"
             app:szTag="@string/tv_object_distance"
-            app:szVal="1.5m" />
+            app:szVal="1.5m"
+            tools:layout_editor_absoluteX="4dp" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
