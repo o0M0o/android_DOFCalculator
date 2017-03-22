@@ -24,6 +24,7 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
+import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.extend.DOFVW;
 import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
 import wxm.dofcalculator.ui.calculator.extend.SeekbarChangedEvent;
@@ -152,47 +153,13 @@ public class FrgCalculator extends FrgUtilityBase {
      */
     protected void updateResultUI() {
         String sz_lf_hot = mESBLensFocal.getCurVal();
-        String sz_od_hot = mESBObjectDistance.getCurVal();
         String la_hot = mESBLensAperture.getCurVal();
 
         int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
-        BigDecimal od_hot = new BigDecimal(sz_od_hot.substring(0, sz_od_hot.indexOf("m")));
-
+        BigDecimal pa = mDICurDevice.getCamera().getPixelArea();
         BigDecimal aperture = new BigDecimal(la_hot.substring(la_hot.indexOf("/") + 1));
-        BigDecimal focal = new BigDecimal(lf_hot);
 
-        //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
-        BigDecimal ff = new BigDecimal(lf_hot * lf_hot);
-        BigDecimal ac = aperture.multiply(mDICurDevice.getCamera().getPixelArea());
-        BigDecimal hyperFocal =  ff.divide(ac, RoundingMode.CEILING)
-                                    .add(new BigDecimal(lf_hot));
-
-        // change to unit mm
-        BigDecimal od_mm = od_hot.multiply(new BigDecimal(1000));
-
-        // dofNear = ((hyperFocal - focal) * distance) / (hyperFocal + distance - (2*focal));
-        BigDecimal dofNear_f = hyperFocal.subtract(focal).multiply(od_mm);
-        BigDecimal dofNear_b = hyperFocal.add(od_mm).subtract(focal.add(focal));
-        BigDecimal dofNear = dofNear_f.divide(dofNear_b, RoundingMode.CEILING);
-
-        // Prevent 'divide by zero' when calculating far distance.
-        BigDecimal dofFar;
-        if(Math.abs(hyperFocal.subtract(od_mm).floatValue()) <= 0.00001)    {
-            dofFar = new BigDecimal(10000000);
-        } else  {
-            BigDecimal f = hyperFocal.subtract(focal).multiply(od_mm);
-            BigDecimal b = hyperFocal.subtract(od_mm);
-            dofFar = f.divide(b, RoundingMode.CEILING);
-        }
-
-        // change to unit m
-        dofNear = dofNear.divide(new BigDecimal(1000), RoundingMode.CEILING);
-        dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
-        BigDecimal dofTotal = dofFar.subtract(dofNear);
-
-        // updat ui
-        EventBus.getDefault().post(new DofChangedEvent(
-                            dofNear.floatValue(), od_hot.floatValue(), dofFar.floatValue()));
+        EventBus.getDefault().post(new CameraSettingChangeEvent(pa, lf_hot, aperture));
     }
 
 

@@ -5,16 +5,20 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Locale;
 
 import cn.wxm.andriodutillib.util.UtilFun;
@@ -25,6 +29,8 @@ import wxm.dofcalculator.R;
  * Created by ookoo on 2017/3/19.
  */
 public class DOFVW extends ConstraintLayout {
+    private final static String     LOG_TAG = "DOFVW";
+
     protected ConstraintLayout      mCLDofView;
     protected View                  mVWFrontDOF;
     protected View                  mVWBackDOF;
@@ -34,7 +40,13 @@ public class DOFVW extends ConstraintLayout {
     protected TextView              mTVObjectDistance;
     protected TextView              mTVBackDof;
 
-    protected DofChangedEvent     mDEEvent;
+    protected ImageView             mIVMover;
+
+    protected DofChangedEvent               mDENOFResult;
+    protected CameraSettingChangeEvent      mCSCameraSetting;
+    protected ObjectDistanceChangedEvent    mODObjectDistance;
+
+    protected TouchListener     mTLObjectDistanceListner = new TouchListener();
 
     public DOFVW(Context context) {
         super(context);
@@ -97,42 +109,63 @@ public class DOFVW extends ConstraintLayout {
 
 
     /**
-     * SeekBar变化处理器
+     * camera setting变化处理器
      * @param event     事件参数
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onDofChangeEvent(DofChangedEvent event) {
-        mDEEvent = event;
-
-        invalidate();
-        requestLayout();
+    public void onCameraSettingChangeEvent(CameraSettingChangeEvent event) {
+        mCSCameraSetting = event;
+        updateDof();
     }
+
+
+    /**
+     * object distance 变化处理器
+     * @param event     事件参数
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onObjectDistanceChangeEvent(ObjectDistanceChangedEvent event) {
+        mODObjectDistance = event;
+        updateDof();
+    }
+
+
 
 
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-        if(null == mDEEvent)    {
+        if(null == mDENOFResult)    {
             if(!isInEditMode()) {
                 setDofShow(View.GONE);
             }
         } else {
             setDofShow(View.VISIBLE);
+            float front_dof =  mDENOFResult.getFrontDof();
+            float object_distance =  mDENOFResult.getObjectDistance();
+            float back_dof =  mDENOFResult.getBackDof();
+
+            Log.d(LOG_TAG, String.format(Locale.CHINA,
+                                "frontNof = %.02fm, object_distance= %.02fm, backNof = %.02fm",
+                                front_dof, object_distance, back_dof));
 
             float om_w = mCLDofView.getWidth() / 100;
-            int h = mCLDofView.getHeight();
+            int h = mCLDofView.getHeight() - mIVMover.getHeight();
+            int mid_x = mIVMover.getLeft() + mIVMover.getWidth()/2;
 
-            int f_x = (int) (om_w * mDEEvent.getFrontDof());
-            int f_w = (int) ((mDEEvent.getObjectDistance() - mDEEvent.getFrontDof()) * om_w);
+            int f_x = (int) (om_w * front_dof);
+            int f_w =  mid_x - f_x;
             adjustDofView(mVWFrontDOF, f_x, f_w, h);
 
             int b_x = f_x + f_w;
-            int b_w = (int) ((mDEEvent.getBackDof() - mDEEvent.getObjectDistance()) * om_w);
+            int b_w = (int) ((back_dof - object_distance) * om_w);
             adjustDofView(mVWBackDOF, b_x, b_w, h);
 
-            mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", mDEEvent.getFrontDof()));
-            mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", mDEEvent.getObjectDistance()));
-            mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", mDEEvent.getBackDof()));
+            /*
+            mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", front_dof));
+            mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", mDENOFResult.getObjectDistance()));
+            mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", mDENOFResult.getBackDof()));
+            */
         }
     }
 
@@ -163,9 +196,61 @@ public class DOFVW extends ConstraintLayout {
         mTVObjectDistance = UtilFun.cast_t(findViewById(R.id.tv_objecet_distance));
         mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
 
+        mIVMover = UtilFun.cast_t(findViewById(R.id.iv_mover));
+
         if(!isInEditMode()) {
-            setDofShow(View.GONE);
+            mIVMover.setOnTouchListener(mTLObjectDistanceListner);
+            //setDofShow(View.GONE);
         }
+    }
+
+    /**
+     * 刷新Dof
+     */
+    private void updateDof()    {
+        if((null == mCSCameraSetting) || (null == mODObjectDistance)) {
+            mDENOFResult = null;
+            return;
+        }
+
+        int lens_focal = mCSCameraSetting.getLensFocal();
+        BigDecimal lens_aperture = mCSCameraSetting.getLensAperture();
+        BigDecimal pixel_area = mCSCameraSetting.getPixelArea();
+        float object_distance = mODObjectDistance.getObjectDistance();
+
+        //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
+        BigDecimal ff = new BigDecimal(lens_focal * lens_focal);
+        BigDecimal ac = lens_aperture.multiply(pixel_area);
+        BigDecimal hyperFocal =  ff.divide(ac, RoundingMode.CEILING)
+                                    .add(new BigDecimal(lens_focal));
+
+        // change to unit mm
+        BigDecimal od_mm = new BigDecimal(object_distance * 1000);
+
+        // dofNear = ((hyperFocal - focal) * distance) / (hyperFocal + distance - (2*focal));
+        BigDecimal focal = new BigDecimal(lens_focal);
+        BigDecimal dofNear_f = hyperFocal.subtract(focal).multiply(od_mm);
+        BigDecimal dofNear_b = hyperFocal.add(od_mm).subtract(focal.add(focal));
+        BigDecimal dofNear = dofNear_f.divide(dofNear_b, RoundingMode.CEILING);
+
+        // Prevent 'divide by zero' when calculating far distance.
+        BigDecimal dofFar;
+        if(Math.abs(hyperFocal.subtract(od_mm).floatValue()) <= 0.00001)    {
+            dofFar = new BigDecimal(10000000);
+        } else  {
+            BigDecimal f = hyperFocal.subtract(focal).multiply(od_mm);
+            BigDecimal b = hyperFocal.subtract(od_mm);
+            dofFar = f.divide(b, RoundingMode.CEILING);
+        }
+
+        // change to unit m
+        dofNear = dofNear.divide(new BigDecimal(1000), RoundingMode.CEILING);
+        dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
+
+        mDENOFResult = new DofChangedEvent(dofNear.floatValue(), object_distance, dofFar.floatValue());
+
+        // updat ui
+        invalidate();
     }
 
     /**
@@ -177,5 +262,74 @@ public class DOFVW extends ConstraintLayout {
         mVWBackDOF.setVisibility(v);
 
         mCLDofInfo.setVisibility(v);
+    }
+
+    /**
+     * 触摸监听类
+     */
+    private class TouchListener implements OnTouchListener {
+        int lastX;
+        int lastY;
+        int screenWidth;
+        int screenHeight;
+
+        TouchListener() {
+            DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+            screenWidth = dm.widthPixels;
+            screenHeight = dm.heightPixels;
+            Log.d(LOG_TAG, "screen width =" + screenWidth + ",screen height="
+                    + screenHeight);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            Log.d(LOG_TAG, "TouchListener -- onTouch");
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = (int) event.getRawX();
+                    lastY = (int) event.getRawY();
+                    Log.d(LOG_TAG, "down x=" + lastX + ", y=" + lastY);
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    int dx = (int) event.getRawX() - lastX;
+                    int dy = (int) event.getRawY() - lastY;
+                    Log.d(LOG_TAG, "move dx=" + dx + ",  dy=" + dy);
+
+                    int left = v.getLeft() + dx;
+                    int top = v.getTop();
+                    int right = v.getRight() + dx;
+                    int bottom = v.getBottom();
+                    Log.d(LOG_TAG, "view  left=" + left + ", top=" + top + ", right="
+                            + right + ",bottom=" + bottom);
+
+                    // set bound
+                    if (left < 0) {
+                        left = 0;
+                        right = left + v.getWidth();
+                    }
+                    if (right > screenWidth) {
+                        right = screenWidth;
+                        left = right - v.getWidth();
+                    }
+
+                    v.layout(left, top, right, top + v.getHeight());
+
+                    lastX = (int) event.getRawX();
+                    lastY = (int) event.getRawY();
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    lastX = (int) event.getRawX();
+                    lastY = (int) event.getRawY();
+                    Log.d(LOG_TAG, "up x=" + lastX + ", y=" + lastY);
+
+                    int mid_x = v.getWidth() / 2 + v.getLeft();
+                    float progress = (float)mid_x / (float)screenWidth;
+                    EventBus.getDefault().post(new ObjectDistanceChangedEvent(progress * 100));
+                    break;
+            }
+            return true;
+        }
     }
 }
