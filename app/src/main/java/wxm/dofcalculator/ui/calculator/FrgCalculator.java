@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Locale;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -26,8 +23,7 @@ import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
 import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.extend.DOFVW;
-import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.SeekbarChangedEvent;
+import wxm.dofcalculator.ui.calculator.extend.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.extend.SeekbarVW;
 import wxm.dofcalculator.utility.ContextUtil;
 
@@ -88,7 +84,7 @@ public class FrgCalculator extends FrgUtilityBase {
      * @param event     事件参数
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSeekBarChangeEvent(SeekbarChangedEvent event) {
+    public void onSeekBarChangeEvent(AttrChangedEvent event) {
         updateResultUI();
     }
 

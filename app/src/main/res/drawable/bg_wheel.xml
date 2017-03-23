@@ -7,6 +7,7 @@
         android:startColor="#66555555">
     </gradient>
 
+    <padding android:top="2dp" />
     <corners android:radius="4dp" />
     <stroke
         android:width="2dp"

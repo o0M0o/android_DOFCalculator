@@ -163,7 +163,7 @@ public class SeekbarVW extends ConstraintLayout {
                     mSBCLExtend.onStopTrackingTouch(seekBar);
                 }
 
-                EventBus.getDefault().post(new SeekbarChangedEvent((int)seekBar.getTag()));
+                EventBus.getDefault().post(new AttrChangedEvent((int)seekBar.getTag()));
             }
         });
     }

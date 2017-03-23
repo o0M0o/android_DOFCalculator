@@ -7,11 +7,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.text.Layout;
 import android.text.TextPaint;
-import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -35,8 +32,15 @@ import wxm.dofcalculator.R;
 @SuppressLint("ClickableViewAccessibility")
 public class TuneWheel extends View {
 
-    public interface OnValueChangeListener {
-        public void onValueChange(float value);
+    /**
+     * 值变动监听器
+     */
+    interface OnValueChangeListener {
+        /**
+         * 值变动接口
+         * @param value     当前数值
+         */
+        void onValueChange(float value);
     }
 
     public static final int MOD_TYPE_HALF = 2;
@@ -45,15 +49,10 @@ public class TuneWheel extends View {
     private static final int ITEM_HALF_DIVIDER = 28;
     private static final int ITEM_ONE_DIVIDER = 10;
 
-    private static final int ITEM_MAX_HEIGHT = 24;
-    private static final int ITEM_MIN_HEIGHT = 16;
 
-    private static final int TEXT_SIZE = 14;
 
     private float mDensity;
     private int mModType = MOD_TYPE_HALF, mLineDivider = ITEM_HALF_DIVIDER;
-    // private int mCurValue = 50, mMaxValue = 500, mModType = MOD_TYPE_ONE,
-    // mLineDivider = ITEM_ONE_DIVIDER;
 
     private int mLastX, mMove;
     private int mWidth, mHeight;
@@ -64,11 +63,18 @@ public class TuneWheel extends View {
 
     private OnValueChangeListener mListener;
 
-    private String  mSZUnit;
-    private int     mValueStep;
-    private int     mMinValue;
-    private int     mMaxValue;
-    private int     mCurValue;
+    /**
+     * 可设置属性
+     */
+    private String  mAttrSZUnit;
+    private int     mAttrValueStep;
+    private int     mAttrMinValue;
+    private int     mAttrMaxValue;
+    private int     mAttrCurValue;
+
+    private int     mAttrTextSize;
+    private int     mAttrMaxHeight;
+    private int     mAttrMinHeight;
 
     public TuneWheel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -84,13 +90,17 @@ public class TuneWheel extends View {
         // for parameter
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TuneWheel);
         try {
-            String sz_unit = array.getString(R.styleable.TuneWheel_szTWUnit);
-            mSZUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
+            String sz_unit = array.getString(R.styleable.TuneWheel_twUnit);
+            mAttrSZUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
 
-            mValueStep = array.getInt(R.styleable.TuneWheel_intTWValueStep, 1);
-            mMinValue = array.getInt(R.styleable.TuneWheel_intTWMinValue, 0);
-            mMaxValue = array.getInt(R.styleable.TuneWheel_intTWMaxValue, 100);
-            mCurValue = array.getInt(R.styleable.TuneWheel_intTWValue, 50);
+            mAttrValueStep = array.getInt(R.styleable.TuneWheel_twValueStep, 1);
+            mAttrMinValue = array.getInt(R.styleable.TuneWheel_twMinValue, 0);
+            mAttrMaxValue = array.getInt(R.styleable.TuneWheel_twMaxValue, 100);
+            mAttrCurValue = array.getInt(R.styleable.TuneWheel_twValue, 50);
+
+            mAttrTextSize = array.getInt(R.styleable.TuneWheel_twTextSize, 14);
+            mAttrMaxHeight = array.getInt(R.styleable.TuneWheel_twMaxHeight, 24);
+            mAttrMinHeight = array.getInt(R.styleable.TuneWheel_twMinHeight, 16);
         } finally {
             array.recycle();
         }
@@ -108,15 +118,15 @@ public class TuneWheel extends View {
             case MOD_TYPE_HALF:
                 mModType = MOD_TYPE_HALF;
                 mLineDivider = ITEM_HALF_DIVIDER;
-                mCurValue = defaultValue * 2;
-                mMaxValue = maxValue * 2;
+                mAttrCurValue = defaultValue * 2;
+                mAttrMaxValue = maxValue * 2;
                 break;
 
             case MOD_TYPE_ONE:
                 mModType = MOD_TYPE_ONE;
                 mLineDivider = ITEM_ONE_DIVIDER;
-                mCurValue = defaultValue;
-                mMaxValue = maxValue;
+                mAttrCurValue = defaultValue;
+                mAttrMaxValue = maxValue;
                 break;
 
             default:
@@ -144,7 +154,7 @@ public class TuneWheel extends View {
      * @return
      */
     public float getValue() {
-        return mCurValue;
+        return mAttrCurValue;
     }
 
     @Override
@@ -175,18 +185,19 @@ public class TuneWheel extends View {
         linePaint.setColor(Color.BLACK);
 
         TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setTextSize(TEXT_SIZE * mDensity);
+        textPaint.setTextSize(mAttrTextSize * mDensity);
 
         int width = mWidth, drawCount = 0;
         float xPosition = 0, textWidth = Layout.getDesiredWidth("0", textPaint);
 
         for (int i = 0; drawCount <= 4 * width; i++) {
-            int numSize = String.valueOf(mCurValue + i).length();
-            int v_s = i * mValueStep;
+            int numSize = String.valueOf(mAttrCurValue + i).length();
+            int v_s = i * mAttrValueStep;
 
             xPosition = (width / 2 - mMove) + i * mLineDivider * mDensity;
             if (xPosition + getPaddingRight() < mWidth) {
-                int cur_i = mCurValue + v_s;
+                int cur_i = mAttrCurValue + v_s;
+                int cur_v = cur_i;
                 switch (mModType)   {
                     case MOD_TYPE_HALF :
                         cur_i /= 2;
@@ -194,15 +205,15 @@ public class TuneWheel extends View {
                 }
 
                 if (cur_i % mModType == 0) {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MAX_HEIGHT, linePaint);
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMaxHeight, linePaint);
 
-                    if (cur_i <= mMaxValue) {
+                    if (cur_i <= mAttrMaxValue) {
                         switch (mModType) {
                             case MOD_TYPE_HALF:
-                                canvas.drawText(String.valueOf(cur_i) + mSZUnit, countLeftStart(mCurValue + i, xPosition, textWidth), getHeight() - textWidth, textPaint);
+                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, countLeftStart(mAttrCurValue + i, xPosition, textWidth), getHeight() - textWidth, textPaint);
                                 break;
                             case MOD_TYPE_ONE:
-                                canvas.drawText(String.valueOf(cur_i) + mSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
+                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
                                 break;
 
                             default:
@@ -210,13 +221,14 @@ public class TuneWheel extends View {
                         }
                     }
                 } else {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMinHeight, linePaint);
                 }
             }
 
             xPosition = (width / 2 - mMove) - i * mLineDivider * mDensity;
             if (xPosition > getPaddingLeft()) {
-                int cur_i = mCurValue - v_s;
+                int cur_i = mAttrCurValue - v_s;
+                int cur_v = cur_i;
                 switch (mModType)   {
                     case MOD_TYPE_HALF :
                         cur_i /= 2;
@@ -224,15 +236,15 @@ public class TuneWheel extends View {
                 }
 
                 if (cur_i % mModType == 0) {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MAX_HEIGHT, linePaint);
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMaxHeight, linePaint);
 
-                    if (cur_i >= mMinValue) {
+                    if (cur_i >= mAttrMinValue) {
                         switch (mModType) {
                             case MOD_TYPE_HALF:
-                                canvas.drawText(String.valueOf(cur_i) + mSZUnit, countLeftStart(mCurValue - i, xPosition, textWidth), getHeight() - textWidth, textPaint);
+                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, countLeftStart(mAttrCurValue - i, xPosition, textWidth), getHeight() - textWidth, textPaint);
                                 break;
                             case MOD_TYPE_ONE:
-                                canvas.drawText(String.valueOf(cur_i) + mSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
+                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
                                 break;
 
                             default:
@@ -240,7 +252,7 @@ public class TuneWheel extends View {
                         }
                     }
                 } else {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * ITEM_MIN_HEIGHT, linePaint);
+                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMinHeight, linePaint);
                 }
             }
 
@@ -352,10 +364,10 @@ public class TuneWheel extends View {
     private void changeMoveAndValue() {
         int tValue = (int) (mMove / (mLineDivider * mDensity));
         if (Math.abs(tValue) > 0) {
-            mCurValue += tValue * mValueStep;
+            mAttrCurValue += tValue * mAttrValueStep;
             mMove -= tValue * mLineDivider * mDensity;
-            if (mCurValue <= mMinValue || mCurValue > mMaxValue) {
-                mCurValue = mCurValue <= mMinValue ? mMinValue : mMaxValue;
+            if (mAttrCurValue <= mAttrMinValue || mAttrCurValue > mAttrMaxValue) {
+                mAttrCurValue = mAttrCurValue <= mAttrMinValue ? mAttrMinValue : mAttrMaxValue;
                 mMove = 0;
                 mScroller.forceFinished(true);
             }
@@ -366,8 +378,8 @@ public class TuneWheel extends View {
 
     private void countMoveEnd() {
         int roundMove = Math.round(mMove / (mLineDivider * mDensity));
-        mCurValue = mCurValue + roundMove * mValueStep;
-        mCurValue = Math.min(Math.max(mMinValue, mCurValue), mMaxValue);
+        mAttrCurValue = mAttrCurValue + roundMove * mAttrValueStep;
+        mAttrCurValue = Math.min(Math.max(mAttrMinValue, mAttrCurValue), mAttrMaxValue);
 
         mLastX = 0;
         mMove = 0;
@@ -378,12 +390,15 @@ public class TuneWheel extends View {
 
     private void notifyValueChange() {
         if (null != mListener) {
+            mListener.onValueChange(mAttrCurValue);
+            /*
             if (mModType == MOD_TYPE_ONE) {
-                mListener.onValueChange(mCurValue);
+                mListener.onValueChange(mAttrCurValue);
             }
             if (mModType == MOD_TYPE_HALF) {
-                mListener.onValueChange(mCurValue / 2f);
+                mListener.onValueChange(mAttrCurValue / 2f);
             }
+            */
         }
     }
 
