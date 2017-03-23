@@ -40,13 +40,12 @@ public class DOFVW extends ConstraintLayout {
     protected TextView              mTVObjectDistance;
     protected TextView              mTVBackDof;
 
-    protected ImageView             mIVMover;
-
     protected DofChangedEvent               mDENOFResult;
     protected CameraSettingChangeEvent      mCSCameraSetting;
     protected ObjectDistanceChangedEvent    mODObjectDistance;
 
-    protected TouchListener     mTLObjectDistanceListner = new TouchListener();
+    protected TuneWheel             mTWWheel;
+
 
     public DOFVW(Context context) {
         super(context);
@@ -81,7 +80,7 @@ public class DOFVW extends ConstraintLayout {
             tv.setText(sz_middle2);
 
             String sz_middle3 = array.getString(R.styleable.DOFVW_szDofMiddle3Tag);
-            sz_middle3 = UtilFun.StringIsNullOrEmpty(sz_middle3) ? "50m" : sz_middle3;
+            sz_middle3 = UtilFun.StringIsNullOrEmpty(sz_middle3) ? "75m" : sz_middle3;
             tv = UtilFun.cast_t(findViewById(R.id.tv_middle3_tag));
             tv.setText(sz_middle3);
 
@@ -150,8 +149,8 @@ public class DOFVW extends ConstraintLayout {
                                 front_dof, object_distance, back_dof));
 
             float om_w = mCLDofView.getWidth() / 100;
-            int h = mCLDofView.getHeight() - mIVMover.getHeight();
-            int mid_x = mIVMover.getLeft() + mIVMover.getWidth()/2;
+            int h = mCLDofView.getHeight();
+            int mid_x = (int)(object_distance * om_w);
 
             int f_x = (int) (om_w * front_dof);
             int f_w =  mid_x - f_x;
@@ -160,12 +159,6 @@ public class DOFVW extends ConstraintLayout {
             int b_x = f_x + f_w;
             int b_w = (int) ((back_dof - object_distance) * om_w);
             adjustDofView(mVWBackDOF, b_x, b_w, h);
-
-            /*
-            mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", front_dof));
-            mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", mDENOFResult.getObjectDistance()));
-            mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", mDENOFResult.getBackDof()));
-            */
         }
     }
 
@@ -196,10 +189,12 @@ public class DOFVW extends ConstraintLayout {
         mTVObjectDistance = UtilFun.cast_t(findViewById(R.id.tv_objecet_distance));
         mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
 
-        mIVMover = UtilFun.cast_t(findViewById(R.id.iv_mover));
+        mTWWheel = UtilFun.cast_t(findViewById(R.id.tw_meter));
+        mTWWheel.setValueChangeListener(value -> {
+            EventBus.getDefault().post(new ObjectDistanceChangedEvent(value));
+        });
 
         if(!isInEditMode()) {
-            mIVMover.setOnTouchListener(mTLObjectDistanceListner);
             //setDofShow(View.GONE);
         }
     }
@@ -248,6 +243,9 @@ public class DOFVW extends ConstraintLayout {
         dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
 
         mDENOFResult = new DofChangedEvent(dofNear.floatValue(), object_distance, dofFar.floatValue());
+        mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", dofNear.floatValue()));
+        mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", object_distance));
+        mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", dofFar.floatValue()));
 
         // updat ui
         invalidate();
@@ -266,7 +264,6 @@ public class DOFVW extends ConstraintLayout {
 
     /**
      * 触摸监听类
-     */
     private class TouchListener implements OnTouchListener {
         int lastX;
         int lastY;
@@ -332,4 +329,5 @@ public class DOFVW extends ConstraintLayout {
             return true;
         }
     }
+     */
 }

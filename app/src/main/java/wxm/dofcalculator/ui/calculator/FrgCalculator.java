@@ -39,7 +39,6 @@ public class FrgCalculator extends FrgUtilityBase {
     // for seekbar
     private final static int    TAG_LENS_FOCAL      = 1;
     private final static int    TAG_LENS_APERTURE   = 2;
-    private final static int    TAG_OBJECT_DISTANCE = 3;
 
     // seekbar ui
     @BindView(R.id.esb_lens_focal)
@@ -48,16 +47,12 @@ public class FrgCalculator extends FrgUtilityBase {
     @BindView(R.id.esb_lens_aperture)
     SeekbarVW   mESBLensAperture;
 
-    @BindView(R.id.esb_object_distance)
-    SeekbarVW   mESBObjectDistance;
-
     @BindView(R.id.evw_dof)
     DOFVW       mEVWDOf;
 
     private DeviceItem mDICurDevice;
 
     private final static NavigableMap<Integer, String> mNMLensFocal = new TreeMap<>();
-    private final static NavigableMap<Integer, String> mNMObjectDistance = new TreeMap<>();
     private final static NavigableMap<Integer, String> mNMLensAperture = new TreeMap<>();
     static {
         // for lens aperture
@@ -74,19 +69,6 @@ public class FrgCalculator extends FrgUtilityBase {
         mNMLensAperture.put(80, "F/32");
         mNMLensAperture.put(88, "F/44");
         mNMLensAperture.put(100, "F/64");
-
-        // for object distance
-        mNMObjectDistance.put(0, "0m");
-        mNMObjectDistance.put(10, "0.4m");
-        mNMObjectDistance.put(20, "6m");
-        mNMObjectDistance.put(30, "8m");
-        mNMObjectDistance.put(40, "12m");
-        mNMObjectDistance.put(50, "20m");
-        mNMObjectDistance.put(60, "30m");
-        mNMObjectDistance.put(70, "40m");
-        mNMObjectDistance.put(80, "50m");
-        mNMObjectDistance.put(90, "75m");
-        mNMObjectDistance.put(100, "100m");
     }
 
     @Override
@@ -134,12 +116,10 @@ public class FrgCalculator extends FrgUtilityBase {
         // for data
         mESBLensFocal.setSeekbarMap(mNMLensFocal);
         mESBLensAperture.setSeekbarMap(mNMLensAperture);
-        mESBObjectDistance.setSeekbarMap(mNMObjectDistance);
 
         // for seekbar
         mESBLensFocal.getSeekBar().setTag(TAG_LENS_FOCAL);
         mESBLensAperture.getSeekBar().setTag(TAG_LENS_APERTURE);
-        mESBObjectDistance.getSeekBar().setTag(TAG_OBJECT_DISTANCE);
     }
 
     @Override

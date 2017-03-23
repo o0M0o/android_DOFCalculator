@@ -59,7 +59,7 @@
             app:szVal="F/1.2"
             tools:layout_editor_absoluteX="4dp" />
 
-        <!-- for object distance -->
+        <!-- for object distance
         <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
             android:id="@+id/esb_object_distance"
             android:layout_width="0dp"
@@ -75,5 +75,6 @@
             app:szTag="@string/tv_object_distance"
             app:szVal="1.5m"
             tools:layout_editor_absoluteX="4dp" />
+        -->
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

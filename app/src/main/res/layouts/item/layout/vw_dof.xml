@@ -101,8 +101,9 @@
             android:layout_width="10dp"
             android:layout_height="0dp"
             android:background="@color/aliceblue"
-            app:layout_constraintBottom_toTopOf="@+id/iv_mover"
-            app:layout_constraintEnd_toEndOf="@+id/iv_mover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -110,33 +111,19 @@
             android:layout_width="10dp"
             android:layout_height="0dp"
             android:background="@color/lightsalmon"
-            app:layout_constraintBottom_toTopOf="@+id/iv_mover"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf ="@id/vw_front_dof"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/iv_mover"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_mover"
-            android:layout_width="26dp"
-            android:layout_height="18dp" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_meter"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="2dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/cl_vw"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tw_meter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -198,5 +185,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="353dp" />
     </android.support.constraint.ConstraintLayout>
+
+    <wxm.dofcalculator.ui.calculator.extend.TuneWheel
+        android:id="@+id/tw_meter"
+        android:background="@drawable/bg_wheel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:szTWUnit="m"
+        app:intTWValueStep="2"
+        app:intTWMinValue="0"
+        app:intTWMaxValue="200"
+        app:intTWValue="100"
+        android:layout_width="0dp"
+        android:layout_height="48dp"/>
 
 </android.support.constraint.ConstraintLayout>

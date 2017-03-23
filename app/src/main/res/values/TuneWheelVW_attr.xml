@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TuneWheel">
+        <attr name="szTWUnit" format="string" />
+        <attr name="intTWValueStep" format="integer" />
+        <attr name="intTWMaxValue" format="integer" />
+        <attr name="intTWMinValue" format="integer" />
+        <attr name="intTWValue" format="integer"  />
+    </declare-styleable>
+</resources>
