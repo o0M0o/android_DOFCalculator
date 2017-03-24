@@ -3,10 +3,12 @@ package wxm.dofcalculator.ui.calculator.extend;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -18,6 +20,7 @@ import android.widget.Scroller;
 
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
+import wxm.dofcalculator.utility.ContextUtil;
 
 
 /**
@@ -34,11 +37,12 @@ public class TuneWheel extends View {
     /**
      * 生成TuneWheel的标尺tag
      */
-    public interface TagTranslate   {
+    public interface TagTranslate {
         /**
          * 得到标尺显示tag
-         * @param val       标尺值
-         * @return          显示tag
+         *
+         * @param val 标尺值
+         * @return 显示tag
          */
         String translateTWTag(int val);
     }
@@ -49,8 +53,9 @@ public class TuneWheel extends View {
     public interface OnValueChangeListener {
         /**
          * 值变动接口
-         * @param value     当前数值
-         * @param valTag    标尺刻度
+         *
+         * @param value  当前数值
+         * @param valTag 标尺刻度
          */
         void onValueChange(float value, String valTag);
     }
@@ -76,18 +81,45 @@ public class TuneWheel extends View {
     /**
      * 可设置属性
      */
-    private String  mAttrSZPostUnit;
-    private String  mAttrSZPrvUnit;
-    private int     mAttrValueStep;
-    private int     mAttrMinValue;
-    private int     mAttrMaxValue;
-    private int     mAttrCurValue;
+    private String mAttrSZPostUnit;
+    private String mAttrSZPrvUnit;
+    private int mAttrValueStep;
+    private int mAttrMinValue;
+    private int mAttrMaxValue;
+    private int mAttrCurValue;
 
-    private int     mAttrTextSize;
-    private int     mAttrMaxHeight;
-    private int     mAttrMinHeight;
+    private int mAttrTextSize;
+    private int mAttrMaxHeight;
+    private int mAttrMinHeight;
 
-    private TagTranslate    mTTTranslator  = new TagTranslate() {
+    /**
+     * 静态变量
+     */
+    private static int TEXT_COLOR_HOT;
+    private static int TEXT_COLOR_NORMAL;
+    private static int LINE_COLOR_CURSOR;
+
+    static {
+        TEXT_COLOR_NORMAL = Color.BLACK;
+
+        Context ct = ContextUtil.getInstance();
+        Resources res = ct.getResources();
+        Resources.Theme te = ct.getTheme();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            TEXT_COLOR_HOT = res.getColor(R.color.firebrick, te);
+            LINE_COLOR_CURSOR = res.getColor(R.color.trans_red, te);
+        } else {
+            TEXT_COLOR_HOT = res.getColor(R.color.firebrick);
+            LINE_COLOR_CURSOR = res.getColor(R.color.trans_red);
+        }
+    }
+
+
+    /**
+     * 把值翻译为tag
+     */
+    private TagTranslate mTTTranslator = new TagTranslate() {
         @Override
         public String translateTWTag(int val) {
             return mAttrSZPrvUnit + String.valueOf(val) + mAttrSZPostUnit;
@@ -128,9 +160,9 @@ public class TuneWheel extends View {
     /**
      * 考虑可扩展，但是时间紧迫，只可以支持两种类型效果图中两种类型
      *
-     * @param defaultValue    初始值
-     * @param maxValue 最大值
-     * @param model    刻度盘精度：<br>
+     * @param defaultValue 初始值
+     * @param maxValue     最大值
+     * @param model        刻度盘精度：<br>
      */
     public void initViewParam(int defaultValue, int maxValue, int model) {
         switch (model) {
@@ -160,7 +192,8 @@ public class TuneWheel extends View {
 
     /**
      * 设置用于接收结果的监听器
-     * @param listener  监听器
+     *
+     * @param listener 监听器
      */
     public void setValueChangeListener(OnValueChangeListener listener) {
         mListener = listener;
@@ -169,15 +202,15 @@ public class TuneWheel extends View {
 
     /**
      * 设置标尺刻度翻译器
-     * @param tt    翻译器
+     * @param tt 翻译器
      */
-    public void setTranslateTag(TagTranslate tt)    {
+    public void setTranslateTag(TagTranslate tt) {
         mTTTranslator = tt;
     }
 
     /**
      * 获取当前刻度值
-     * @return
+     * @return   当前值
      */
     public float getValue() {
         return mAttrCurValue;
@@ -193,52 +226,60 @@ public class TuneWheel extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        drawScaleLine(canvas);
+        //drawScaleLine(canvas);
     }
 
 
     /**
      * 从中间往两边开始画刻度线
-     * @param canvas    context
+     *
+     * @param canvas context
      */
     private void drawScaleLine(Canvas canvas) {
         canvas.save();
 
         Paint linePaint = new Paint();
         linePaint.setStrokeWidth(2);
-        linePaint.setColor(Color.BLACK);
+        linePaint.setColor(TEXT_COLOR_NORMAL);
 
-        TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setTextSize(mAttrTextSize * mDensity);
+        TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        tp_normal.setTextSize(mAttrTextSize * mDensity);
+
+        TextPaint tp_big = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        tp_big.setTextSize((mAttrTextSize + 2) * mDensity);
+        tp_big.setColor(TEXT_COLOR_HOT);
 
         int width = mWidth, drawCount = 0;
         float xPosition = 0;
-        float textWidth = Layout.getDesiredWidth("0", textPaint);
+        float textWidth = Layout.getDesiredWidth("0", tp_normal);
 
         //int text_top_pos = getTop() + getPaddingTop() + 2;
 
         //int left_h = getHeight() / 2 + (int)textWidth / 2;
-        int left_h = getHeight() / 2 - (int)textWidth / 2;;
-        int ln_long_s_y = left_h - (int)mDensity * mAttrMaxHeight / 2;
-        int ln_long_e_y = left_h + (int)mDensity * mAttrMaxHeight / 2;
-        int ln_short_s_y = left_h - (int)mDensity * mAttrMinHeight / 2;
-        int ln_short_e_y = left_h + (int)mDensity * mAttrMinHeight / 2;
+        int left_h = getHeight() / 2 - (int) textWidth / 2;
+        int ln_long_s_y = left_h - (int) mDensity * mAttrMaxHeight / 2;
+        int ln_long_e_y = left_h + (int) mDensity * mAttrMaxHeight / 2;
+        int ln_short_s_y = left_h - (int) mDensity * mAttrMinHeight / 2;
+        int ln_short_e_y = left_h + (int) mDensity * mAttrMinHeight / 2;
 
         for (int i = 0; drawCount <= 4 * width; i++) {
             xPosition = (width / 2 - mMove) + i * mLineDivider * mDensity;
             if (xPosition + getPaddingRight() < mWidth) {
                 int cur_v = mAttrCurValue + i * mAttrValueStep;
                 if (cur_v <= mAttrMaxValue) {
+                    String tw_tag = mTTTranslator.translateTWTag(cur_v);
                     if ((cur_v / 2) % mModType == 0) {
                         canvas.drawLine(xPosition, ln_long_s_y, xPosition, ln_long_e_y, linePaint);
 
-                        String tw_tag = mTTTranslator.translateTWTag(cur_v);
                         canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
-                                getHeight() - textWidth, textPaint);
-                                //text_top_pos, textPaint);
+                                getHeight() - textWidth, i == 0 ? tp_big : tp_normal);
                     } else {
                         canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
+
+                        if(0 == i)  {
+                            canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
+                                    getHeight() - textWidth, tp_big);
+                        }
                     }
                 }
             }
@@ -253,8 +294,7 @@ public class TuneWheel extends View {
 
                         String tw_tag = mTTTranslator.translateTWTag(cur_v);
                         canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
-                                getHeight() - textWidth, textPaint);
-                                //text_top_pos, textPaint);
+                                getHeight() - textWidth, i == 0 ? tp_big : tp_normal);
                     } else {
                         canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
                     }
@@ -292,13 +332,12 @@ public class TuneWheel extends View {
         //int pad_top = 24;
         //int pad_bottom = 24;
         int indexWidth = 12;
-        int cr = getResources().getColor(R.color.trans_red);
 
         canvas.save();
 
         Paint redPaint = new Paint();
         redPaint.setStrokeWidth(indexWidth);
-        redPaint.setColor(cr);
+        redPaint.setColor(LINE_COLOR_CURSOR);
         canvas.drawLine(mWidth / 2, s_y, mWidth / 2, e_y, redPaint);
 
         /*
