@@ -122,7 +122,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/tw_meter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_vw">
@@ -185,22 +184,5 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="353dp" />
     </android.support.constraint.ConstraintLayout>
-
-    <wxm.dofcalculator.ui.calculator.extend.TuneWheel
-        android:id="@+id/tw_meter"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:background="@drawable/bg_wheel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:twMaxHeight="16"
-        app:twMaxValue="100"
-        app:twMinHeight="8"
-        app:twMinValue="0"
-        app:twPostUnit="m"
-        app:twTextSize="10"
-        app:twValue="50"
-        app:twValueStep="2" />
 
 </android.support.constraint.ConstraintLayout>

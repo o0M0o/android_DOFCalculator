@@ -53,6 +53,12 @@ public class VWCameraAdjust extends ConstraintLayout {
         return mTVLAVal.getText().toString();
     }
 
+    public int getCurObjectDistance() {
+        String val = mTVODVal.getText().toString();
+        float v = Float.valueOf(val.substring(0, val.indexOf("m")));
+        return (int) (1000 * v);
+    }
+
     /**
      * 初始化UI元件
      */
@@ -64,21 +70,34 @@ public class VWCameraAdjust extends ConstraintLayout {
         mTWLATuneWheel = UtilFun.cast_t(findViewById(R.id.tw_la_val));
 
         mTWLATuneWheel.setValueChangeListener((value, valTag) -> {
-            mTVLAVal.setText(valTag);
+            String tag = String.format(Locale.CHINA, "F/%s", valTag);
+
+            mTVLAVal.setText(tag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
 
-        mTWLATuneWheel.setTranslateTag(val -> String.format(Locale.CHINA, "F/%.01f", (float) val /10));
+        mTWLATuneWheel.setTranslateTag(val -> String.format(Locale.CHINA, "%.01f", (float) val /10));
 
         // for lens focal
         mTVLFVal = UtilFun.cast_t(findViewById(R.id.tv_lf_val));
         mTWLFTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_lf_val));
 
-        mTWLFTuneWheel.setValueChangeListener((value, tag) -> {
+        mTWLFTuneWheel.setValueChangeListener((value, valTag) -> {
+            String tag = String.valueOf((int)value) + "mm";
+
             mTVLFVal.setText(tag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
 
         // for object distance
+        mTVODVal = UtilFun.cast_t(findViewById(R.id.tv_od_val));
+        mTWODTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_od_val));
+
+        mTWODTuneWheel.setValueChangeListener((value, valTag) -> {
+            String tag = valTag + "m";
+
+            mTVODVal.setText(tag);
+            EventBus.getDefault().post(new AttrChangedEvent(0));
+        });
     }
 }

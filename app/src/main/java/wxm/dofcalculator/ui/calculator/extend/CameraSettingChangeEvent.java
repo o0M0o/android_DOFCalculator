@@ -11,11 +11,15 @@ public class CameraSettingChangeEvent {
     private int         mLFLensFocal;
     private BigDecimal  mBDlensAperture;
 
+    private int         mODObjectDistance;
 
-    public CameraSettingChangeEvent(BigDecimal pa, int lf, BigDecimal la)   {
+
+    public CameraSettingChangeEvent(BigDecimal pa, int lf, BigDecimal la, int od)   {
         mBDPixelArea = pa;
         mLFLensFocal = lf;
         mBDlensAperture = la;
+
+        mODObjectDistance = od;
     }
 
     /**
@@ -40,5 +44,13 @@ public class CameraSettingChangeEvent {
      */
     public BigDecimal getLensAperture() {
         return mBDlensAperture;
+    }
+
+    /**
+     * 获取物距(单位 : 豪米)
+     * @return      物距
+     */
+    public int getObjectDistance()   {
+        return mODObjectDistance;
     }
 }

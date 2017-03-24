@@ -22,8 +22,6 @@ import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.ObjectDistanceChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.TuneWheel;
 
 /**
  * extend view for Dof result ui
@@ -43,10 +41,6 @@ public class VWDof extends ConstraintLayout {
 
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
-    protected ObjectDistanceChangedEvent mODObjectDistance;
-
-    protected TuneWheel mTWWheel;
-
 
     public VWDof(Context context) {
         super(context);
@@ -118,19 +112,6 @@ public class VWDof extends ConstraintLayout {
     }
 
 
-    /**
-     * object distance 变化处理器
-     * @param event     事件参数
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onObjectDistanceChangeEvent(ObjectDistanceChangedEvent event) {
-        mODObjectDistance = event;
-        updateDof();
-    }
-
-
-
-
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -188,22 +169,13 @@ public class VWDof extends ConstraintLayout {
         mTVFrontDof = UtilFun.cast_t(findViewById(R.id.tv_front_dof));
         mTVObjectDistance = UtilFun.cast_t(findViewById(R.id.tv_objecet_distance));
         mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
-
-        mTWWheel = UtilFun.cast_t(findViewById(R.id.tw_meter));
-        mTWWheel.setValueChangeListener((value, tag) -> {
-            EventBus.getDefault().post(new ObjectDistanceChangedEvent(value));
-        });
-
-        if(!isInEditMode()) {
-            EventBus.getDefault().post(new ObjectDistanceChangedEvent(mTWWheel.getValue()));
-        }
     }
 
     /**
      * 刷新Dof
      */
     private void updateDof()    {
-        if((null == mCSCameraSetting) || (null == mODObjectDistance)) {
+        if(null == mCSCameraSetting)    {
             mDENOFResult = null;
             return;
         }
@@ -211,7 +183,8 @@ public class VWDof extends ConstraintLayout {
         int lens_focal = mCSCameraSetting.getLensFocal();
         BigDecimal lens_aperture = mCSCameraSetting.getLensAperture();
         BigDecimal pixel_area = mCSCameraSetting.getPixelArea();
-        float object_distance = mODObjectDistance.getObjectDistance();
+        int od = mCSCameraSetting.getObjectDistance();
+        float f_od = (float)od;
 
         //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
         BigDecimal ff = new BigDecimal(lens_focal * lens_focal);
@@ -220,7 +193,7 @@ public class VWDof extends ConstraintLayout {
                                     .add(new BigDecimal(lens_focal));
 
         // change to unit mm
-        BigDecimal od_mm = new BigDecimal(object_distance * 1000);
+        BigDecimal od_mm = new BigDecimal(od);
 
         // dofNear = ((hyperFocal - focal) * distance) / (hyperFocal + distance - (2*focal));
         BigDecimal focal = new BigDecimal(lens_focal);
@@ -230,6 +203,7 @@ public class VWDof extends ConstraintLayout {
 
         // Prevent 'divide by zero' when calculating far distance.
         BigDecimal dofFar;
+
         if(Math.abs(hyperFocal.subtract(od_mm).floatValue()) <= 0.00001)    {
             dofFar = new BigDecimal(10000000);
         } else  {
@@ -242,9 +216,9 @@ public class VWDof extends ConstraintLayout {
         dofNear = dofNear.divide(new BigDecimal(1000), RoundingMode.CEILING);
         dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
 
-        mDENOFResult = new DofChangedEvent(dofNear.floatValue(), object_distance, dofFar.floatValue());
+        mDENOFResult = new DofChangedEvent(dofNear.floatValue(), f_od / 1000, dofFar.floatValue());
         mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", dofNear.floatValue()));
-        mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", object_distance));
+        mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", f_od / 1000));
         mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", dofFar.floatValue()));
 
         // updat ui

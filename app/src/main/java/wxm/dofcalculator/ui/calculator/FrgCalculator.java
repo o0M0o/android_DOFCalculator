@@ -28,12 +28,8 @@ import wxm.dofcalculator.utility.ContextUtil;
  * Created by wxm on 2017/3/11.
  */
 public class FrgCalculator extends FrgUtilityBase {
-    // for seekbar
-    private final static int    TAG_LENS_FOCAL      = 1;
-    private final static int    TAG_LENS_APERTURE   = 2;
-
     @BindView(R.id.evw_dof)
-    VWDof mEVWDOf;
+    VWDof           mEVWDof;
 
     @BindView(R.id.eca_adjust)
     VWCameraAdjust  mEVWCamera;
@@ -53,11 +49,11 @@ public class FrgCalculator extends FrgUtilityBase {
     }
 
     /**
-     * SeekBar变化处理器
+     * 设置变化处理器
      * @param event     事件参数
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSeekBarChangeEvent(AttrChangedEvent event) {
+    public void onAttrChangeEvent(AttrChangedEvent event) {
         updateResultUI();
     }
 
@@ -96,12 +92,13 @@ public class FrgCalculator extends FrgUtilityBase {
     protected void updateResultUI() {
         String sz_lf_hot = mEVWCamera.getCurLensFocal();
         String sz_la_hot = mEVWCamera.getCurLensAperture();
+        int od = mEVWCamera.getCurObjectDistance();
 
         int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
         BigDecimal pa = mDICurDevice.getCamera().getPixelArea();
         BigDecimal aperture = new BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("/") + 1));
 
-        EventBus.getDefault().post(new CameraSettingChangeEvent(pa, lf_hot, aperture));
+        EventBus.getDefault().post(new CameraSettingChangeEvent(pa, lf_hot, aperture, od));
     }
 
 

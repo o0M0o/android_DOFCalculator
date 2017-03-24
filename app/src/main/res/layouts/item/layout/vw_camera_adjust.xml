@@ -54,7 +54,6 @@
             app:twMaxValue="100"
             app:twMinHeight="9"
             app:twMinValue="0"
-            app:twPostUnit="m"
             app:twTextSize="9"
             app:twValue="50"
             app:twValueStep="2" />
@@ -109,7 +108,6 @@
             app:twMaxValue="135"
             app:twMinHeight="9"
             app:twMinValue="50"
-            app:twPostUnit="mm"
             app:twTextSize="9"
             app:twValue="50"
             app:twValueStep="2" />
