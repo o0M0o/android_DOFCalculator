@@ -177,7 +177,6 @@ public class TuneWheel extends View {
 
     /**
      * 获取当前刻度值
-     *
      * @return
      */
     public float getValue() {
@@ -392,14 +391,6 @@ public class TuneWheel extends View {
     private void notifyValueChange() {
         if (null != mListener) {
             mListener.onValueChange(mAttrCurValue, mTTTranslator.translateTWTag(mAttrCurValue));
-            /*
-            if (mModType == MOD_TYPE_ONE) {
-                mListener.onValueChange(mAttrCurValue);
-            }
-            if (mModType == MOD_TYPE_HALF) {
-                mListener.onValueChange(mAttrCurValue / 2f);
-            }
-            */
         }
     }
 

@@ -35,12 +35,8 @@ public class FrgCalculator extends FrgUtilityBase {
     @BindView(R.id.evw_dof)
     VWDof mEVWDOf;
 
-    @BindView(R.id.etw_lens_focal)
-    VWLensFocalAdjust  mEVWLensFocal;
-
-    @BindView(R.id.etw_lens_aperture)
-    VWLensApertureAdjust  mEVWLensAperture;
-
+    @BindView(R.id.eca_adjust)
+    VWCameraAdjust  mEVWCamera;
 
     private DeviceItem mDICurDevice;
 
@@ -98,12 +94,12 @@ public class FrgCalculator extends FrgUtilityBase {
      * 更新结果UI
      */
     protected void updateResultUI() {
-        String sz_lf_hot = mEVWLensFocal.getCurVal();
-        String la_hot = mEVWLensAperture.getCurVal();
+        String sz_lf_hot = mEVWCamera.getCurLensFocal();
+        String sz_la_hot = mEVWCamera.getCurLensAperture();
 
         int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
         BigDecimal pa = mDICurDevice.getCamera().getPixelArea();
-        BigDecimal aperture = new BigDecimal(la_hot.substring(la_hot.indexOf("/") + 1));
+        BigDecimal aperture = new BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("/") + 1));
 
         EventBus.getDefault().post(new CameraSettingChangeEvent(pa, lf_hot, aperture));
     }

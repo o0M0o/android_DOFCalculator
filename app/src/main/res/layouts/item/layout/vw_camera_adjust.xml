@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <!-- for lens focal -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cc_object_distance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_od_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_object_distance"
+            android:textColor="@color/text_fit"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/tv_od_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="50m"
+            android:textColor="@color/turquoise"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <wxm.dofcalculator.ui.calculator.extend.TuneWheel
+            android:id="@+id/tw_od_val"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="64dp"
+            android:background="@drawable/bg_wheel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:twMaxHeight="18"
+            app:twMaxValue="100"
+            app:twMinHeight="9"
+            app:twMinValue="0"
+            app:twPostUnit="m"
+            app:twTextSize="9"
+            app:twValue="50"
+            app:twValueStep="2" />
+    </android.support.constraint.ConstraintLayout>
+
+    <!-- for lens focal -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cc_lens_focal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cc_object_distance">
+
+        <TextView
+            android:id="@+id/tv_lf_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_lens_focal"
+            android:textColor="@color/text_fit"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/tv_lf_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="50mm"
+            android:textColor="@color/turquoise"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lf_tag"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <wxm.dofcalculator.ui.calculator.extend.TuneWheel
+            android:id="@+id/tw_lf_val"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="64dp"
+            android:background="@drawable/bg_wheel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:twMaxHeight="18"
+            app:twMaxValue="135"
+            app:twMinHeight="9"
+            app:twMinValue="50"
+            app:twPostUnit="mm"
+            app:twTextSize="9"
+            app:twValue="50"
+            app:twValueStep="2" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <!-- for lens aperture -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cc_lens_aperture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cc_lens_focal">
+
+        <TextView
+            android:id="@+id/tv_la_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_lens_aperture"
+            android:textColor="@color/text_fit"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <TextView
+            android:id="@+id/tv_la_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="F/1.2"
+            android:textColor="@color/turquoise"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_la_tag"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <wxm.dofcalculator.ui.calculator.extend.TuneWheel
+            android:id="@+id/tw_la_val"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="64dp"
+            android:background="@drawable/bg_wheel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:twMaxHeight="18"
+            app:twMaxValue="640"
+            app:twMinHeight="10"
+            app:twMinValue="9"
+            app:twTextSize="9"
+            app:twValue="12"
+            app:twValueStep="2" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

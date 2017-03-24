@@ -89,7 +89,6 @@ public class VWDof extends ConstraintLayout {
             sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "100m" : sz_max;
             tv = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
             tv.setText(sz_max);
-
         } finally {
             array.recycle();
         }
@@ -196,7 +195,7 @@ public class VWDof extends ConstraintLayout {
         });
 
         if(!isInEditMode()) {
-            //setDofShow(View.GONE);
+            EventBus.getDefault().post(new ObjectDistanceChangedEvent(mTWWheel.getValue()));
         }
     }
 

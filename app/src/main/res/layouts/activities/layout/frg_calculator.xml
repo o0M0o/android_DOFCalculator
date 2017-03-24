@@ -9,43 +9,18 @@
     <wxm.dofcalculator.ui.calculator.VWDof
         android:id="@+id/evw_dof"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/cl_adjust_para"
+        app:layout_constraintBottom_toTopOf="@+id/eca_adjust"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_adjust_para"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
-        android:padding="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <wxm.dofcalculator.ui.calculator.VWCameraAdjust
+        android:id="@+id/eca_adjust"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="4dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
 
-        <!-- for lens focal -->
-        <wxm.dofcalculator.ui.calculator.VWLensFocalAdjust
-            android:id="@+id/etw_lens_focal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="4dp" />
-
-        <!-- for lens aperture -->
-        <wxm.dofcalculator.ui.calculator.VWLensApertureAdjust
-            android:id="@+id/etw_lens_aperture"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etw_lens_focal"
-            tools:layout_editor_absoluteX="4dp" />
-
-    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
