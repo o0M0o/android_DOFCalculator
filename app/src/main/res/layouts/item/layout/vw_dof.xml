@@ -189,7 +189,7 @@
     <wxm.dofcalculator.ui.calculator.extend.TuneWheel
         android:id="@+id/tw_meter"
         android:layout_width="0dp"
-        android:layout_height="42dp"
+        android:layout_height="46dp"
         android:background="@drawable/bg_wheel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

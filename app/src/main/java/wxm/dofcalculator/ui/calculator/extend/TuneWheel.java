@@ -37,8 +37,8 @@ public class TuneWheel extends View {
     public interface TagTranslate   {
         /**
          * 得到标尺显示tag
-         * @param val   标尺值
-         * @return      显示tag
+         * @param val       标尺值
+         * @return          显示tag
          */
         String translateTWTag(int val);
     }
@@ -50,8 +50,9 @@ public class TuneWheel extends View {
         /**
          * 值变动接口
          * @param value     当前数值
+         * @param valTag    标尺刻度
          */
-        void onValueChange(float value);
+        void onValueChange(float value, String valTag);
     }
 
     public static final int MOD_TYPE_HALF = 2;
@@ -390,7 +391,7 @@ public class TuneWheel extends View {
 
     private void notifyValueChange() {
         if (null != mListener) {
-            mListener.onValueChange(mAttrCurValue);
+            mListener.onValueChange(mAttrCurValue, mTTTranslator.translateTWTag(mAttrCurValue));
             /*
             if (mModType == MOD_TYPE_ONE) {
                 mListener.onValueChange(mAttrCurValue);

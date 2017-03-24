@@ -60,9 +60,8 @@ public class VWLensApertureAdjust extends ConstraintLayout {
         mTVVal = UtilFun.cast_t(findViewById(R.id.tv_val));
         mTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_val));
 
-        mTuneWheel.setValueChangeListener(value -> {
-            String val = String.format(Locale.CHINA, "F/%.01f", value / 10);
-            mTVVal.setText(val);
+        mTuneWheel.setValueChangeListener((value, valTag) -> {
+            mTVVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
 

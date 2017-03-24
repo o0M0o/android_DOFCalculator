@@ -191,7 +191,7 @@ public class VWDof extends ConstraintLayout {
         mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
 
         mTWWheel = UtilFun.cast_t(findViewById(R.id.tw_meter));
-        mTWWheel.setValueChangeListener(value -> {
+        mTWWheel.setValueChangeListener((value, tag) -> {
             EventBus.getDefault().post(new ObjectDistanceChangedEvent(value));
         });
 
