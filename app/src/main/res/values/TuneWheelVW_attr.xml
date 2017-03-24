@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="TuneWheel">
-        <attr name="twUnit" format="string" />
+        <attr name="twPostUnit" format="string" />
+        <attr name="twPrvUnit" format="string" />
         <attr name="twValueStep" format="integer" />
         <attr name="twMaxValue" format="integer" />
         <attr name="twMinValue" format="integer" />

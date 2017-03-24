@@ -11,8 +11,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
-import java.util.NavigableMap;
-import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,10 +19,8 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
-import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
-import wxm.dofcalculator.ui.calculator.extend.DOFVW;
 import wxm.dofcalculator.ui.calculator.extend.AttrChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.SeekbarVW;
+import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
@@ -36,36 +32,17 @@ public class FrgCalculator extends FrgUtilityBase {
     private final static int    TAG_LENS_FOCAL      = 1;
     private final static int    TAG_LENS_APERTURE   = 2;
 
-    // seekbar ui
-    @BindView(R.id.esb_lens_focal)
-    SeekbarVW   mESBLensFocal;
-
-    @BindView(R.id.esb_lens_aperture)
-    SeekbarVW   mESBLensAperture;
-
     @BindView(R.id.evw_dof)
-    DOFVW       mEVWDOf;
+    VWDof mEVWDOf;
+
+    @BindView(R.id.etw_lens_focal)
+    VWLensFocalAdjust  mEVWLensFocal;
+
+    @BindView(R.id.etw_lens_aperture)
+    VWLensApertureAdjust  mEVWLensAperture;
+
 
     private DeviceItem mDICurDevice;
-
-    private final static NavigableMap<Integer, String> mNMLensFocal = new TreeMap<>();
-    private final static NavigableMap<Integer, String> mNMLensAperture = new TreeMap<>();
-    static {
-        // for lens aperture
-        mNMLensAperture.put(0, "F/1.2");
-        mNMLensAperture.put(8, "F/1.4");
-        mNMLensAperture.put(16, "F/2.0");
-        mNMLensAperture.put(24, "F/2.8");
-        mNMLensAperture.put(32, "F/4.0");
-        mNMLensAperture.put(40, "F/5.6");
-        mNMLensAperture.put(48, "F/8.0");
-        mNMLensAperture.put(56, "F/11");
-        mNMLensAperture.put(64, "F/16");
-        mNMLensAperture.put(72, "F/22");
-        mNMLensAperture.put(80, "F/32");
-        mNMLensAperture.put(88, "F/44");
-        mNMLensAperture.put(100, "F/64");
-    }
 
     @Override
     protected void enterActivity()  {
@@ -109,13 +86,6 @@ public class FrgCalculator extends FrgUtilityBase {
 
     @Override
     protected void initUiComponent(View view) {
-        // for data
-        mESBLensFocal.setSeekbarMap(mNMLensFocal);
-        mESBLensAperture.setSeekbarMap(mNMLensAperture);
-
-        // for seekbar
-        mESBLensFocal.getSeekBar().setTag(TAG_LENS_FOCAL);
-        mESBLensAperture.getSeekBar().setTag(TAG_LENS_APERTURE);
     }
 
     @Override
@@ -128,8 +98,8 @@ public class FrgCalculator extends FrgUtilityBase {
      * 更新结果UI
      */
     protected void updateResultUI() {
-        String sz_lf_hot = mESBLensFocal.getCurVal();
-        String la_hot = mESBLensAperture.getCurVal();
+        String sz_lf_hot = mEVWLensFocal.getCurVal();
+        String la_hot = mEVWLensAperture.getCurVal();
 
         int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
         BigDecimal pa = mDICurDevice.getCamera().getPixelArea();
@@ -145,6 +115,7 @@ public class FrgCalculator extends FrgUtilityBase {
      * @param maxFocal      最大焦距
      */
     private void initLensFocalTMap(int minFocal, int maxFocal)  {
+        /*
         mNMLensFocal.clear();
         int step_val = 10;
         int step_count = 10;
@@ -152,5 +123,6 @@ public class FrgCalculator extends FrgUtilityBase {
         for(int i = 0; i < step_count; ++i) {
             mNMLensFocal.put(step_val * i, Integer.toString(minFocal + step_focal * i) + "mm");
         }
+        */
     }
 }

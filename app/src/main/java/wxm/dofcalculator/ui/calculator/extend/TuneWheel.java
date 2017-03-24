@@ -31,11 +31,22 @@ import wxm.dofcalculator.R;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class TuneWheel extends View {
+    /**
+     * 生成TuneWheel的标尺tag
+     */
+    public interface TagTranslate   {
+        /**
+         * 得到标尺显示tag
+         * @param val   标尺值
+         * @return      显示tag
+         */
+        String translateTWTag(int val);
+    }
 
     /**
      * 值变动监听器
      */
-    interface OnValueChangeListener {
+    public interface OnValueChangeListener {
         /**
          * 值变动接口
          * @param value     当前数值
@@ -46,10 +57,8 @@ public class TuneWheel extends View {
     public static final int MOD_TYPE_HALF = 2;
     public static final int MOD_TYPE_ONE = 10;
 
-    private static final int ITEM_HALF_DIVIDER = 28;
+    private static final int ITEM_HALF_DIVIDER = 20;
     private static final int ITEM_ONE_DIVIDER = 10;
-
-
 
     private float mDensity;
     private int mModType = MOD_TYPE_HALF, mLineDivider = ITEM_HALF_DIVIDER;
@@ -66,7 +75,8 @@ public class TuneWheel extends View {
     /**
      * 可设置属性
      */
-    private String  mAttrSZUnit;
+    private String  mAttrSZPostUnit;
+    private String  mAttrSZPrvUnit;
     private int     mAttrValueStep;
     private int     mAttrMinValue;
     private int     mAttrMaxValue;
@@ -76,6 +86,14 @@ public class TuneWheel extends View {
     private int     mAttrMaxHeight;
     private int     mAttrMinHeight;
 
+    private TagTranslate    mTTTranslator  = new TagTranslate() {
+        @Override
+        public String translateTWTag(int val) {
+            return mAttrSZPrvUnit + String.valueOf(val) + mAttrSZPostUnit;
+        }
+    };
+
+
     public TuneWheel(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -84,14 +102,14 @@ public class TuneWheel extends View {
 
         mMinVelocity = ViewConfiguration.get(getContext()).getScaledMinimumFlingVelocity();
 
-        // setBackgroundResource(R.drawable.bg_wheel);
-        //setBackgroundDrawable(createBackground());
-
         // for parameter
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TuneWheel);
         try {
-            String sz_unit = array.getString(R.styleable.TuneWheel_twUnit);
-            mAttrSZUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
+            String sz_unit = array.getString(R.styleable.TuneWheel_twPostUnit);
+            mAttrSZPostUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
+
+            sz_unit = array.getString(R.styleable.TuneWheel_twPrvUnit);
+            mAttrSZPrvUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
 
             mAttrValueStep = array.getInt(R.styleable.TuneWheel_twValueStep, 1);
             mAttrMinValue = array.getInt(R.styleable.TuneWheel_twMinValue, 0);
@@ -141,11 +159,19 @@ public class TuneWheel extends View {
 
     /**
      * 设置用于接收结果的监听器
-     *
-     * @param listener
+     * @param listener  监听器
      */
     public void setValueChangeListener(OnValueChangeListener listener) {
         mListener = listener;
+    }
+
+
+    /**
+     * 设置标尺刻度翻译器
+     * @param tt    翻译器
+     */
+    public void setTranslateTag(TagTranslate tt)    {
+        mTTTranslator = tt;
     }
 
     /**
@@ -169,7 +195,6 @@ public class TuneWheel extends View {
         super.onDraw(canvas);
 
         drawScaleLine(canvas);
-        drawMiddleLine(canvas);
     }
 
 
@@ -188,71 +213,51 @@ public class TuneWheel extends View {
         textPaint.setTextSize(mAttrTextSize * mDensity);
 
         int width = mWidth, drawCount = 0;
-        float xPosition = 0, textWidth = Layout.getDesiredWidth("0", textPaint);
+        float xPosition = 0;
+        float textWidth = Layout.getDesiredWidth("0", textPaint);
+
+        //int text_top_pos = getTop() + getPaddingTop() + 2;
+
+        //int left_h = getHeight() / 2 + (int)textWidth / 2;
+        int left_h = getHeight() / 2 - (int)textWidth / 2;;
+        int ln_long_s_y = left_h - (int)mDensity * mAttrMaxHeight / 2;
+        int ln_long_e_y = left_h + (int)mDensity * mAttrMaxHeight / 2;
+        int ln_short_s_y = left_h - (int)mDensity * mAttrMinHeight / 2;
+        int ln_short_e_y = left_h + (int)mDensity * mAttrMinHeight / 2;
 
         for (int i = 0; drawCount <= 4 * width; i++) {
-            int numSize = String.valueOf(mAttrCurValue + i).length();
-            int v_s = i * mAttrValueStep;
-
             xPosition = (width / 2 - mMove) + i * mLineDivider * mDensity;
             if (xPosition + getPaddingRight() < mWidth) {
-                int cur_i = mAttrCurValue + v_s;
-                int cur_v = cur_i;
-                switch (mModType)   {
-                    case MOD_TYPE_HALF :
-                        cur_i /= 2;
-                        break;
-                }
+                int cur_v = mAttrCurValue + i * mAttrValueStep;
+                if (cur_v <= mAttrMaxValue) {
+                    if ((cur_v / 2) % mModType == 0) {
+                        canvas.drawLine(xPosition, ln_long_s_y, xPosition, ln_long_e_y, linePaint);
 
-                if (cur_i % mModType == 0) {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMaxHeight, linePaint);
-
-                    if (cur_i <= mAttrMaxValue) {
-                        switch (mModType) {
-                            case MOD_TYPE_HALF:
-                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, countLeftStart(mAttrCurValue + i, xPosition, textWidth), getHeight() - textWidth, textPaint);
-                                break;
-                            case MOD_TYPE_ONE:
-                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
-                                break;
-
-                            default:
-                                break;
-                        }
+                        String tw_tag = mTTTranslator.translateTWTag(cur_v);
+                        canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
+                                getHeight() - textWidth, textPaint);
+                                //text_top_pos, textPaint);
+                    } else {
+                        canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
                     }
-                } else {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMinHeight, linePaint);
                 }
             }
 
             xPosition = (width / 2 - mMove) - i * mLineDivider * mDensity;
             if (xPosition > getPaddingLeft()) {
-                int cur_i = mAttrCurValue - v_s;
-                int cur_v = cur_i;
-                switch (mModType)   {
-                    case MOD_TYPE_HALF :
-                        cur_i /= 2;
-                        break;
-                }
+                int cur_v = mAttrCurValue - i * mAttrValueStep;
+                if (cur_v >= mAttrMinValue) {
+                    if ((cur_v / 2) % mModType == 0) {
+                        canvas.drawLine(xPosition, ln_long_s_y, xPosition,
+                                ln_long_e_y, linePaint);
 
-                if (cur_i % mModType == 0) {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMaxHeight, linePaint);
-
-                    if (cur_i >= mAttrMinValue) {
-                        switch (mModType) {
-                            case MOD_TYPE_HALF:
-                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, countLeftStart(mAttrCurValue - i, xPosition, textWidth), getHeight() - textWidth, textPaint);
-                                break;
-                            case MOD_TYPE_ONE:
-                                canvas.drawText(String.valueOf(cur_v) + mAttrSZUnit, xPosition - (textWidth * numSize / 2), getHeight() - textWidth, textPaint);
-                                break;
-
-                            default:
-                                break;
-                        }
+                        String tw_tag = mTTTranslator.translateTWTag(cur_v);
+                        canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
+                                getHeight() - textWidth, textPaint);
+                                //text_top_pos, textPaint);
+                    } else {
+                        canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
                     }
-                } else {
-                    canvas.drawLine(xPosition, getPaddingTop(), xPosition, mDensity * mAttrMinHeight, linePaint);
                 }
             }
 
@@ -260,24 +265,20 @@ public class TuneWheel extends View {
         }
 
         canvas.restore();
+
+        drawMiddleLine(canvas, ln_long_s_y, ln_long_e_y);
     }
 
     /**
      * 计算没有数字显示位置的辅助方法
      *
-     * @param value
+     * @param tag
      * @param xPosition
      * @param textWidth
      * @return
      */
-    private float countLeftStart(int value, float xPosition, float textWidth) {
-        float xp = 0f;
-        if (value < 20) {
-            xp = xPosition - (textWidth * 1 / 2);
-        } else {
-            xp = xPosition - (textWidth * 2 / 2);
-        }
-        return xp;
+    private float countLeftStart(String tag, float xPosition, float textWidth) {
+        return xPosition - ((tag.length() * textWidth) / 2);
     }
 
     /**
@@ -285,34 +286,33 @@ public class TuneWheel extends View {
      *
      * @param canvas
      */
-    private void drawMiddleLine(Canvas canvas) {
+    private void drawMiddleLine(Canvas canvas, int s_y, int e_y) {
         // TOOD 常量太多，暂时放这，最终会放在类的开始，放远了怕很快忘记
-        int gap = 12, indexWidth = 8, indexTitleWidth = 24, indexTitleHight = 10, shadow = 6;
-        String color = "#66999999";
+        //int gap = 12, indexWidth = 12, indexTitleWidth = 24, indexTitleHight = 10, shadow = 6;
+        //int pad_top = 24;
+        //int pad_bottom = 24;
+        int indexWidth = 12;
+        int cr = getResources().getColor(R.color.trans_red);
 
         canvas.save();
 
         Paint redPaint = new Paint();
         redPaint.setStrokeWidth(indexWidth);
-        redPaint.setColor(Color.RED);
-        canvas.drawLine(mWidth / 2, 0, mWidth / 2, mHeight, redPaint);
+        redPaint.setColor(cr);
+        canvas.drawLine(mWidth / 2, s_y, mWidth / 2, e_y, redPaint);
 
+        /*
         Paint ovalPaint = new Paint();
         ovalPaint.setColor(Color.RED);
         ovalPaint.setStrokeWidth(indexTitleWidth);
         canvas.drawLine(mWidth / 2, 0, mWidth / 2, indexTitleHight, ovalPaint);
         canvas.drawLine(mWidth / 2, mHeight - indexTitleHight, mWidth / 2, mHeight, ovalPaint);
 
-        // RectF ovalRectF = new RectF(mWidth / 2 - 10, 0, mWidth / 2 + 10, 4 *
-        // mDensity); //TODO 椭圆
-        // canvas.drawOval(ovalRectF, ovalPaint);
-        // ovalRectF.set(mWidth / 2 - 10, mHeight - 8 * mDensity, mWidth / 2 +
-        // 10, mHeight); //TODO
-
         Paint shadowPaint = new Paint();
         shadowPaint.setStrokeWidth(shadow);
         shadowPaint.setColor(Color.parseColor(color));
         canvas.drawLine(mWidth / 2 + gap, 0, mWidth / 2 + gap, mHeight, shadowPaint);
+        */
 
         canvas.restore();
     }

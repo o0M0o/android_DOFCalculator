@@ -10,9 +10,9 @@
         android:id="@+id/cl_dof_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- for front dof -->
         <TextView
@@ -102,8 +102,8 @@
             android:layout_height="0dp"
             android:background="@color/aliceblue"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -112,7 +112,7 @@
             android:layout_height="0dp"
             android:background="@color/lightsalmon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf ="@id/vw_front_dof"
+            app:layout_constraintStart_toEndOf="@id/vw_front_dof"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
@@ -122,10 +122,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/cl_vw"
         app:layout_constraintBottom_toTopOf="@+id/tw_meter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_vw">
 
         <TextView
             android:id="@+id/tv_min_tag"
@@ -188,19 +188,19 @@
 
     <wxm.dofcalculator.ui.calculator.extend.TuneWheel
         android:id="@+id/tw_meter"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
         android:background="@drawable/bg_wheel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:twUnit="m"
-        app:twValueStep="2"
-        app:twMinValue="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:twMaxHeight="16"
         app:twMaxValue="100"
+        app:twMinHeight="8"
+        app:twMinValue="0"
+        app:twPostUnit="m"
+        app:twTextSize="10"
         app:twValue="50"
-        app:twTextSize="12"
-        app:twMaxHeight="22"
-        app:twMinHeight="14"
-        android:layout_width="0dp"
-        android:layout_height="46dp"/>
+        app:twValueStep="2" />
 
 </android.support.constraint.ConstraintLayout>

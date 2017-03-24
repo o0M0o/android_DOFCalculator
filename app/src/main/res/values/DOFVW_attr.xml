@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DOFVW">
+    <declare-styleable name="VWDof">
         <attr name="szDofMinTag" format="string" />
         <attr name="szDofMiddle1Tag" format="string" />
         <attr name="szDofMiddle2Tag" format="string" />

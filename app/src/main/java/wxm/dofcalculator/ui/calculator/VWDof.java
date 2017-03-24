@@ -1,16 +1,13 @@
-package wxm.dofcalculator.ui.calculator.extend;
+package wxm.dofcalculator.ui.calculator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,12 +20,16 @@ import java.util.Locale;
 
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
+import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
+import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
+import wxm.dofcalculator.ui.calculator.extend.ObjectDistanceChangedEvent;
+import wxm.dofcalculator.ui.calculator.extend.TuneWheel;
 
 /**
  * extend view for Dof result ui
  * Created by ookoo on 2017/3/19.
  */
-public class DOFVW extends ConstraintLayout {
+public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
 
     protected ConstraintLayout      mCLDofView;
@@ -40,20 +41,20 @@ public class DOFVW extends ConstraintLayout {
     protected TextView              mTVObjectDistance;
     protected TextView              mTVBackDof;
 
-    protected DofChangedEvent               mDENOFResult;
-    protected CameraSettingChangeEvent      mCSCameraSetting;
-    protected ObjectDistanceChangedEvent    mODObjectDistance;
+    protected DofChangedEvent mDENOFResult;
+    protected CameraSettingChangeEvent mCSCameraSetting;
+    protected ObjectDistanceChangedEvent mODObjectDistance;
 
-    protected TuneWheel             mTWWheel;
+    protected TuneWheel mTWWheel;
 
 
-    public DOFVW(Context context) {
+    public VWDof(Context context) {
         super(context);
         setWillNotDraw(false);
         initUIComponent();
     }
 
-    public DOFVW(Context context, AttributeSet attrs){
+    public VWDof(Context context, AttributeSet attrs){
         super(context, attrs);
         setWillNotDraw(false);
         initUIComponent();
@@ -61,30 +62,30 @@ public class DOFVW extends ConstraintLayout {
         //TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
         //在使用完成后，一定要调用recycle方法
         //属性的名称是styleable中的名称+“_”+属性名称
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.DOFVW);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VWDof);
         try {
             TextView tv;
-            String sz_min = array.getString(R.styleable.DOFVW_szDofMinTag);
+            String sz_min = array.getString(R.styleable.VWDof_szDofMinTag);
             sz_min = UtilFun.StringIsNullOrEmpty(sz_min) ? "0m" : sz_min;
             tv = UtilFun.cast_t(findViewById(R.id.tv_min_tag));
             tv.setText(sz_min);
 
-            String sz_middle1 = array.getString(R.styleable.DOFVW_szDofMiddle1Tag);
+            String sz_middle1 = array.getString(R.styleable.VWDof_szDofMiddle1Tag);
             sz_middle1 = UtilFun.StringIsNullOrEmpty(sz_middle1) ? "25m" : sz_middle1;
             tv = UtilFun.cast_t(findViewById(R.id.tv_middle1_tag));
             tv.setText(sz_middle1);
 
-            String sz_middle2 = array.getString(R.styleable.DOFVW_szDofMiddle2Tag);
+            String sz_middle2 = array.getString(R.styleable.VWDof_szDofMiddle2Tag);
             sz_middle2 = UtilFun.StringIsNullOrEmpty(sz_middle2) ? "50m" : sz_middle2;
             tv = UtilFun.cast_t(findViewById(R.id.tv_middle2_tag));
             tv.setText(sz_middle2);
 
-            String sz_middle3 = array.getString(R.styleable.DOFVW_szDofMiddle3Tag);
+            String sz_middle3 = array.getString(R.styleable.VWDof_szDofMiddle3Tag);
             sz_middle3 = UtilFun.StringIsNullOrEmpty(sz_middle3) ? "75m" : sz_middle3;
             tv = UtilFun.cast_t(findViewById(R.id.tv_middle3_tag));
             tv.setText(sz_middle3);
 
-            String sz_max = array.getString(R.styleable.DOFVW_szDofMaxTag);
+            String sz_max = array.getString(R.styleable.VWDof_szDofMaxTag);
             sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "100m" : sz_max;
             tv = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
             tv.setText(sz_max);

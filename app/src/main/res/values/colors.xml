@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="trans_red">#60FF4081</color><!--半透明 -->
     <color name="trans_1">#20000000</color><!--半透明 -->
     <color name="trans_black">#40000000</color><!--半透明 -->
     <color name="trans_full">#00000000</color><!--全透明 -->

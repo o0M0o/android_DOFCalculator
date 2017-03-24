@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="wxm.dofcalculator.ui.calculator.ACCalculator">
 
-    <wxm.dofcalculator.ui.calculator.extend.DOFVW
+    <wxm.dofcalculator.ui.calculator.VWDof
         android:id="@+id/evw_dof"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/cl_adjust_para"
@@ -27,54 +27,25 @@
         tools:layout_editor_absoluteX="4dp">
 
         <!-- for lens focal -->
-        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
-            android:id="@+id/esb_lens_focal"
+        <wxm.dofcalculator.ui.calculator.VWLensFocalAdjust
+            android:id="@+id/etw_lens_focal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:szMinTag="35mm"
-            app:szMiddle1Tag="50mm"
-            app:szMiddle2Tag="75mm"
-            app:szMaxTag="155mm"
-            app:szTag="@string/tv_lens_focal"
-            app:szVal="50mm"
             tools:layout_editor_absoluteX="4dp" />
 
         <!-- for lens aperture -->
-        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
-            android:id="@+id/esb_lens_aperture"
+        <wxm.dofcalculator.ui.calculator.VWLensApertureAdjust
+            android:id="@+id/etw_lens_aperture"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/esb_lens_focal"
-            app:szMinTag="F/1.2"
-            app:szMiddle1Tag="F/12"
-            app:szMiddle2Tag="F/24"
-            app:szMaxTag="F/64"
-            app:szTag="@string/tv_lens_aperture"
-            app:szVal="F/1.2"
+            app:layout_constraintTop_toBottomOf="@+id/etw_lens_focal"
             tools:layout_editor_absoluteX="4dp" />
 
-        <!-- for object distance
-        <wxm.dofcalculator.ui.calculator.extend.SeekbarVW
-            android:id="@+id/esb_object_distance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/esb_lens_aperture"
-            app:szMinTag="0.0m"
-            app:szMiddle1Tag="1.5m"
-            app:szMiddle2Tag="25m"
-            app:szMaxTag="1000m"
-            app:szTag="@string/tv_object_distance"
-            app:szVal="1.5m"
-            tools:layout_editor_absoluteX="4dp" />
-        -->
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
