@@ -54,7 +54,7 @@ public class TuneWheel extends View {
          * @param value     当前数值
          * @param valTag    标尺刻度
          */
-        void onValueChange(float value, String valTag);
+        void onValueChange(int value, String valTag);
     }
 
     public static final int MOD_TYPE_HALF = 2;
@@ -247,16 +247,15 @@ public class TuneWheel extends View {
         float xPosition = 0;
         float textWidth = Layout.getDesiredWidth("0", tp_normal);
 
-        //int text_top_pos = getTop() + getPaddingTop() + 2;
+        int text_top_pos = getTop() + getPaddingTop() - 2;
+        int text_bottom_pos = getHeight() - (int)textWidth;
 
-        //int left_h = getHeight() / 2 + (int)textWidth / 2;
-        int left_h = getHeight() / 2 - (int) textWidth / 2;
+        int left_h = getHeight() / 2;
         int ln_long_s_y = left_h - (int) mDensity * mAttrMaxHeight / 2;
         int ln_long_e_y = left_h + (int) mDensity * mAttrMaxHeight / 2;
         int ln_short_s_y = left_h - (int) mDensity * mAttrMinHeight / 2;
         int ln_short_e_y = left_h + (int) mDensity * mAttrMinHeight / 2;
 
-        boolean b_skip = false;
         for (int i = 0; drawCount <= 4 * width; i++) {
             xPosition = (width / 2 - mMove) + i * mLineDivider * mDensity;
             if (xPosition + getPaddingRight() < mWidth) {
@@ -266,17 +265,18 @@ public class TuneWheel extends View {
                     if ((cur_v / 2) % mModType == 0) {
                         canvas.drawLine(xPosition, ln_long_s_y, xPosition, ln_long_e_y, linePaint);
 
-                        if(!b_skip || 1 != i)
+                        canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
+                                text_bottom_pos, tp_normal);
+
+                        if(0 == i)
                             canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
-                                    getHeight() - textWidth, i == 0 ? tp_big : tp_normal);
+                                    text_top_pos, tp_big);
                     } else {
                         canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
 
                         if(0 == i)  {
                             canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
-                                    getHeight() - textWidth, tp_big);
-
-                            b_skip = true;
+                                    text_top_pos, tp_big);
                         }
                     }
                 }
@@ -288,14 +288,12 @@ public class TuneWheel extends View {
                     int cur_v = mAttrCurValue - i * mAttrValueStep;
                     if (cur_v >= mAttrMinValue) {
                         if ((cur_v / 2) % mModType == 0) {
+                            String tw_tag = mTTTranslator.translateTWTag(cur_v);
                             canvas.drawLine(xPosition, ln_long_s_y, xPosition,
                                     ln_long_e_y, linePaint);
 
-                            if (!b_skip || 1 != i)  {
-                                String tw_tag = mTTTranslator.translateTWTag(cur_v);
-                                canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
-                                    getHeight() - textWidth, tp_normal);
-                            }
+                            canvas.drawText(tw_tag, countLeftStart(tw_tag, xPosition, textWidth),
+                                    text_bottom_pos, tp_normal);
                         } else {
                             canvas.drawLine(xPosition, ln_short_s_y, xPosition, ln_short_e_y, linePaint);
                         }
@@ -331,8 +329,6 @@ public class TuneWheel extends View {
     private void drawMiddleLine(Canvas canvas, int s_y, int e_y) {
         // TOOD 常量太多，暂时放这，最终会放在类的开始，放远了怕很快忘记
         //int gap = 12, indexWidth = 12, indexTitleWidth = 24, indexTitleHight = 10, shadow = 6;
-        //int pad_top = 24;
-        //int pad_bottom = 24;
         int indexWidth = 12;
 
         canvas.save();
