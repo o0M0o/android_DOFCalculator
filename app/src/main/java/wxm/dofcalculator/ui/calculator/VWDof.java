@@ -3,6 +3,9 @@ package wxm.dofcalculator.ui.calculator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -31,8 +34,6 @@ public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
 
     protected ConstraintLayout      mCLDofView;
-    protected View                  mVWFrontDOF;
-    protected View                  mVWBackDOF;
 
     protected ConstraintLayout      mCLDofInfo;
     protected TextView              mTVFrontDof;
@@ -115,31 +116,82 @@ public class VWDof extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
+        class utility   {
+            void drawRange()    {
+                float front_dof =  mDENOFResult.getFrontDof();
+                float object_distance =  mDENOFResult.getObjectDistance();
+                float back_dof =  mDENOFResult.getBackDof();
+
+                Paint p_f = new Paint();
+                p_f.setColor(Color.CYAN);
+                p_f.setStrokeJoin(Paint.Join.ROUND);
+                p_f.setStrokeCap(Paint.Cap.ROUND);
+                p_f.setStrokeWidth(3);
+
+                Paint p_b = new Paint();
+                p_b.setColor(Color.RED);
+                p_b.setStrokeJoin(Paint.Join.ROUND);
+                p_b.setStrokeCap(Paint.Cap.ROUND);
+                p_b.setStrokeWidth(3);
+
+                canvas.save();
+
+                float om_w = mCLDofView.getWidth() / 100;
+                int h_top = mCLDofInfo.getHeight();
+                int h = mCLDofView.getHeight() + h_top;
+                int mid_x = (int)(object_distance * om_w);
+
+                int f_x = (int) (om_w * front_dof);
+                canvas.drawRect(f_x, h_top, mid_x, h, p_f);
+
+                int b_x = (int) (back_dof * om_w);
+                canvas.drawRect(mid_x, h_top, b_x, h, p_b);
+
+                canvas.restore();
+            }
+
+            void drawBkg()  {
+                Paint p_bkg = new Paint();
+                p_bkg.setColor(Color.YELLOW);
+                p_bkg.setStrokeJoin(Paint.Join.ROUND);
+                p_bkg.setStrokeCap(Paint.Cap.ROUND);
+                p_bkg.setStrokeWidth(3);
+
+                int h_top = mCLDofInfo.getHeight();
+                int h = mCLDofView.getHeight();
+                int l = getWidth();
+                int h_middle = h_top + h / 2;
+                int h_bottom = h_middle + h / 2;
+
+                Path pt_u = new Path();
+                pt_u.moveTo(0, h_top);
+                pt_u.lineTo(0, h_middle);
+                pt_u.lineTo(l, h_top);
+                pt_u.lineTo(0, h_top);
+
+                Path pt_d = new Path();
+                pt_d.moveTo(0, h_middle);
+                pt_d.lineTo(0, h_bottom);
+                pt_d.lineTo(l, h_bottom);
+                pt_d.lineTo(0, h_middle);
+
+                canvas.save();
+                canvas.drawPath(pt_u, p_bkg);
+                canvas.drawPath(pt_d, p_bkg);
+                canvas.restore();
+            }
+        }
+
+        utility helper = new utility();
         if(null == mDENOFResult)    {
+            helper.drawBkg();
             if(!isInEditMode()) {
                 setDofShow(View.GONE);
             }
         } else {
             setDofShow(View.VISIBLE);
-            float front_dof =  mDENOFResult.getFrontDof();
-            float object_distance =  mDENOFResult.getObjectDistance();
-            float back_dof =  mDENOFResult.getBackDof();
-
-            Log.d(LOG_TAG, String.format(Locale.CHINA,
-                                "frontNof = %.02fm, object_distance= %.02fm, backNof = %.02fm",
-                                front_dof, object_distance, back_dof));
-
-            float om_w = mCLDofView.getWidth() / 100;
-            int h = mCLDofView.getHeight();
-            int mid_x = (int)(object_distance * om_w);
-
-            int f_x = (int) (om_w * front_dof);
-            int f_w =  mid_x - f_x;
-            adjustDofView(mVWFrontDOF, f_x, f_w, h);
-
-            int b_x = f_x + f_w;
-            int b_w = (int) ((back_dof - object_distance) * om_w);
-            adjustDofView(mVWBackDOF, b_x, b_w, h);
+            helper.drawRange();
+            helper.drawBkg();
         }
     }
 
@@ -162,8 +214,6 @@ public class VWDof extends ConstraintLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
 
         mCLDofView = UtilFun.cast_t(findViewById(R.id.cl_vw));
-        mVWFrontDOF = UtilFun.cast_t(findViewById(R.id.vw_front_dof));
-        mVWBackDOF = UtilFun.cast_t(findViewById(R.id.vw_back_dof));
 
         mCLDofInfo = UtilFun.cast_t(findViewById(R.id.cl_dof_info));
         mTVFrontDof = UtilFun.cast_t(findViewById(R.id.tv_front_dof));
@@ -230,9 +280,6 @@ public class VWDof extends ConstraintLayout {
      * @param v     gone or visibility
      */
     private void setDofShow(int v) {
-        mVWFrontDOF.setVisibility(v);
-        mVWBackDOF.setVisibility(v);
-
         mCLDofInfo.setVisibility(v);
     }
 
