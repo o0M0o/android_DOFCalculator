@@ -268,7 +268,7 @@ public class TuneWheel extends View {
         float xPosition;
         float textWidth = Layout.getDesiredWidth("0", tp_normal);
 
-        int text_top_pos = getTop() + getPaddingTop() - 2;
+        int text_top_pos = getTop() + getPaddingTop() + 8;
         int text_bottom_pos = getHeight() - (int) textWidth;
 
         int left_h = getHeight() / 2;

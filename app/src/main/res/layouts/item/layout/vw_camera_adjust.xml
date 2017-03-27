@@ -43,7 +43,7 @@
         <wxm.dofcalculator.ui.calculator.extend.TuneWheel
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,7 +97,7 @@
         <wxm.dofcalculator.ui.calculator.extend.TuneWheel
             android:id="@+id/tw_lf_val"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="F/1.2"
+            android:text="F1.2"
             android:textColor="@color/turquoise"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
         <wxm.dofcalculator.ui.calculator.extend.TuneWheel
             android:id="@+id/tw_la_val"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
