@@ -4,6 +4,7 @@
         <attr name="twPostUnit" format="string" />
         <attr name="twPrvUnit" format="string" />
 
+        <attr name="twLineDivider" format="integer" />
         <attr name="twModeType" format="integer" />
         <attr name="twMaxValue" format="integer" />
         <attr name="twMinValue" format="integer" />

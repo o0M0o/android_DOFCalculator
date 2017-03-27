@@ -18,6 +18,10 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 
@@ -33,6 +37,9 @@ import wxm.dofcalculator.R;
  */
 @SuppressLint("ClickableViewAccessibility")
 public class TuneWheel extends View {
+    public final static String PARA_VAL_MIN = "val_min";
+    public final static String PARA_VAL_MAX = "val_max";
+
     /**
      * 生成TuneWheel的标尺tag
      */
@@ -59,10 +66,7 @@ public class TuneWheel extends View {
         void onValueChange(int value, String valTag);
     }
 
-    public static final int MOD_TYPE_HALF = 2;
 
-    private static final int ITEM_HALF_DIVIDER = 20;
-    private static final int ITEM_ONE_DIVIDER = 10;
 
 
     private int mLastX, mMove;
@@ -87,6 +91,7 @@ public class TuneWheel extends View {
     private int mAttrMaxHeight;
     private int mAttrMinHeight;
     private int mAttrModeType;
+    private int mAttrLineDivider;
 
     /**
      * 固定变量
@@ -95,7 +100,6 @@ public class TuneWheel extends View {
     private int TEXT_COLOR_NORMAL;
     private int LINE_COLOR_CURSOR;
     private float DISPLAY_DENSITY;
-    private int LINE_DIVIDER = ITEM_HALF_DIVIDER;
 
 
     /**
@@ -139,6 +143,7 @@ public class TuneWheel extends View {
             sz_unit = array.getString(R.styleable.TuneWheel_twPrvUnit);
             mAttrSZPrvUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
 
+            mAttrLineDivider = array.getInt(R.styleable.TuneWheel_twLineDivider, 20);
             mAttrModeType = array.getInt(R.styleable.TuneWheel_twModeType, 2);
             mAttrMinValue = array.getInt(R.styleable.TuneWheel_twMinValue, 0);
             mAttrMaxValue = array.getInt(R.styleable.TuneWheel_twMaxValue, 100);
@@ -178,6 +183,22 @@ public class TuneWheel extends View {
      */
     public float getCurValue() {
         return mAttrCurValue;
+    }
+
+    /**
+     * 调整参数
+     * @param m_paras      新参数
+     */
+    public void adjustPara(Map<String, Object> m_paras)  {
+        for(String k : m_paras.keySet())     {
+            if(k.equals(PARA_VAL_MIN))  {
+                mAttrMinValue = (int)m_paras.get(k);
+            } else if(k.equals(PARA_VAL_MAX))   {
+                mAttrMaxValue = (int)m_paras.get(k);
+            }
+        }
+        
+        invalidate();
     }
 
     @Override
@@ -257,7 +278,7 @@ public class TuneWheel extends View {
         int ln_short_e_y = left_h + (int) DISPLAY_DENSITY * mAttrMinHeight / 2;
 
         for (int i = 0; drawCount <= 4 * width; i++) {
-            xPosition = (width / 2 - mMove) + i * LINE_DIVIDER * DISPLAY_DENSITY;
+            xPosition = (width / 2 - mMove) + i * mAttrLineDivider * DISPLAY_DENSITY;
             if (xPosition + getPaddingRight() < mWidth) {
                 int cur_v = mAttrCurValue + i;
                 if (cur_v <= mAttrMaxValue) {
@@ -286,7 +307,7 @@ public class TuneWheel extends View {
             }
 
             if (0 != i) {
-                xPosition = (width / 2 - mMove) - i * LINE_DIVIDER * DISPLAY_DENSITY;
+                xPosition = (width / 2 - mMove) - i * mAttrLineDivider * DISPLAY_DENSITY;
                 if (xPosition > getPaddingLeft()) {
                     int cur_v = mAttrCurValue - i;
                     if (cur_v >= mAttrMinValue) {
@@ -305,7 +326,7 @@ public class TuneWheel extends View {
                 }
             }
 
-            drawCount += 2 * LINE_DIVIDER * DISPLAY_DENSITY;
+            drawCount += 2 * mAttrLineDivider * DISPLAY_DENSITY;
         }
 
         helper.drawMiddleLine(canvas, ln_long_s_y, ln_long_e_y);
@@ -389,10 +410,10 @@ public class TuneWheel extends View {
         }
 
         private void changeMoveAndValue() {
-            int tValue = (int) (mMove / (LINE_DIVIDER * DISPLAY_DENSITY));
+            int tValue = (int) (mMove / (mAttrLineDivider * DISPLAY_DENSITY));
             if (Math.abs(tValue) > 0) {
                 mAttrCurValue += tValue;
-                mMove -= tValue * LINE_DIVIDER * DISPLAY_DENSITY;
+                mMove -= tValue * mAttrLineDivider * DISPLAY_DENSITY;
                 if (mAttrCurValue <= mAttrMinValue || mAttrCurValue > mAttrMaxValue) {
                     mAttrCurValue = mAttrCurValue <= mAttrMinValue ? mAttrMinValue : mAttrMaxValue;
                     mMove = 0;
@@ -404,7 +425,7 @@ public class TuneWheel extends View {
         }
 
         private void countMoveEnd() {
-            int roundMove = Math.round(mMove / (LINE_DIVIDER * DISPLAY_DENSITY));
+            int roundMove = Math.round(mMove / (mAttrLineDivider * DISPLAY_DENSITY));
             mAttrCurValue = mAttrCurValue + roundMove;
             mAttrCurValue = Math.min(Math.max(mAttrMinValue, mAttrCurValue), mAttrMaxValue);
 

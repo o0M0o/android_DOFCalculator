@@ -1,20 +1,30 @@
 package wxm.dofcalculator.ui.calculator;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
+import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
+import wxm.dofcalculator.define.DeviceItem;
+import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.ui.calculator.extend.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.extend.TuneWheel;
+import wxm.dofcalculator.utility.ContextUtil;
 
 /**
  * 相机设定视图
@@ -91,6 +101,23 @@ public class VWCameraAdjust extends ConstraintLayout {
             mTVLFVal.setText(tag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
+
+        Context ct = getContext();
+        if(ct instanceof Activity)  {
+            Intent it = ((Activity)ct).getIntent();
+            if(null != it) {
+                int d_id = it.getIntExtra(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
+                if(GlobalDef.INT_INVAILED_ID != d_id)   {
+                    DeviceItem di = ContextUtil.getDUDevice().getData(d_id);
+                    if(null != di)  {
+                        Map<String, Object> mp = new HashMap<>();
+                        mp.put(TuneWheel.PARA_VAL_MIN, di.getLens().getMinFocal());
+                        mp.put(TuneWheel.PARA_VAL_MAX, di.getLens().getMaxFocal());
+                        mTWLFTuneWheel.adjustPara(mp);
+                    }
+                }
+            }
+        }
 
         // for object distance
         mTVODVal = UtilFun.cast_t(findViewById(R.id.tv_od_val));
