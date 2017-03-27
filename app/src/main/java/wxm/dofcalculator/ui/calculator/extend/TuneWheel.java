@@ -86,6 +86,7 @@ public class TuneWheel extends View {
     private int mAttrTextSize;
     private int mAttrMaxHeight;
     private int mAttrMinHeight;
+    private int mAttrModeType;
 
     /**
      * 固定变量
@@ -94,7 +95,6 @@ public class TuneWheel extends View {
     private int TEXT_COLOR_NORMAL;
     private int LINE_COLOR_CURSOR;
     private float DISPLAY_DENSITY;
-    private int MOD_TYPE = 2;
     private int LINE_DIVIDER = ITEM_HALF_DIVIDER;
 
 
@@ -139,6 +139,7 @@ public class TuneWheel extends View {
             sz_unit = array.getString(R.styleable.TuneWheel_twPrvUnit);
             mAttrSZPrvUnit = UtilFun.StringIsNullOrEmpty(sz_unit) ? "" : sz_unit;
 
+            mAttrModeType = array.getInt(R.styleable.TuneWheel_twModeType, 2);
             mAttrMinValue = array.getInt(R.styleable.TuneWheel_twMinValue, 0);
             mAttrMaxValue = array.getInt(R.styleable.TuneWheel_twMaxValue, 100);
             mAttrCurValue = array.getInt(R.styleable.TuneWheel_twValue, 50);
@@ -261,7 +262,7 @@ public class TuneWheel extends View {
                 int cur_v = mAttrCurValue + i;
                 if (cur_v <= mAttrMaxValue) {
                     String tw_tag = mTTTranslator.translateTWTag(cur_v);
-                    if (cur_v % MOD_TYPE == 0) {
+                    if ((cur_v - mAttrMinValue) % mAttrModeType == 0) {
                         canvas.drawLine(xPosition, ln_long_s_y, xPosition, ln_long_e_y, linePaint);
 
                         canvas.drawText(tw_tag,
@@ -289,7 +290,7 @@ public class TuneWheel extends View {
                 if (xPosition > getPaddingLeft()) {
                     int cur_v = mAttrCurValue - i;
                     if (cur_v >= mAttrMinValue) {
-                        if (cur_v % MOD_TYPE == 0) {
+                        if ((cur_v - mAttrMinValue) % mAttrModeType == 0) {
                             String tw_tag = mTTTranslator.translateTWTag(cur_v);
                             canvas.drawLine(xPosition, ln_long_s_y, xPosition,
                                     ln_long_e_y, linePaint);

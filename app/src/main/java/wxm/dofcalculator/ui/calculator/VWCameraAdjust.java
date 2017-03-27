@@ -30,6 +30,11 @@ public class VWCameraAdjust extends ConstraintLayout {
     protected TextView  mTVODVal;
     protected TuneWheel mTWODTuneWheel;
 
+    private final static String[] LENS_APERTURE_ARR = {
+            "F1.0", "F1.4", "F2.0", "F2.8", "F4.0",
+            "F5.6", "F8.0", "F11", "F16", "F22",
+            "F32", "F45", "F64"};
+
     public VWCameraAdjust(Context context) {
         super(context);
         initUIComponent();
@@ -70,20 +75,18 @@ public class VWCameraAdjust extends ConstraintLayout {
         mTWLATuneWheel = UtilFun.cast_t(findViewById(R.id.tw_la_val));
 
         mTWLATuneWheel.setValueChangeListener((value, valTag) -> {
-            String tag = String.format(Locale.CHINA, "F/%s", valTag);
-
-            mTVLAVal.setText(tag);
+            mTVLAVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
 
-        mTWLATuneWheel.setTranslateTag(val -> String.format(Locale.CHINA, "%.01f", (float) val /10));
+        mTWLATuneWheel.setTranslateTag(val -> LENS_APERTURE_ARR[val]);
 
         // for lens focal
         mTVLFVal = UtilFun.cast_t(findViewById(R.id.tv_lf_val));
         mTWLFTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_lf_val));
 
         mTWLFTuneWheel.setValueChangeListener((value, valTag) -> {
-            String tag = String.valueOf((int)value) + "mm";
+            String tag = String.valueOf(value) + "mm";
 
             mTVLFVal.setText(tag);
             EventBus.getDefault().post(new AttrChangedEvent(0));

@@ -157,12 +157,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:twModeType="3"
             app:twMaxHeight="16"
-            app:twMaxValue="640"
+            app:twMaxValue="12"
             app:twMinHeight="8"
-            app:twMinValue="9"
+            app:twMinValue="0"
             app:twTextSize="9"
-            app:twValue="12" />
+            app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

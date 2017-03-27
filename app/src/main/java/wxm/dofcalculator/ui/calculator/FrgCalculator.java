@@ -82,7 +82,7 @@ public class FrgCalculator extends FrgUtilityBase {
 
     @Override
     protected void loadUI() {
-        updateResultUI();
+        //updateResultUI();
     }
 
 
@@ -96,7 +96,7 @@ public class FrgCalculator extends FrgUtilityBase {
 
         int lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")));
         BigDecimal pa = mDICurDevice.getCamera().getPixelArea();
-        BigDecimal aperture = new BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("/") + 1));
+        BigDecimal aperture = new BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("F") + 1));
 
         EventBus.getDefault().post(new CameraSettingChangeEvent(pa, lf_hot, aperture, od));
     }
