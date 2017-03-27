@@ -234,7 +234,7 @@ public class FrgDeviceSelect
 
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            FastViewHolder vh = FastViewHolder.get(getContext(), convertView,
+            FastViewHolder vh = FastViewHolder.get(getActivity(), convertView,
                     R.layout.lv_device);
             View rv = vh.getConvertView();
             rv.setOnClickListener(mCLItem);
