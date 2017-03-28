@@ -86,83 +86,23 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
+    <wxm.dofcalculator.ui.extend.MeterView.MeterView
+        android:id="@+id/evw_meter"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        app:mvModeType="5"
+        app:mvPostUnit="m"
+        app:mvTextSize="10"
+        app:layout_constraintTop_toBottomOf="@+id/cl_dof_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_vw"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_dof_info"
-        app:layout_constraintBottom_toTopOf="@+id/cl_meter">
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_meter"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_vw"
-        app:layout_constraintBottom_toBottomOf="parent" >
-
-        <TextView
-            android:id="@+id/tv_min_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0m"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="6dp" />
-
-        <TextView
-            android:id="@+id/tv_middle1_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25m"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_middle2_tag"
-            app:layout_constraintStart_toStartOf="@+id/tv_min_tag"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="122dp" />
-
-        <TextView
-            android:id="@+id/tv_middle2_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="50m"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_max_tag"
-            app:layout_constraintStart_toStartOf="@+id/tv_min_tag"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="239dp" />
-
-        <TextView
-            android:id="@+id/tv_middle3_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="75m"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_max_tag"
-            app:layout_constraintStart_toStartOf="@+id/tv_middle2_tag"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="239dp" />
-
-        <TextView
-            android:id="@+id/tv_max_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100m"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="353dp" />
-    </android.support.constraint.ConstraintLayout>
-
+        app:layout_constraintTop_toBottomOf="@id/evw_meter" />
 </android.support.constraint.ConstraintLayout>

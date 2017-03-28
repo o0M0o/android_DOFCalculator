@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.calculator.extend;
+package wxm.dofcalculator.ui.extend.TuneWheel;
 
 
 import android.annotation.SuppressLint;
@@ -18,9 +18,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;

@@ -7,23 +7,19 @@ import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
-import wxm.dofcalculator.ui.calculator.extend.AttrChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.TuneWheel;
+import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
+import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**

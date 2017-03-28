@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -23,8 +22,9 @@ import java.util.Locale;
 
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
-import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
-import wxm.dofcalculator.ui.calculator.extend.DofChangedEvent;
+import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
+import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
+import wxm.dofcalculator.ui.extend.MeterView.MeterView;
 
 /**
  * extend view for Dof result ui
@@ -34,6 +34,7 @@ public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
 
     protected ConstraintLayout      mCLDofView;
+    protected MeterView             mMVMeter;
 
     protected ConstraintLayout      mCLDofInfo;
     protected TextView              mTVFrontDof;
@@ -57,6 +58,7 @@ public class VWDof extends ConstraintLayout {
         //TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
         //在使用完成后，一定要调用recycle方法
         //属性的名称是styleable中的名称+“_”+属性名称
+        /*
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VWDof);
         try {
             TextView tv;
@@ -87,6 +89,7 @@ public class VWDof extends ConstraintLayout {
         } finally {
             array.recycle();
         }
+        */
     }
 
     @Override
@@ -134,12 +137,12 @@ public class VWDof extends ConstraintLayout {
                 p_b.setStrokeCap(Paint.Cap.ROUND);
                 p_b.setStrokeWidth(3);
 
-                canvas.save();
-
                 float om_w = mCLDofView.getWidth() / 100;
-                int h_top = mCLDofInfo.getHeight();
-                int h = mCLDofView.getHeight() + h_top;
+                int h_top = mCLDofView.getTop() + 5;
+                int h = mCLDofView.getHeight() + h_top - 5;
                 int mid_x = (int)(object_distance * om_w);
+
+                canvas.save();
 
                 int f_x = (int) (om_w * front_dof);
                 canvas.drawRect(f_x, h_top, mid_x, h, p_f);
@@ -157,23 +160,25 @@ public class VWDof extends ConstraintLayout {
                 p_bkg.setStrokeCap(Paint.Cap.ROUND);
                 p_bkg.setStrokeWidth(3);
 
-                int h_top = mCLDofInfo.getHeight();
+                int x_start = mCLDofView.getLeft();
+                int x_end = mCLDofView.getRight();
+                int h_top = mCLDofView.getTop();
                 int h = mCLDofView.getHeight();
                 int l = getWidth();
                 int h_middle = h_top + h / 2;
                 int h_bottom = h_middle + h / 2;
 
                 Path pt_u = new Path();
-                pt_u.moveTo(0, h_top);
-                pt_u.lineTo(0, h_middle);
-                pt_u.lineTo(l, h_top);
-                pt_u.lineTo(0, h_top);
+                pt_u.moveTo(x_start, h_top);
+                pt_u.lineTo(x_start, h_middle);
+                pt_u.lineTo(x_end, h_top);
+                pt_u.lineTo(x_start, h_top);
 
                 Path pt_d = new Path();
-                pt_d.moveTo(0, h_middle);
-                pt_d.lineTo(0, h_bottom);
-                pt_d.lineTo(l, h_bottom);
-                pt_d.lineTo(0, h_middle);
+                pt_d.moveTo(x_start, h_middle);
+                pt_d.lineTo(x_start, h_bottom);
+                pt_d.lineTo(x_end, h_bottom);
+                pt_d.lineTo(x_start, h_middle);
 
                 canvas.save();
                 canvas.drawPath(pt_u, p_bkg);
@@ -186,7 +191,7 @@ public class VWDof extends ConstraintLayout {
         if(null == mDENOFResult)    {
             helper.drawBkg();
             if(!isInEditMode()) {
-                setDofShow(View.GONE);
+                setDofShow(View.INVISIBLE);
             }
         } else {
             setDofShow(View.VISIBLE);
@@ -214,6 +219,7 @@ public class VWDof extends ConstraintLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
 
         mCLDofView = UtilFun.cast_t(findViewById(R.id.cl_vw));
+        mMVMeter = UtilFun.cast_t(findViewById(R.id.evw_meter));
 
         mCLDofInfo = UtilFun.cast_t(findViewById(R.id.cl_dof_info));
         mTVFrontDof = UtilFun.cast_t(findViewById(R.id.tv_front_dof));

@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.calculator.extend;
+package wxm.dofcalculator.ui.calculator.event;
 
 /**
  * 景深变化事件

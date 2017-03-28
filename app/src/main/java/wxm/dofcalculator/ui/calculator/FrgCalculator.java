@@ -19,8 +19,8 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
-import wxm.dofcalculator.ui.calculator.extend.AttrChangedEvent;
-import wxm.dofcalculator.ui.calculator.extend.CameraSettingChangeEvent;
+import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
+import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
