@@ -12,6 +12,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import cn.wxm.andriodutillib.util.UtilFun;
@@ -66,6 +67,11 @@ public class MeterView extends View {
     private int TEXT_COLOR_NORMAL;
     private float DISPLAY_DENSITY;
 
+    /**
+     *  标尺上游标
+     */
+    private ArrayList<MeterViewTag>     mALTags = new ArrayList<>();
+
 
     /**
      * 把值翻译为tag
@@ -117,6 +123,26 @@ public class MeterView extends View {
     public void setTranslateTag(TagTranslate tt) {
         mTTTranslator = tt;
     }
+
+
+    /**
+     * 清理标尺游标
+     */
+    public void clearValueTag()     {
+        mALTags.clear();
+        invalidate();
+        requestLayout();
+    }
+
+    /**
+     * 添加标尺游标
+     */
+    public void addValueTag(MeterViewTag vt)    {
+        mALTags.add(vt);
+        invalidate();
+        requestLayout();
+    }
+
 
     /**
      * 调整参数
@@ -219,12 +245,46 @@ public class MeterView extends View {
                     }
                 }
             }
+
+            private void drawTags() {
+                int w_line = 2;
+                Paint linePaint = new Paint();
+                linePaint.setStrokeWidth(w_line);
+                linePaint.setColor(Color.RED);
+
+                int ln_long_s_y = mVWHeight;
+                int ln_long_e_y = mVWHeight
+                        - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
+
+                for(MeterViewTag mt : mALTags)  {
+                    float x = MeterValueToXPosition(mt.mTagVal);
+
+                    canvas.drawLine(x, ln_long_s_y, x, ln_long_e_y, linePaint);
+                }
+            }
+
+            /**
+             * 通过值获得标尺x坐标
+             * @param val       值
+             * @return          标尺X坐标
+             */
+            private float MeterValueToXPosition(int val)    {
+                float ret = val * (mVWWidth / (mAttrMaxValue - mAttrMinValue));
+                return Math.max(Math.min(mVWWidth, ret), 0);
+            }
         }
         utility helper = new utility();
 
         canvas.save();
+        /*
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), p);
+        */
+
         helper.drawBaseLine();
         helper.drawLines();
+        helper.drawTags();
         canvas.restore();
     }
 }

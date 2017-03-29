@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import cn.wxm.andriodutillib.util.UtilFun;
@@ -25,6 +26,7 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
 import wxm.dofcalculator.ui.extend.MeterView.MeterView;
+import wxm.dofcalculator.ui.extend.MeterView.MeterViewTag;
 
 /**
  * extend view for Dof result ui
@@ -33,7 +35,6 @@ import wxm.dofcalculator.ui.extend.MeterView.MeterView;
 public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
 
-    protected ConstraintLayout      mCLDofView;
     protected MeterView             mMVMeter;
 
     protected ConstraintLayout      mCLDofInfo;
@@ -58,38 +59,11 @@ public class VWDof extends ConstraintLayout {
         //TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
         //在使用完成后，一定要调用recycle方法
         //属性的名称是styleable中的名称+“_”+属性名称
-        /*
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VWDof);
         try {
-            TextView tv;
-            String sz_min = array.getString(R.styleable.VWDof_szDofMinTag);
-            sz_min = UtilFun.StringIsNullOrEmpty(sz_min) ? "0m" : sz_min;
-            tv = UtilFun.cast_t(findViewById(R.id.tv_min_tag));
-            tv.setText(sz_min);
-
-            String sz_middle1 = array.getString(R.styleable.VWDof_szDofMiddle1Tag);
-            sz_middle1 = UtilFun.StringIsNullOrEmpty(sz_middle1) ? "25m" : sz_middle1;
-            tv = UtilFun.cast_t(findViewById(R.id.tv_middle1_tag));
-            tv.setText(sz_middle1);
-
-            String sz_middle2 = array.getString(R.styleable.VWDof_szDofMiddle2Tag);
-            sz_middle2 = UtilFun.StringIsNullOrEmpty(sz_middle2) ? "50m" : sz_middle2;
-            tv = UtilFun.cast_t(findViewById(R.id.tv_middle2_tag));
-            tv.setText(sz_middle2);
-
-            String sz_middle3 = array.getString(R.styleable.VWDof_szDofMiddle3Tag);
-            sz_middle3 = UtilFun.StringIsNullOrEmpty(sz_middle3) ? "75m" : sz_middle3;
-            tv = UtilFun.cast_t(findViewById(R.id.tv_middle3_tag));
-            tv.setText(sz_middle3);
-
-            String sz_max = array.getString(R.styleable.VWDof_szDofMaxTag);
-            sz_max = UtilFun.StringIsNullOrEmpty(sz_max) ? "100m" : sz_max;
-            tv = UtilFun.cast_t(findViewById(R.id.tv_max_tag));
-            tv.setText(sz_max);
         } finally {
             array.recycle();
         }
-        */
     }
 
     @Override
@@ -121,69 +95,22 @@ public class VWDof extends ConstraintLayout {
         super.onDraw(canvas);
         class utility   {
             void drawRange()    {
-                float front_dof =  mDENOFResult.getFrontDof();
-                float object_distance =  mDENOFResult.getObjectDistance();
-                float back_dof =  mDENOFResult.getBackDof();
+                mMVMeter.clearValueTag();
 
-                Paint p_f = new Paint();
-                p_f.setColor(Color.CYAN);
-                p_f.setStrokeJoin(Paint.Join.ROUND);
-                p_f.setStrokeCap(Paint.Cap.ROUND);
-                p_f.setStrokeWidth(3);
+                MeterViewTag mt_f = new MeterViewTag();
+                mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
+                mMVMeter.addValueTag(mt_f);
 
-                Paint p_b = new Paint();
-                p_b.setColor(Color.RED);
-                p_b.setStrokeJoin(Paint.Join.ROUND);
-                p_b.setStrokeCap(Paint.Cap.ROUND);
-                p_b.setStrokeWidth(3);
+                MeterViewTag mt_od = new MeterViewTag();
+                mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
+                mMVMeter.addValueTag(mt_od);
 
-                float om_w = mCLDofView.getWidth() / 100;
-                int h_top = mCLDofView.getTop() + 5;
-                int h = mCLDofView.getHeight() + h_top - 5;
-                int mid_x = (int)(object_distance * om_w);
-
-                canvas.save();
-
-                int f_x = (int) (om_w * front_dof);
-                canvas.drawRect(f_x, h_top, mid_x, h, p_f);
-
-                int b_x = (int) (back_dof * om_w);
-                canvas.drawRect(mid_x, h_top, b_x, h, p_b);
-
-                canvas.restore();
+                MeterViewTag mt_b = new MeterViewTag();
+                mt_b.mTagVal = (int)mDENOFResult.getBackDof();
+                mMVMeter.addValueTag(mt_b);
             }
 
             void drawBkg()  {
-                Paint p_bkg = new Paint();
-                p_bkg.setColor(Color.YELLOW);
-                p_bkg.setStrokeJoin(Paint.Join.ROUND);
-                p_bkg.setStrokeCap(Paint.Cap.ROUND);
-                p_bkg.setStrokeWidth(3);
-
-                int x_start = mCLDofView.getLeft();
-                int x_end = mCLDofView.getRight();
-                int h_top = mCLDofView.getTop();
-                int h = mCLDofView.getHeight();
-                int l = getWidth();
-                int h_middle = h_top + h / 2;
-                int h_bottom = h_middle + h / 2;
-
-                Path pt_u = new Path();
-                pt_u.moveTo(x_start, h_top);
-                pt_u.lineTo(x_start, h_middle);
-                pt_u.lineTo(x_end, h_top);
-                pt_u.lineTo(x_start, h_top);
-
-                Path pt_d = new Path();
-                pt_d.moveTo(x_start, h_middle);
-                pt_d.lineTo(x_start, h_bottom);
-                pt_d.lineTo(x_end, h_bottom);
-                pt_d.lineTo(x_start, h_middle);
-
-                canvas.save();
-                canvas.drawPath(pt_u, p_bkg);
-                canvas.drawPath(pt_d, p_bkg);
-                canvas.restore();
             }
         }
 
@@ -192,6 +119,7 @@ public class VWDof extends ConstraintLayout {
             helper.drawBkg();
             if(!isInEditMode()) {
                 setDofShow(View.INVISIBLE);
+                mMVMeter.clearValueTag();
             }
         } else {
             setDofShow(View.VISIBLE);
@@ -201,24 +129,11 @@ public class VWDof extends ConstraintLayout {
     }
 
     /**
-     * 调整Dof view(仅做平移)
-     * @param v     view
-     * @param x     x coords for view
-     * @param w     width for view
-     * @param h     height for view
-     */
-    public void adjustDofView(View v, int x, int w, int h) {
-        v.layout(x, 0, x + w, h);
-    }
-
-
-    /**
      * 初始化UI元件
      */
     private void initUIComponent()  {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
 
-        mCLDofView = UtilFun.cast_t(findViewById(R.id.cl_vw));
         mMVMeter = UtilFun.cast_t(findViewById(R.id.evw_meter));
 
         mCLDofInfo = UtilFun.cast_t(findViewById(R.id.cl_dof_info));
