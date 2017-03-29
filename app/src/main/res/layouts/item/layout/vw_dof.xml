@@ -89,7 +89,7 @@
         android:id="@+id/evw_meter"
         android:background="@color/white"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="52dp"
         app:mvModeType="5"
         app:mvPostUnit="m"
         app:mvTextSize="10"

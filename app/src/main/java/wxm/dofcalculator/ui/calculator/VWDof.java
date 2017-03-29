@@ -155,19 +155,19 @@ public class VWDof extends ConstraintLayout {
                 mMVMeter.clearValueTag();
 
                 MeterViewTag mt_f = new MeterViewTag();
-                mt_f.mSZTagName = "front";
+                mt_f.mSZTagName = "前点";
                 mt_f.mCRTagColor = mCRDOFFront;
                 mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
                 mMVMeter.addValueTag(mt_f);
 
                 MeterViewTag mt_od = new MeterViewTag();
-                mt_od.mSZTagName = "object_distance";
+                mt_od.mSZTagName = "物距";
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
                 mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
                 mMVMeter.addValueTag(mt_od);
 
                 MeterViewTag mt_b = new MeterViewTag();
-                mt_b.mSZTagName = "back";
+                mt_b.mSZTagName = "后点";
                 mt_b.mCRTagColor = mCRDOFBack;
                 mt_b.mTagVal = (int)mDENOFResult.getBackDof();
                 mMVMeter.addValueTag(mt_b);

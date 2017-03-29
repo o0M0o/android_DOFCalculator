@@ -13,5 +13,6 @@
         <attr name="mvShortLineHeight" format="integer" />
         <attr name="mvLongLineHeight" format="integer" />
         <attr name="mvBaseLineWidth" format="integer" />
+        <attr name="mvBaseLineBottomPadding" format="integer" />
     </declare-styleable>
 </resources>

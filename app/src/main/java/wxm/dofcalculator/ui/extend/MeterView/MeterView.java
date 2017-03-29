@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -61,11 +62,14 @@ public class MeterView extends View {
     private int mAttrModeType;
     private int mAttrLongLineCount;
 
+    private int mAttrBaseLineBottomPadding;
+
     /**
      * 固定变量
      */
     private int TEXT_COLOR_NORMAL;
     private float DISPLAY_DENSITY;
+    private float DISPLAY_TEXT_WIDH;
 
     /**
      *  标尺上游标
@@ -110,6 +114,14 @@ public class MeterView extends View {
             mAttrShortLineHeight = array.getInt(R.styleable.MeterView_mvShortLineHeight, 4);
             mAttrLongLineHeight = array.getInt(R.styleable.MeterView_mvLongLineHeight, 8);
             mAttrBaseLineWidth = array.getInt(R.styleable.MeterView_mvBaseLineWidth, 4);
+
+            mAttrBaseLineBottomPadding = array.getInt(R.styleable.MeterView_mvBaseLineBottomPadding,
+                                    24);
+
+            // get other
+            TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
+            DISPLAY_TEXT_WIDH = Layout.getDesiredWidth("0", tp_normal);
         } finally {
             array.recycle();
         }
@@ -189,11 +201,17 @@ public class MeterView extends View {
             private float mBigWidthUnit;
             private float mSmallWidthUnit;
 
+            private int mBigUnitVal;
+            private int mSmallUnitVal;
+
             public utility()    {
                 mTotalValue = mAttrMaxValue - mAttrMinValue;
 
                 mBigWidthUnit = mVWWidth / mAttrLongLineCount;
                 mSmallWidthUnit = mBigWidthUnit / mAttrModeType;
+
+                mBigUnitVal = mTotalValue / mAttrLongLineCount;
+                mSmallUnitVal = mBigUnitVal / mAttrModeType;
             }
 
             private void drawBaseLine() {
@@ -201,7 +219,7 @@ public class MeterView extends View {
                 basePaint.setStrokeWidth(mAttrBaseLineWidth);
                 basePaint.setColor(TEXT_COLOR_NORMAL);
 
-                int y = mVWHeight - mAttrBaseLineWidth / 2;
+                float y = mVWHeight - DISPLAY_DENSITY * mAttrBaseLineBottomPadding;
                 canvas.drawLine(0, y, mVWWidth, y, basePaint);
             }
 
@@ -218,30 +236,29 @@ public class MeterView extends View {
                 TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
                 tp_normal.setColor(getResources().getColor(R.color.text_fit));
                 tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
-                float textWidth = Layout.getDesiredWidth("0", tp_normal);
 
                 // for axis
-                int ln_long_s_y = mVWHeight;
-                int ln_long_e_y = mVWHeight
-                        - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
-                int ln_short_s_y = mVWHeight;
-                int ln_short_e_y = mVWHeight
-                        - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrShortLineHeight);
-                int text_top_pos = ln_long_e_y - 8;
+                float b_start = mVWHeight - DISPLAY_DENSITY * mAttrBaseLineBottomPadding;
+                float ln_long_s_y = b_start;
+                float ln_long_e_y = b_start
+                            - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
+                float ln_short_s_y = b_start;
+                float ln_short_e_y = b_start
+                            - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrShortLineHeight);
+                float text_top_pos = ln_long_e_y - 8;
 
-                int unit_val = mTotalValue / mAttrLongLineCount;
                 for(int i = 0; i <= mAttrLongLineCount; i++) {
                     float hot_x = RulerValueToXPosition(i, 0, 0);
                     canvas.drawLine(hot_x, ln_long_s_y, hot_x, ln_long_e_y, LongLinePaint);
 
-                    String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue + unit_val * i);
+                    String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue + mBigUnitVal * i);
                     float x_start;
                     if(0 == i)  {
                         x_start = 0;
                     } else if (mAttrLongLineCount == i)   {
-                        x_start = hot_x - tw_tag.length() * textWidth - 4;
+                        x_start = hot_x - tw_tag.length() * DISPLAY_TEXT_WIDH - 4;
                     } else  {
-                        x_start = hot_x - tw_tag.length() * textWidth / 2;
+                        x_start = hot_x - tw_tag.length() * DISPLAY_TEXT_WIDH / 2;
                     }
 
                     canvas.drawText(tw_tag, x_start, text_top_pos, tp_normal);
@@ -254,15 +271,11 @@ public class MeterView extends View {
             }
 
             private void drawTags() {
-                int w_line = 2;
                 Paint linePaint = new Paint();
-                linePaint.setStrokeWidth(w_line);
-                linePaint.setColor(Color.RED);
 
-                int ln_long_s_y = mVWHeight;
-                int ln_long_e_y = mVWHeight
-                        - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
-                int text_top_pos = ln_long_e_y - 8;
+                float ln_long_s_y = mVWHeight - DISPLAY_DENSITY * (mAttrBaseLineBottomPadding - 2);
+                float ln_long_e_y = ln_long_s_y + DISPLAY_DENSITY * 8;
+                float text_top_pos = ln_long_e_y + DISPLAY_TEXT_WIDH + DISPLAY_DENSITY * 4;
 
                 TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
@@ -270,11 +283,18 @@ public class MeterView extends View {
                     float x = MeterValueToXPosition(mt.mTagVal);
 
                     linePaint.setColor(mt.mCRTagColor);
-                    canvas.drawLine(x, ln_long_s_y, x, ln_long_e_y, linePaint);
+                    Path p = new Path();
+                    p.moveTo(x, ln_long_s_y);
+                    p.lineTo(x - 8, ln_long_e_y);
+                    p.lineTo(x + 8, ln_long_e_y);
+                    p.lineTo(x, ln_long_s_y);
+                    canvas.drawPath(p, linePaint);
 
                     tp_normal.setColor(mt.mCRTagColor);
                     tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
-                    canvas.drawText(mt.mSZTagName, x, text_top_pos, tp_normal);
+                    canvas.drawText(mt.mSZTagName,
+                            x - mt.mSZTagName.length() * DISPLAY_TEXT_WIDH / 2,
+                            text_top_pos, tp_normal);
                 }
             }
 
@@ -284,12 +304,9 @@ public class MeterView extends View {
              * @return          标尺X坐标
              */
             private float MeterValueToXPosition(int val)    {
-                int unit_val = mTotalValue / mAttrLongLineCount;
-                int small_unit_val = unit_val / mAttrModeType;
-
-                int big = val / unit_val;
-                int small = val % unit_val / small_unit_val;
-                int left = val % unit_val % small_unit_val;
+                int big = val / mBigUnitVal;
+                int small = val % mBigUnitVal / mSmallUnitVal;
+                int left = val % mSmallUnitVal;
 
                 return RulerValueToXPosition(big, small, left);
             }
@@ -302,9 +319,6 @@ public class MeterView extends View {
              * @return          x坐标
              */
             private float RulerValueToXPosition(int big, int small, int left) {
-                int unit_val = mTotalValue / mAttrLongLineCount;
-                int small_unit_val = unit_val / mAttrModeType;
-
                 float x_big = 0 == big ?
                                 mLongLineWidth / 2
                                 : (mAttrLongLineCount == big ?
@@ -312,19 +326,13 @@ public class MeterView extends View {
                                         : mBigWidthUnit * big - mLongLineWidth / 2 );
 
                 float x_small = mSmallWidthUnit * small;
-                float x_left = mSmallWidthUnit * (left / small_unit_val);
+                float x_left = mSmallWidthUnit * left / mSmallUnitVal;
                 return x_big + x_small + x_left;
             }
         }
         utility helper = new utility();
 
         canvas.save();
-        /*
-        Paint p = new Paint();
-        p.setColor(Color.WHITE);
-        canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), p);
-        */
-
         helper.drawBaseLine();
         helper.drawLines();
         helper.drawTags();
