@@ -181,6 +181,21 @@ public class MeterView extends View {
      */
     private void drawScaleLine(Canvas canvas) {
         class utility {
+            private int mTotalValue;
+
+            private int mShortLineWidth = 2;
+            private int mLongLineWidth = 4;
+
+            private float mBigWidthUnit;
+            private float mSmallWidthUnit;
+
+            public utility()    {
+                mTotalValue = mAttrMaxValue - mAttrMinValue;
+
+                mBigWidthUnit = mVWWidth / mAttrLongLineCount;
+                mSmallWidthUnit = mBigWidthUnit / mAttrModeType;
+            }
+
             private void drawBaseLine() {
                 Paint basePaint = new Paint();
                 basePaint.setStrokeWidth(mAttrBaseLineWidth);
@@ -191,15 +206,13 @@ public class MeterView extends View {
             }
 
             private void drawLines() {
-                int w_line = 2;
-                int w_long_line = 4;
                 // for paint
                 Paint linePaint = new Paint();
-                linePaint.setStrokeWidth(w_line);
+                linePaint.setStrokeWidth(mShortLineWidth);
                 linePaint.setColor(TEXT_COLOR_NORMAL);
 
                 Paint LongLinePaint = new Paint();
-                LongLinePaint.setStrokeWidth(w_long_line);
+                LongLinePaint.setStrokeWidth(mLongLineWidth);
                 LongLinePaint.setColor(TEXT_COLOR_NORMAL);
 
                 TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -216,31 +229,25 @@ public class MeterView extends View {
                         - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrShortLineHeight);
                 int text_top_pos = ln_long_e_y - 8;
 
-                int unit_val = (mAttrMaxValue - mAttrMinValue) / mAttrLongLineCount;
-                int w_long = mVWWidth / mAttrLongLineCount;
-                int w_short = w_long / mAttrModeType;
-
+                int unit_val = mTotalValue / mAttrLongLineCount;
                 for(int i = 0; i <= mAttrLongLineCount; i++) {
-                    int hot_x = 0 == i ?
-                                w_long_line / 2
-                                : (mAttrLongLineCount == i ?  mVWWidth - w_long_line / 2 : w_long * i);
+                    float hot_x = RulerValueToXPosition(i, 0, 0);
                     canvas.drawLine(hot_x, ln_long_s_y, hot_x, ln_long_e_y, LongLinePaint);
 
                     String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue + unit_val * i);
-                    int x_start;
+                    float x_start;
                     if(0 == i)  {
                         x_start = 0;
                     } else if (mAttrLongLineCount == i)   {
-                        x_start = hot_x - (int)(tw_tag.length() * textWidth) - 4;
+                        x_start = hot_x - tw_tag.length() * textWidth - 4;
                     } else  {
-                        x_start = hot_x - (int)(tw_tag.length() * textWidth) / 2;
+                        x_start = hot_x - tw_tag.length() * textWidth / 2;
                     }
 
-                    canvas.drawText(tw_tag, x_start,
-                            text_top_pos, tp_normal);
+                    canvas.drawText(tw_tag, x_start, text_top_pos, tp_normal);
 
                     for(int j = 1; j < mAttrModeType; j++)  {
-                        int cur_x = w_long * i + w_short * j;
+                        float cur_x = RulerValueToXPosition(i, j, 0);
                         canvas.drawLine(cur_x, ln_short_s_y, cur_x, ln_short_e_y, linePaint);
                     }
                 }
@@ -255,11 +262,19 @@ public class MeterView extends View {
                 int ln_long_s_y = mVWHeight;
                 int ln_long_e_y = mVWHeight
                         - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
+                int text_top_pos = ln_long_e_y - 8;
+
+                TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
                 for(MeterViewTag mt : mALTags)  {
                     float x = MeterValueToXPosition(mt.mTagVal);
 
+                    linePaint.setColor(mt.mCRTagColor);
                     canvas.drawLine(x, ln_long_s_y, x, ln_long_e_y, linePaint);
+
+                    tp_normal.setColor(mt.mCRTagColor);
+                    tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
+                    canvas.drawText(mt.mSZTagName, x, text_top_pos, tp_normal);
                 }
             }
 
@@ -269,8 +284,36 @@ public class MeterView extends View {
              * @return          标尺X坐标
              */
             private float MeterValueToXPosition(int val)    {
-                float ret = val * (mVWWidth / (mAttrMaxValue - mAttrMinValue));
-                return Math.max(Math.min(mVWWidth, ret), 0);
+                int unit_val = mTotalValue / mAttrLongLineCount;
+                int small_unit_val = unit_val / mAttrModeType;
+
+                int big = val / unit_val;
+                int small = val % unit_val / small_unit_val;
+                int left = val % unit_val % small_unit_val;
+
+                return RulerValueToXPosition(big, small, left);
+            }
+
+            /**
+             * 尺度值获得X坐标
+             * @param big       大值
+             * @param small     小值
+             * @param left      剩余值
+             * @return          x坐标
+             */
+            private float RulerValueToXPosition(int big, int small, int left) {
+                int unit_val = mTotalValue / mAttrLongLineCount;
+                int small_unit_val = unit_val / mAttrModeType;
+
+                float x_big = 0 == big ?
+                                mLongLineWidth / 2
+                                : (mAttrLongLineCount == big ?
+                                        mVWWidth - mLongLineWidth / 2
+                                        : mBigWidthUnit * big - mLongLineWidth / 2 );
+
+                float x_small = mSmallWidthUnit * small;
+                float x_left = mSmallWidthUnit * (left / small_unit_val);
+                return x_big + x_small + x_left;
             }
         }
         utility helper = new utility();

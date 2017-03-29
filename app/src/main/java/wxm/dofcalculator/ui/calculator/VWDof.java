@@ -21,6 +21,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import butterknife.BindColor;
+import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
@@ -44,6 +46,15 @@ public class VWDof extends ConstraintLayout {
 
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
+
+    @BindColor(R.color.rosybrown)
+    int     mCRDOFFront;
+
+    @BindColor(R.color.red_ff725f)
+    int     mCRDOFObjectDistance;
+
+    @BindColor(R.color.orangered)
+    int     mCRDOFBack;
 
     public VWDof(Context context) {
         super(context);
@@ -95,19 +106,6 @@ public class VWDof extends ConstraintLayout {
         super.onDraw(canvas);
         class utility   {
             void drawRange()    {
-                mMVMeter.clearValueTag();
-
-                MeterViewTag mt_f = new MeterViewTag();
-                mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
-                mMVMeter.addValueTag(mt_f);
-
-                MeterViewTag mt_od = new MeterViewTag();
-                mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
-                mMVMeter.addValueTag(mt_od);
-
-                MeterViewTag mt_b = new MeterViewTag();
-                mt_b.mTagVal = (int)mDENOFResult.getBackDof();
-                mMVMeter.addValueTag(mt_b);
             }
 
             void drawBkg()  {
@@ -133,6 +131,7 @@ public class VWDof extends ConstraintLayout {
      */
     private void initUIComponent()  {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
+        ButterKnife.bind(this);
 
         mMVMeter = UtilFun.cast_t(findViewById(R.id.evw_meter));
 
@@ -150,6 +149,31 @@ public class VWDof extends ConstraintLayout {
             mDENOFResult = null;
             return;
         }
+
+        class utility   {
+            void updateDofView()    {
+                mMVMeter.clearValueTag();
+
+                MeterViewTag mt_f = new MeterViewTag();
+                mt_f.mSZTagName = "front";
+                mt_f.mCRTagColor = mCRDOFFront;
+                mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
+                mMVMeter.addValueTag(mt_f);
+
+                MeterViewTag mt_od = new MeterViewTag();
+                mt_od.mSZTagName = "object_distance";
+                mt_od.mCRTagColor = mCRDOFObjectDistance;
+                mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
+                mMVMeter.addValueTag(mt_od);
+
+                MeterViewTag mt_b = new MeterViewTag();
+                mt_b.mSZTagName = "back";
+                mt_b.mCRTagColor = mCRDOFBack;
+                mt_b.mTagVal = (int)mDENOFResult.getBackDof();
+                mMVMeter.addValueTag(mt_b);
+            }
+        }
+        utility helper = new utility();
 
         int lens_focal = mCSCameraSetting.getLensFocal();
         BigDecimal lens_aperture = mCSCameraSetting.getLensAperture();
@@ -193,7 +217,8 @@ public class VWDof extends ConstraintLayout {
         mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", dofFar.floatValue()));
 
         // updat ui
-        invalidate();
+        //invalidate();
+        helper.updateDofView();
     }
 
     /**

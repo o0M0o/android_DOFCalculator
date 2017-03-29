@@ -9,4 +9,5 @@ public class MeterViewTag {
     public int      mCRTagColor;
 
     public int      mTagVal;
+    public int      mTagFontSize;
 }
