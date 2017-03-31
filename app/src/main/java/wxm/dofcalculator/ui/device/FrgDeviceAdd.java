@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 
+import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,6 +94,9 @@ public class FrgDeviceAdd
     @BindString(R.string.error_need_max_focal)
     String              mSZNeedMaxFocal;
 
+    @BindArray(R.array.sensor_size)
+    String[]    mSASensorSize;
+
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         LOG_TAG = "FrgDeviceAdd";
@@ -102,9 +107,15 @@ public class FrgDeviceAdd
 
     @Override
     protected void initUiComponent(View view) {
+        String[] org_arr = new String[mSASensorSize.length];
+        for(int i = 0; i < org_arr.length; ++i) {
+            String org = mSASensorSize[i];
+            org_arr[i] = org.substring(0, org.indexOf("|"));
+        }
+
         // for sensor size
-        ArrayAdapter<CharSequence> ap_sensor_size = ArrayAdapter.createFromResource(getActivity(),
-                R.array.sensor_size, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> ap_sensor_size = new ArrayAdapter<>(getActivity(),
+                                                android.R.layout.simple_spinner_item, org_arr);
         ap_sensor_size.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSPSensorSize.setAdapter(ap_sensor_size);
 
@@ -280,7 +291,8 @@ public class FrgDeviceAdd
         CameraItem ci = new CameraItem();
 
         ci.setName(mETCamraName.getText().toString());
-        ci.setFilmSize(getSensorSize());
+        ci.setFilmSize(Math.round(getSensorSize().floatValue()));
+        ci.setFilmName(getFilmName());
         ci.setPixelCount(getSensorPixelCount());
         return ci;
     }
@@ -300,36 +312,31 @@ public class FrgDeviceAdd
     }
 
     /**
-     * 获取传感器尺寸
+     * 获取传感器对角线尺寸
      * @return  传感器尺寸
      */
-    private int getSensorSize() {
+    private BigDecimal getSensorSize() {
         int idx = mSPSensorSize.getSelectedItemPosition();
-        int ret = -1;
-        switch (idx)    {
-            case 0 :
-                ret = 135;
-                break;
-
-            case 1 :
-                ret = 85;
-                break;
-
-            case 2 :
-                ret = 65;
-                break;
-
-            case 3 :
-                ret = 55;
-                break;
-
-            case 4 :
-                ret = 35;
-                break;
-
+        if(AdapterView.INVALID_POSITION != idx) {
+            String sel_ss = mSASensorSize[idx];
+            return  new BigDecimal(sel_ss.substring(sel_ss.indexOf("|") + 1));
         }
 
-        return ret;
+        return BigDecimal.ZERO;
+    }
+
+    /**
+     * 获得传感器名
+     * @return  传感器名
+     */
+    private String getFilmName()    {
+        int idx = mSPSensorSize.getSelectedItemPosition();
+        if(AdapterView.INVALID_POSITION != idx) {
+            String org = mSASensorSize[idx];
+            return org.substring(0, org.indexOf("|"));
+        }
+
+        return "";
     }
 
     /**

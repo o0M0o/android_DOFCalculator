@@ -9,6 +9,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,9 @@ public class CameraItem
     @DatabaseField(columnName = "name", canBeNull = false, dataType = DataType.STRING)
     private String name;
 
+    @DatabaseField(columnName = "filmName", canBeNull = false, dataType = DataType.STRING)
+    private String filmName;
+
     /**
      * 相机底片对角线尺寸，单位为mm
      */
@@ -50,7 +54,6 @@ public class CameraItem
     public CameraItem() {
         setID(-1);
         setName("");
-
     }
 
     // for name
@@ -71,7 +74,16 @@ public class CameraItem
         filmSize = fs;
     }
 
-    // for filmSize
+    // for filmName
+    public String getFilmName()    {
+        return filmName;
+    }
+
+    public void setFilmName(String fn) {
+        filmName = fn;
+    }
+
+    // for pixel count
     public int getPixelCount()    {
         return pixelCount;
     }
@@ -81,11 +93,11 @@ public class CameraItem
     }
 
     /**
-     * 获取像素点面积，单位平方毫米
-     * @return   area for one pixel
+     * 获取弥散圆直径，单位毫米
+     * @return   弥散圆直径
      */
-    public BigDecimal getPixelArea()    {
-        return new BigDecimal("0.003");
+    public BigDecimal getCameraCOC()    {
+        return new BigDecimal((float)filmSize/1730);
     }
 
     @Override

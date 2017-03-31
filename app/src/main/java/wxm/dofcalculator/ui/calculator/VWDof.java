@@ -3,9 +3,6 @@ package wxm.dofcalculator.ui.calculator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,10 +15,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import butterknife.BindColor;
+import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
@@ -37,15 +35,23 @@ import wxm.dofcalculator.ui.extend.MeterView.MeterViewTag;
 public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
 
-    protected MeterView             mMVMeter;
-
-    protected ConstraintLayout      mCLDofInfo;
-    protected TextView              mTVFrontDof;
-    protected TextView              mTVObjectDistance;
-    protected TextView              mTVBackDof;
-
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
+
+    @BindView(R.id.evw_meter)
+    MeterView   mMVMeter;
+
+    @BindView(R.id.cl_dof_info)
+    ConstraintLayout      mCLDofInfo;
+
+    @BindView(R.id.tv_front_dof)
+    TextView      mTVFrontDof;
+
+    @BindView(R.id.tv_objecet_distance)
+    TextView      mTVObjectDistance;
+
+    @BindView(R.id.tv_back_dof)
+    TextView      mTVBackDof;
 
     @BindColor(R.color.rosybrown)
     int     mCRDOFFront;
@@ -55,6 +61,15 @@ public class VWDof extends ConstraintLayout {
 
     @BindColor(R.color.orangered)
     int     mCRDOFBack;
+
+    @BindString(R.string.tag_front_point)
+    String  mSZTagFrontPoint;
+
+    @BindString(R.string.tag_object_distance)
+    String  mSZTagObjectDistance;
+
+    @BindString(R.string.tag_back_point)
+    String  mSZTagBackPoint;
 
     public VWDof(Context context) {
         super(context);
@@ -133,9 +148,7 @@ public class VWDof extends ConstraintLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
         ButterKnife.bind(this);
 
-        mMVMeter = UtilFun.cast_t(findViewById(R.id.evw_meter));
 
-        mCLDofInfo = UtilFun.cast_t(findViewById(R.id.cl_dof_info));
         mTVFrontDof = UtilFun.cast_t(findViewById(R.id.tv_front_dof));
         mTVObjectDistance = UtilFun.cast_t(findViewById(R.id.tv_objecet_distance));
         mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
@@ -155,19 +168,19 @@ public class VWDof extends ConstraintLayout {
                 mMVMeter.clearValueTag();
 
                 MeterViewTag mt_f = new MeterViewTag();
-                mt_f.mSZTagName = "前点";
+                mt_f.mSZTagName = mSZTagFrontPoint;
                 mt_f.mCRTagColor = mCRDOFFront;
                 mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
                 mMVMeter.addValueTag(mt_f);
 
                 MeterViewTag mt_od = new MeterViewTag();
-                mt_od.mSZTagName = "物距";
+                mt_od.mSZTagName = mSZTagObjectDistance;
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
                 mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
                 mMVMeter.addValueTag(mt_od);
 
                 MeterViewTag mt_b = new MeterViewTag();
-                mt_b.mSZTagName = "后点";
+                mt_b.mSZTagName = mSZTagBackPoint;
                 mt_b.mCRTagColor = mCRDOFBack;
                 mt_b.mTagVal = (int)mDENOFResult.getBackDof();
                 mMVMeter.addValueTag(mt_b);
@@ -177,7 +190,7 @@ public class VWDof extends ConstraintLayout {
 
         int lens_focal = mCSCameraSetting.getLensFocal();
         BigDecimal lens_aperture = mCSCameraSetting.getLensAperture();
-        BigDecimal pixel_area = mCSCameraSetting.getPixelArea();
+        BigDecimal pixel_area = mCSCameraSetting.getCOC();
         int od = mCSCameraSetting.getObjectDistance();
         float f_od = (float)od;
 

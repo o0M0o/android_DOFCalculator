@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindArray;
 import butterknife.BindView;
 import cn.wxm.andriodutillib.util.FastViewHolder;
 import butterknife.ButterKnife;
@@ -59,6 +60,8 @@ public class FrgDeviceSelect
     @BindView(R.id.bt_delete)
     Button      mBUDelete;
 
+    @BindArray(R.array.sensor_size)
+    String[]    mSASensorSize;
 
     @Override
     protected void enterActivity()  {
@@ -148,7 +151,7 @@ public class FrgDeviceSelect
             hm.put(KEY_DEVICE_NAME, di.getName());
             hm.put(KEY_CAMERA_INFO,
                     String.format(Locale.CHINA, "%s,%d万像素",
-                            getCameraSensorSizeName(ci), ci.getPixelCount()));
+                            ci.getFilmName(), ci.getPixelCount()));
             hm.put(KEY_LENS_INFO,
                     String.format(Locale.CHINA, "%d-%dmm 焦距",
                             li.getMinFocal(), li.getMaxFocal()));

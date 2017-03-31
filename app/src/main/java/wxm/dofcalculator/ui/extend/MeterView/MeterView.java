@@ -16,6 +16,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Map;
 
+import butterknife.BindString;
+import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 
@@ -76,7 +78,6 @@ public class MeterView extends View {
      */
     private ArrayList<MeterViewTag>     mALTags = new ArrayList<>();
 
-
     /**
      * 把值翻译为tag
      */
@@ -87,9 +88,9 @@ public class MeterView extends View {
         }
     };
 
-
     public MeterView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        ButterKnife.bind(this);
 
         // for normal setting
         Resources res = context.getResources();
@@ -280,21 +281,23 @@ public class MeterView extends View {
                 TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
                 for(MeterViewTag mt : mALTags)  {
-                    float x = MeterValueToXPosition(mt.mTagVal);
+                    if(mt.mTagVal >= mAttrMinValue && mt.mTagVal <= mAttrMaxValue) {
+                        float x = MeterValueToXPosition(mt.mTagVal);
 
-                    linePaint.setColor(mt.mCRTagColor);
-                    Path p = new Path();
-                    p.moveTo(x, ln_long_s_y);
-                    p.lineTo(x - 8, ln_long_e_y);
-                    p.lineTo(x + 8, ln_long_e_y);
-                    p.lineTo(x, ln_long_s_y);
-                    canvas.drawPath(p, linePaint);
+                        linePaint.setColor(mt.mCRTagColor);
+                        Path p = new Path();
+                        p.moveTo(x, ln_long_s_y);
+                        p.lineTo(x - 8, ln_long_e_y);
+                        p.lineTo(x + 8, ln_long_e_y);
+                        p.lineTo(x, ln_long_s_y);
+                        canvas.drawPath(p, linePaint);
 
-                    tp_normal.setColor(mt.mCRTagColor);
-                    tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
-                    canvas.drawText(mt.mSZTagName,
-                            x - mt.mSZTagName.length() * DISPLAY_TEXT_WIDH / 2,
-                            text_top_pos, tp_normal);
+                        tp_normal.setColor(mt.mCRTagColor);
+                        tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
+                        canvas.drawText(mt.mSZTagName,
+                                x - mt.mSZTagName.length() * DISPLAY_TEXT_WIDH / 2,
+                                text_top_pos, tp_normal);
+                    }
                 }
             }
 

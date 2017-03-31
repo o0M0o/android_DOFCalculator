@@ -120,9 +120,7 @@ public class VWCameraAdjust extends ConstraintLayout {
         mTWODTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_od_val));
 
         mTWODTuneWheel.setValueChangeListener((value, valTag) -> {
-            String tag = valTag + "m";
-
-            mTVODVal.setText(tag);
+            mTVODVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
     }

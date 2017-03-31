@@ -30,4 +30,8 @@
     <string name="tv_lens_focal">焦距</string>
     <string name="tv_lens_aperture">光圈</string>
     <string name="tv_object_distance">物距</string>
+
+    <string name="tag_front_point">近点</string>
+    <string name="tag_object_distance">物距</string>
+    <string name="tag_back_point">远点</string>
 </resources>

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * Created by ookoo on 2017/3/22.
  */
 public class CameraSettingChangeEvent {
-    private BigDecimal  mBDPixelArea;
+    private BigDecimal  mBDCOC;
     private int         mLFLensFocal;
     private BigDecimal  mBDlensAperture;
 
@@ -15,7 +15,7 @@ public class CameraSettingChangeEvent {
 
 
     public CameraSettingChangeEvent(BigDecimal pa, int lf, BigDecimal la, int od)   {
-        mBDPixelArea = pa;
+        mBDCOC = pa;
         mLFLensFocal = lf;
         mBDlensAperture = la;
 
@@ -23,11 +23,11 @@ public class CameraSettingChangeEvent {
     }
 
     /**
-     * 获取像素面积(单位 : 平方毫米)
-     * @return      面积
+     * 获取弥散圆直径(单位 : 毫米)
+     * @return      弥散直径
      */
-    public BigDecimal getPixelArea()    {
-        return mBDPixelArea;
+    public BigDecimal getCOC()    {
+        return mBDCOC;
     }
 
     /**
