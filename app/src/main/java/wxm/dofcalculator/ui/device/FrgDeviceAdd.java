@@ -51,8 +51,6 @@ public class FrgDeviceAdd
     @BindView(R.id.sp_sensor_size)
     Spinner             mSPSensorSize;
 
-    @BindView(R.id.sp_sensor_pixel_count)
-    Spinner             mSPSensorPixelCount;
 
     // for lens
     @BindView(R.id.et_lens_name)
@@ -118,12 +116,6 @@ public class FrgDeviceAdd
                                                 android.R.layout.simple_spinner_item, org_arr);
         ap_sensor_size.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSPSensorSize.setAdapter(ap_sensor_size);
-
-        // for sensor size
-        ArrayAdapter<CharSequence> ap_sensor_pc = ArrayAdapter.createFromResource(getActivity(),
-                R.array.sensor_pixel_count, android.R.layout.simple_spinner_item);
-        ap_sensor_pc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSPSensorPixelCount.setAdapter(ap_sensor_pc);
     }
 
     @Override
@@ -180,7 +172,6 @@ public class FrgDeviceAdd
     private boolean checkCameraParameter()   {
         String c_name = mETCamraName.getText().toString();
         int ss_idx = mSPSensorSize.getSelectedItemPosition();
-        int sp_idx = mSPSensorPixelCount.getSelectedItemPosition();
 
         Activity ac = getActivity();
         if(UtilFun.StringIsNullOrEmpty(c_name)) {
@@ -200,17 +191,6 @@ public class FrgDeviceAdd
 
             AlertDialog.Builder builder = new AlertDialog.Builder(ac);
             builder.setMessage(mSZNeedCameraSensorSize).setTitle(mSZWarn);
-
-            AlertDialog dlg = builder.create();
-            dlg.show();
-            return false;
-        }
-
-        if(AdapterView.INVALID_POSITION == sp_idx)  {
-            mSPSensorPixelCount.requestFocus();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(ac);
-            builder.setMessage(mSZNeedCameraSensorPixelCount).setTitle(mSZWarn);
 
             AlertDialog dlg = builder.create();
             dlg.show();
@@ -293,7 +273,6 @@ public class FrgDeviceAdd
         ci.setName(mETCamraName.getText().toString());
         ci.setFilmSize(Math.round(getSensorSize().floatValue()));
         ci.setFilmName(getFilmName());
-        ci.setPixelCount(getSensorPixelCount());
         return ci;
     }
 
@@ -337,34 +316,5 @@ public class FrgDeviceAdd
         }
 
         return "";
-    }
-
-    /**
-     * 获取传感器像素数
-     * @return  传感器像素数
-     */
-    private int getSensorPixelCount() {
-        int idx = mSPSensorPixelCount.getSelectedItemPosition();
-        int ret = -1;
-        switch (idx)    {
-            case 0 :
-                ret = 2400;
-                break;
-
-            case 1 :
-                ret = 1600;
-                break;
-
-            case 2 :
-                ret = 1200;
-                break;
-
-            case 3 :
-                ret = 800;
-                break;
-
-        }
-
-        return ret;
     }
 }

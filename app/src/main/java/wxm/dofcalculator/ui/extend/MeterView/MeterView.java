@@ -202,8 +202,8 @@ public class MeterView extends View {
             private float mBigWidthUnit;
             private float mSmallWidthUnit;
 
-            private int mBigUnitVal;
-            private int mSmallUnitVal;
+            private float mBigUnitVal;
+            private float mSmallUnitVal;
 
             public utility()    {
                 mTotalValue = mAttrMaxValue - mAttrMinValue;
@@ -252,7 +252,8 @@ public class MeterView extends View {
                     float hot_x = RulerValueToXPosition(i, 0, 0);
                     canvas.drawLine(hot_x, ln_long_s_y, hot_x, ln_long_e_y, LongLinePaint);
 
-                    String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue + mBigUnitVal * i);
+                    String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue
+                                                    + (int)(mBigUnitVal * i));
                     float x_start;
                     if(0 == i)  {
                         x_start = 0;
@@ -307,9 +308,10 @@ public class MeterView extends View {
              * @return          标尺X坐标
              */
             private float MeterValueToXPosition(int val)    {
-                int big = val / mBigUnitVal;
-                int small = val % mBigUnitVal / mSmallUnitVal;
-                int left = val % mSmallUnitVal;
+                val -= mAttrMinValue;
+                int big = (int)(val / mBigUnitVal);
+                int small = (int)(val % mBigUnitVal / mSmallUnitVal);
+                int left = (int)(val % mSmallUnitVal);
 
                 return RulerValueToXPosition(big, small, left);
             }

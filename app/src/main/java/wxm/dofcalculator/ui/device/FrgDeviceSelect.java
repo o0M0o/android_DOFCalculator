@@ -150,8 +150,8 @@ public class FrgDeviceSelect
             hm.put(KEY_DEVICE_ID, String.valueOf(di.getID()));
             hm.put(KEY_DEVICE_NAME, di.getName());
             hm.put(KEY_CAMERA_INFO,
-                    String.format(Locale.CHINA, "%s,%d万像素",
-                            ci.getFilmName(), ci.getPixelCount()));
+                    String.format(Locale.CHINA, "%s",
+                            ci.getFilmName()));
             hm.put(KEY_LENS_INFO,
                     String.format(Locale.CHINA, "%d-%dmm 焦距",
                             li.getMinFocal(), li.getMaxFocal()));

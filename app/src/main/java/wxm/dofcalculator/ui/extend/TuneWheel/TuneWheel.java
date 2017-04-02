@@ -176,11 +176,18 @@ public class TuneWheel extends View {
 
     /**
      * 获取当前刻度值
-     *
      * @return 当前值
      */
-    public float getCurValue() {
+    public int getCurValue() {
         return mAttrCurValue;
+    }
+
+    /**
+     * 获取当前刻度值
+     * @return 当前值
+     */
+    public String getCurValueTag() {
+        return mTTTranslator.translateTWTag(mAttrCurValue);
     }
 
     /**

@@ -4,68 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="2dp"
     android:paddingBottom="2dp"
-    android:paddingStart="4dp"
     android:paddingEnd="4dp"
+    android:paddingStart="4dp"
+    android:paddingTop="2dp"
     tools:context="wxm.dofcalculator.ui.device.ACDevice">
 
-    <RelativeLayout
-        android:id="@+id/rl_device"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_device_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/rl_camera"
+        android:background="@color/white"
+        android:paddingBottom="2dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_device_name"
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_device_name"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white"
-            android:paddingBottom="2dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="0dp">
+            android:hint="@string/hint_device_name"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_device_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:hint="@string/hint_device_name"
-                android:maxLines="1" />
-        </android.support.design.widget.TextInputLayout>
-    </RelativeLayout>
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/rl_camera"
+        android:background="@color/beige"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_device"
+        app:layout_constraintTop_toBottomOf="@+id/til_device_name"
         tools:layout_editor_absoluteX="0dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_camera_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:background="@color/white"
             android:paddingBottom="2dp"
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="4dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_camera_name"
@@ -77,87 +68,65 @@
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_sensor_size"
-            android:layout_width="match_parent"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_film_size"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/til_camera_name"
+            android:layout_marginTop="4dp"
             android:background="@color/white"
-            android:padding="8dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_camera_name">
 
             <TextView
                 android:id="@+id/tv_sensor_size"
-                android:layout_width="128dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:text="@string/tv_sensor_size"
-                android:textColor="@color/text_fit" />
+                android:textColor="@color/text_fit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
                 android:id="@+id/sp_sensor_size"
-                android:layout_width="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
-                android:layout_toEndOf="@id/tv_sensor_size"
-                android:background="#90d7ec" />
-        </RelativeLayout>
+                android:layout_marginStart="12dp"
+                android:background="#90d7ec"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_sensor_size"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_sensor_pixel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_sensor_size"
-            android:background="@color/white"
-            android:padding="8dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
-
-            <TextView
-                android:id="@+id/tv_sensor_pixel_count"
-                android:layout_width="128dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/tv_sensor_pixel_count"
-                android:textColor="@color/text_fit" />
-
-            <Spinner
-                android:id="@+id/sp_sensor_pixel_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
-                android:layout_toEndOf="@id/tv_sensor_pixel_count"
-                android:background="#90d7ec" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_lens"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_lens"
+        android:background="@color/beige"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_camera">
+        app:layout_constraintTop_toBottomOf="@+id/rl_camera"
+        tools:layout_editor_absoluteX="0dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_lens_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="false"
             android:background="@color/white"
             android:paddingBottom="2dp"
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="4dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_lens_name"
@@ -171,18 +140,19 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_lens_min_focal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="false"
             android:layout_below="@id/til_lens_name"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="2dp"
             android:background="@color/white"
             android:paddingBottom="2dp"
-            android:paddingEnd="8dp"
+            android:paddingEnd="0dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintEnd_toStartOf="@+id/til_lens_max_focal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_lens_name">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_lens_min_focal"
@@ -197,18 +167,19 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_lens_max_focal"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="false"
             android:layout_below="@id/til_lens_min_focal"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="2dp"
             android:background="@color/white"
             android:paddingBottom="2dp"
             android:paddingEnd="8dp"
-            android:paddingStart="8dp"
+            android:paddingStart="0dp"
             android:paddingTop="4dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/til_lens_min_focal"
+            app:layout_constraintTop_toBottomOf="@+id/til_lens_name">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/et_lens_max_focal"
@@ -220,5 +191,5 @@
                 android:inputType="number"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

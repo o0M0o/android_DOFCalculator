@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +17,21 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
+import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
+import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
 import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
 
@@ -140,7 +146,25 @@ public class VWCameraAdjust extends ConstraintLayout {
 
     @OnClick({R.id.bt_change_object_distance})
     public void onChangeODRange(View v) {
+        DlgODRange dlg_od = new DlgODRange();
+        dlg_od.addDialogListener(new DlgOKOrNOBase.DialogResultListener() {
+            @Override
+            public void onDialogPositiveResult(DialogFragment dialogFragment) {
+                mODMin = dlg_od.getODMin();
+                mODMax = dlg_od.getODMax();
+                updateObjectDistanceRange();
 
+                EventBus.getDefault().post(
+                        new ObjectDistanceRangeChangeEvent(mODMin, mODMax));
+            }
+
+            @Override
+            public void onDialogNegativeResult(DialogFragment dialogFragment) {
+            }
+        });
+
+        dlg_od.show(((AppCompatActivity)getContext()).getSupportFragmentManager()
+                ,"select object distance");
     }
 
     /**
@@ -151,5 +175,7 @@ public class VWCameraAdjust extends ConstraintLayout {
         hm.put(TuneWheel.PARA_VAL_MIN, mODMin);
         hm.put(TuneWheel.PARA_VAL_MAX, mODMax);
         mTWODTuneWheel.adjustPara(hm);
+
+        mTVODVal.setText(mTWODTuneWheel.getCurValueTag());
     }
 }

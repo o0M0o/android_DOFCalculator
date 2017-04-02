@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindColor;
@@ -25,8 +26,10 @@ import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
+import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
 import wxm.dofcalculator.ui.extend.MeterView.MeterView;
 import wxm.dofcalculator.ui.extend.MeterView.MeterViewTag;
+import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 
 /**
  * extend view for Dof result ui
@@ -110,8 +113,22 @@ public class VWDof extends ConstraintLayout {
      * @param event     事件参数
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCameraSettingChangeEvent(CameraSettingChangeEvent event) {
+    public void onCameraSettingChange(CameraSettingChangeEvent event) {
         mCSCameraSetting = event;
+        updateDof();
+    }
+
+    /**
+     * camera setting变化处理器
+     * @param event     事件参数
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onObjectDistanceRangeChange(ObjectDistanceRangeChangeEvent event) {
+        HashMap<String, Object> hm = new HashMap<>();
+        hm.put(TuneWheel.PARA_VAL_MIN, event.getObjectDistanceMin());
+        hm.put(TuneWheel.PARA_VAL_MAX, event.getObjectDistanceMax());
+        mMVMeter.adjustPara(hm);
+
         updateDof();
     }
 
