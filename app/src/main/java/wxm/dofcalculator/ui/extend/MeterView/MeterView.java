@@ -194,8 +194,6 @@ public class MeterView extends View {
      */
     private void drawScaleLine(Canvas canvas) {
         class utility {
-            private int mTotalValue;
-
             private int mShortLineWidth = 2;
             private int mLongLineWidth = 4;
 
@@ -206,7 +204,10 @@ public class MeterView extends View {
             private float mSmallUnitVal;
 
             public utility()    {
-                mTotalValue = mAttrMaxValue - mAttrMinValue;
+                int mTotalValue = mAttrMaxValue - mAttrMinValue;
+                while (0 != mTotalValue % mAttrLongLineCount)   {
+                    mTotalValue++;
+                }
 
                 mBigWidthUnit = mVWWidth / mAttrLongLineCount;
                 mSmallWidthUnit = mBigWidthUnit / mAttrModeType;
@@ -240,17 +241,15 @@ public class MeterView extends View {
 
                 // for axis
                 float b_start = mVWHeight - DISPLAY_DENSITY * mAttrBaseLineBottomPadding;
-                float ln_long_s_y = b_start;
                 float ln_long_e_y = b_start
                             - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrLongLineHeight);
-                float ln_short_s_y = b_start;
                 float ln_short_e_y = b_start
                             - (int) DISPLAY_DENSITY * (mAttrBaseLineWidth + mAttrShortLineHeight);
                 float text_top_pos = ln_long_e_y - 8;
 
                 for(int i = 0; i <= mAttrLongLineCount; i++) {
                     float hot_x = RulerValueToXPosition(i, 0, 0);
-                    canvas.drawLine(hot_x, ln_long_s_y, hot_x, ln_long_e_y, LongLinePaint);
+                    canvas.drawLine(hot_x, b_start, hot_x, ln_long_e_y, LongLinePaint);
 
                     String tw_tag = mTTTranslator.translateTWTag(mAttrMinValue
                                                     + (int)(mBigUnitVal * i));
@@ -267,7 +266,7 @@ public class MeterView extends View {
 
                     for(int j = 1; j < mAttrModeType; j++)  {
                         float cur_x = RulerValueToXPosition(i, j, 0);
-                        canvas.drawLine(cur_x, ln_short_s_y, cur_x, ln_short_e_y, linePaint);
+                        canvas.drawLine(cur_x, b_start, cur_x, ln_short_e_y, linePaint);
                     }
                 }
             }
