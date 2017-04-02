@@ -7,18 +7,25 @@ import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
+import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
 
@@ -27,14 +34,27 @@ import wxm.dofcalculator.utility.ContextUtil;
  * Created by ookoo on 2017/3/24.
  */
 public class VWCameraAdjust extends ConstraintLayout {
-    protected TextView  mTVLAVal;
-    protected TuneWheel mTWLATuneWheel;
+    @BindView(R.id.tv_la_val)
+    TextView  mTVLAVal;
+    @BindView(R.id.tw_la_val)
+    TuneWheel mTWLATuneWheel;
 
-    protected TextView  mTVLFVal;
-    protected TuneWheel mTWLFTuneWheel;
+    @BindView(R.id.tv_lf_val)
+    TextView  mTVLFVal;
+    @BindView(R.id.tw_lf_val)
+    TuneWheel mTWLFTuneWheel;
 
-    protected TextView  mTVODVal;
-    protected TuneWheel mTWODTuneWheel;
+    @BindView(R.id.tv_od_val)
+    TextView  mTVODVal;
+    @BindView(R.id.tw_od_val)
+    TuneWheel mTWODTuneWheel;
+
+    /**
+     * 最小和最大物距
+     * 单位m
+     */
+    private int     mODMin = 0;
+    private int     mODMax = 100;
 
     private final static String[] LENS_APERTURE_ARR = {
             "F1.0", "F1.4", "F2.0", "F2.8", "F4.0",
@@ -75,11 +95,9 @@ public class VWCameraAdjust extends ConstraintLayout {
      */
     private void initUIComponent()  {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_camera_adjust, this);
+        ButterKnife.bind(this);
 
         // for lens aperture
-        mTVLAVal = UtilFun.cast_t(findViewById(R.id.tv_la_val));
-        mTWLATuneWheel = UtilFun.cast_t(findViewById(R.id.tw_la_val));
-
         mTWLATuneWheel.setValueChangeListener((value, valTag) -> {
             mTVLAVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
@@ -88,9 +106,6 @@ public class VWCameraAdjust extends ConstraintLayout {
         mTWLATuneWheel.setTranslateTag(val -> LENS_APERTURE_ARR[val]);
 
         // for lens focal
-        mTVLFVal = UtilFun.cast_t(findViewById(R.id.tv_lf_val));
-        mTWLFTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_lf_val));
-
         mTWLFTuneWheel.setValueChangeListener((value, valTag) -> {
             String tag = String.valueOf(value) + "mm";
 
@@ -116,12 +131,25 @@ public class VWCameraAdjust extends ConstraintLayout {
         }
 
         // for object distance
-        mTVODVal = UtilFun.cast_t(findViewById(R.id.tv_od_val));
-        mTWODTuneWheel = UtilFun.cast_t(findViewById(R.id.tw_od_val));
-
         mTWODTuneWheel.setValueChangeListener((value, valTag) -> {
             mTVODVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
+        updateObjectDistanceRange();
+    }
+
+    @OnClick({R.id.bt_change_object_distance})
+    public void onChangeODRange(View v) {
+
+    }
+
+    /**
+     * 设置物距最小，最大值
+     */
+    private void updateObjectDistanceRange()    {
+        HashMap<String, Object> hm = new HashMap<>();
+        hm.put(TuneWheel.PARA_VAL_MIN, mODMin);
+        hm.put(TuneWheel.PARA_VAL_MAX, mODMax);
+        mTWODTuneWheel.adjustPara(hm);
     }
 }

@@ -147,11 +147,6 @@ public class VWDof extends ConstraintLayout {
     private void initUIComponent()  {
         LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
         ButterKnife.bind(this);
-
-
-        mTVFrontDof = UtilFun.cast_t(findViewById(R.id.tv_front_dof));
-        mTVObjectDistance = UtilFun.cast_t(findViewById(R.id.tv_objecet_distance));
-        mTVBackDof = UtilFun.cast_t(findViewById(R.id.tv_back_dof));
     }
 
     /**

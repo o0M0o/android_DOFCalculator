@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="4dp">
 
+
     <!-- for lens focal -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cc_object_distance"
@@ -14,8 +15,8 @@
         android:background="@color/white"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tv_od_tag"
@@ -32,12 +33,12 @@
             android:id="@+id/tv_od_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="50m"
-            android:textColor="@color/turquoise"
+            android:textColor="#843900"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp" />
 
         <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
@@ -88,10 +89,10 @@
             android:id="@+id/tv_lf_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:textColor="#843900"
             android:text="50mm"
-            android:textColor="@color/turquoise"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_lf_tag"
             tools:layout_editor_absoluteX="0dp" />
@@ -145,10 +146,10 @@
             android:id="@+id/tv_la_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:textColor="#843900"
             android:text="F1.2"
-            android:textColor="@color/turquoise"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_la_tag"
             tools:layout_editor_absoluteX="0dp" />
@@ -172,5 +173,14 @@
             app:twTextSize="9"
             app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/bt_change_object_distance"
+        android:text="@string/bt_change_object_distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </android.support.constraint.ConstraintLayout>
