@@ -41,4 +41,7 @@
     <string name="sz_error">错误</string>
 
     <string name="sz_sure">确认</string>
+    <string name="bt_change_object_distance_step">修改物距调步值</string>
+    <string name="tag_od_meter">步值米</string>
+    <string name="tag_od_decimeter">步值分米</string>
 </resources>

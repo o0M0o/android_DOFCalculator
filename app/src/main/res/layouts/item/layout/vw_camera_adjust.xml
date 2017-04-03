@@ -173,13 +173,36 @@
             app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
 
-    <Button
-        android:id="@+id/bt_change_object_distance"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cc_od_para"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/bt_change_object_distance"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture" />
+        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture">
+
+        <ToggleButton
+            android:id="@+id/tb_ob_step"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/bt_change_object_distance"
+            android:checked="false"
+            android:textOff="@string/tag_od_meter"
+            android:textOn="@string/tag_od_decimeter"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/bt_change_object_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_change_object_distance"
+            app:layout_constraintStart_toEndOf="@id/tb_ob_step"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>

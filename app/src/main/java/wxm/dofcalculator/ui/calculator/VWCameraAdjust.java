@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,6 +20,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +56,9 @@ public class VWCameraAdjust extends ConstraintLayout {
     TextView  mTVODVal;
     @BindView(R.id.tw_od_val)
     TuneWheel mTWODTuneWheel;
+
+    @BindView(R.id.tb_ob_step)
+    ToggleButton    mTBODStep;
 
     /**
      * 最小和最大物距
@@ -168,12 +173,28 @@ public class VWCameraAdjust extends ConstraintLayout {
     }
 
     /**
+     *  切换object distance 步进值
+     * @param v     para
+     */
+    @OnClick({R.id.tb_ob_step})
+    public void onChangeODStep(View v) {
+        updateObjectDistanceRange();
+    }
+
+    /**
      * 设置物距最小，最大值
      */
     private void updateObjectDistanceRange()    {
+        boolean b_decimeter = mTBODStep.isChecked();
+
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put(TuneWheel.PARA_VAL_MIN, mODMin);
-        hm.put(TuneWheel.PARA_VAL_MAX, mODMax);
+        hm.put(TuneWheel.PARA_VAL_MIN, b_decimeter ? mODMin * 10 : mODMin);
+        hm.put(TuneWheel.PARA_VAL_MAX, b_decimeter ? mODMax * 10 : mODMax);
+        mTWODTuneWheel.setTranslateTag(b_decimeter ?
+                (TuneWheel.TagTranslate) val ->
+                        String.format(Locale.CHINA, "%d.%dm", val / 10, val % 10)
+                : (TuneWheel.TagTranslate) val ->
+                        String.format(Locale.CHINA, "%dm", val));
         mTWODTuneWheel.adjustPara(hm);
 
         mTVODVal.setText(mTWODTuneWheel.getCurValueTag());
