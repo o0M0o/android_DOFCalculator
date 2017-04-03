@@ -36,7 +36,7 @@
             android:textColor="#843900"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_od_tag"
             app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
             tools:layout_editor_absoluteX="0dp" />
 
@@ -173,6 +173,7 @@
             app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
 
+    <!--
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cc_od_para"
         android:layout_width="0dp"
@@ -186,14 +187,14 @@
 
         <ToggleButton
             android:id="@+id/tb_ob_step"
-            android:layout_width="96dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bt_change_object_distance"
             android:checked="false"
             android:textOff="@string/tag_od_meter"
             android:textOn="@string/tag_od_decimeter"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/bt_change_object_distance"
@@ -203,6 +204,5 @@
             app:layout_constraintStart_toEndOf="@id/tb_ob_step"
             app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
-
+    -->
 </android.support.constraint.ConstraintLayout>

@@ -27,7 +27,7 @@
 
         <activity
             android:name=".ui.calculator.ACCalculator"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/label_calculator"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

@@ -225,7 +225,8 @@ public class MeterView extends View {
 
                     int big_unit = (mAttrMaxValue - mAttrMinValue) / mAttrLongLineCount;
                     mAttrMinValue = (int)n_min - big_unit;
-                    mAttrMaxValue = (int)n_max + big_unit;
+                    mAttrMaxValue = Math.max(mAttrLongLineCount + mAttrMinValue,
+                                    (int)n_max + big_unit);
                 }
 
 
