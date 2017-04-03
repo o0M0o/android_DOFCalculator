@@ -193,6 +193,7 @@ public class VWCameraAdjust extends ConstraintLayout {
         mTWODTuneWheel.setTranslateTag(b_decimeter ?
                 (TuneWheel.TagTranslate) val ->
                         String.format(Locale.CHINA, "%d.%dm", val / 10, val % 10)
+
                 : (TuneWheel.TagTranslate) val ->
                         String.format(Locale.CHINA, "%dm", val));
         mTWODTuneWheel.adjustPara(hm);
