@@ -244,7 +244,7 @@ public class TuneWheel extends View {
              * @param s_y        起始Y坐标
              * @param e_y        结束Y坐标
              */
-            private void drawMiddleLine(Canvas canvas, int s_y, int e_y) {
+            private void drawMiddleLine(Canvas canvas, float s_y, float e_y) {
                 int indexWidth = 12;
 
                 Paint redPaint = new Paint();
@@ -273,14 +273,14 @@ public class TuneWheel extends View {
         float xPosition;
         float textWidth = Layout.getDesiredWidth("0", tp_normal);
 
-        int text_top_pos = getTop() + getPaddingTop() + 8;
-        int text_bottom_pos = getHeight() - (int) textWidth;
+        float text_top_pos = getTop() + getPaddingTop() + DISPLAY_DENSITY * 6;
+        float text_bottom_pos = getHeight() - textWidth - DISPLAY_DENSITY * 1;
 
-        int left_h = getHeight() / 2;
-        int ln_long_s_y = left_h - (int) DISPLAY_DENSITY * mAttrMaxHeight / 2;
-        int ln_long_e_y = left_h + (int) DISPLAY_DENSITY * mAttrMaxHeight / 2;
-        int ln_short_s_y = left_h - (int) DISPLAY_DENSITY * mAttrMinHeight / 2;
-        int ln_short_e_y = left_h + (int) DISPLAY_DENSITY * mAttrMinHeight / 2;
+        float left_h = getHeight() / 2;
+        float ln_long_s_y = left_h - DISPLAY_DENSITY * mAttrMaxHeight / 2;
+        float ln_long_e_y = left_h + DISPLAY_DENSITY * mAttrMaxHeight / 2;
+        float ln_short_s_y = left_h - DISPLAY_DENSITY * mAttrMinHeight / 2;
+        float ln_short_e_y = left_h + DISPLAY_DENSITY * mAttrMinHeight / 2;
 
         for (int i = 0; drawCount <= 4 * width; i++) {
             xPosition = (width / 2 - mMove) + i * mAttrLineDivider * DISPLAY_DENSITY;

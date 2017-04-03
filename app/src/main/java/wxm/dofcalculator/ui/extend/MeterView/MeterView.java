@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Map;
 
 import butterknife.BindString;
@@ -203,13 +205,37 @@ public class MeterView extends View {
             private float mBigUnitVal;
             private float mSmallUnitVal;
 
+            private int   PAD_START;
+            private int   PAD_END;
+
             public utility()    {
+                PAD_START = getPaddingStart();
+                PAD_END   = getPaddingEnd();
+
+                // 根据游标调整有效值范围
+                // 设定显示范围为 20 ~ 80%
+                if(!mALTags.isEmpty()) {
+                    LinkedList<Float> ls_val = new LinkedList<>();
+                    for (MeterViewTag mt : mALTags) {
+                        ls_val.add(mt.mTagVal);
+                    }
+
+                    float n_min = Collections.min(ls_val);
+                    float n_max = Collections.max(ls_val);
+
+                    int big_unit = (mAttrMaxValue - mAttrMinValue) / mAttrLongLineCount;
+                    mAttrMinValue = (int)n_min - big_unit;
+                    mAttrMaxValue = (int)n_max + big_unit;
+                }
+
+
+                // 获得显示值
                 int mTotalValue = mAttrMaxValue - mAttrMinValue;
                 while (0 != mTotalValue % mAttrLongLineCount)   {
                     mTotalValue++;
                 }
 
-                mBigWidthUnit = mVWWidth / mAttrLongLineCount;
+                mBigWidthUnit = (mVWWidth - PAD_START - PAD_END) / mAttrLongLineCount;
                 mSmallWidthUnit = mBigWidthUnit / mAttrModeType;
 
                 mBigUnitVal = mTotalValue / mAttrLongLineCount;
@@ -222,7 +248,7 @@ public class MeterView extends View {
                 basePaint.setColor(TEXT_COLOR_NORMAL);
 
                 float y = mVWHeight - DISPLAY_DENSITY * mAttrBaseLineBottomPadding;
-                canvas.drawLine(0, y, mVWWidth, y, basePaint);
+                canvas.drawLine(getPaddingStart(), y, mVWWidth - getPaddingEnd(), y, basePaint);
             }
 
             private void drawLines() {
@@ -255,7 +281,7 @@ public class MeterView extends View {
                                                     + (int)(mBigUnitVal * i));
                     float x_start;
                     if(0 == i)  {
-                        x_start = 0;
+                        x_start = PAD_START;
                     } else if (mAttrLongLineCount == i)   {
                         x_start = hot_x - tw_tag.length() * DISPLAY_TEXT_WIDH - 4;
                     } else  {
@@ -280,24 +306,22 @@ public class MeterView extends View {
 
                 TextPaint tp_normal = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
-                for(MeterViewTag mt : mALTags)  {
-                    if(mt.mTagVal >= mAttrMinValue && mt.mTagVal <= mAttrMaxValue) {
-                        float x = MeterValueToXPosition(mt.mTagVal);
+                for (MeterViewTag mt : mALTags) {
+                    float x = MeterValueToXPosition(mt.mTagVal);
 
-                        linePaint.setColor(mt.mCRTagColor);
-                        Path p = new Path();
-                        p.moveTo(x, ln_long_s_y);
-                        p.lineTo(x - 8, ln_long_e_y);
-                        p.lineTo(x + 8, ln_long_e_y);
-                        p.lineTo(x, ln_long_s_y);
-                        canvas.drawPath(p, linePaint);
+                    linePaint.setColor(mt.mCRTagColor);
+                    Path p = new Path();
+                    p.moveTo(x, ln_long_s_y);
+                    p.lineTo(x - 8, ln_long_e_y);
+                    p.lineTo(x + 8, ln_long_e_y);
+                    p.lineTo(x, ln_long_s_y);
+                    canvas.drawPath(p, linePaint);
 
-                        tp_normal.setColor(mt.mCRTagColor);
-                        tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
-                        canvas.drawText(mt.mSZTagName,
-                                x - mt.mSZTagName.length() * DISPLAY_TEXT_WIDH / 2,
-                                text_top_pos, tp_normal);
-                    }
+                    tp_normal.setColor(mt.mCRTagColor);
+                    tp_normal.setTextSize(mAttrTextSize * DISPLAY_DENSITY);
+                    canvas.drawText(mt.mSZTagName,
+                            x - mt.mSZTagName.length() * DISPLAY_TEXT_WIDH / 2,
+                            text_top_pos, tp_normal);
                 }
             }
 
@@ -306,7 +330,7 @@ public class MeterView extends View {
              * @param val       值
              * @return          标尺X坐标
              */
-            private float MeterValueToXPosition(int val)    {
+            private float MeterValueToXPosition(float val)    {
                 val -= mAttrMinValue;
                 int big = (int)(val / mBigUnitVal);
                 int small = (int)(val % mBigUnitVal / mSmallUnitVal);
@@ -324,10 +348,10 @@ public class MeterView extends View {
              */
             private float RulerValueToXPosition(int big, int small, int left) {
                 float x_big = 0 == big ?
-                                mLongLineWidth / 2
+                                mLongLineWidth / 2 + PAD_START
                                 : (mAttrLongLineCount == big ?
-                                        mVWWidth - mLongLineWidth / 2
-                                        : mBigWidthUnit * big - mLongLineWidth / 2 );
+                                        mVWWidth - mLongLineWidth / 2 - PAD_END
+                                        : PAD_START + mBigWidthUnit * big - mLongLineWidth / 2 );
 
                 float x_small = mSmallWidthUnit * small;
                 float x_left = mSmallWidthUnit * left / mSmallUnitVal;

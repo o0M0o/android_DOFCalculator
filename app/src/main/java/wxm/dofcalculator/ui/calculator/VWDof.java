@@ -50,6 +50,9 @@ public class VWDof extends ConstraintLayout {
     @BindView(R.id.tv_front_dof)
     TextView      mTVFrontDof;
 
+    @BindView(R.id.tv_drive)
+    TextView      mTVDrive;
+
     @BindView(R.id.tv_objecet_distance)
     TextView      mTVObjectDistance;
 
@@ -118,21 +121,6 @@ public class VWDof extends ConstraintLayout {
         updateDof();
     }
 
-    /**
-     * camera setting变化处理器
-     * @param event     事件参数
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onObjectDistanceRangeChange(ObjectDistanceRangeChangeEvent event) {
-        HashMap<String, Object> hm = new HashMap<>();
-        hm.put(TuneWheel.PARA_VAL_MIN, event.getObjectDistanceMin());
-        hm.put(TuneWheel.PARA_VAL_MAX, event.getObjectDistanceMax());
-        mMVMeter.adjustPara(hm);
-
-        updateDof();
-    }
-
-
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -176,25 +164,43 @@ public class VWDof extends ConstraintLayout {
         }
 
         class utility   {
+            /**
+             * 更新dof信息
+             */
+            void updateDofInfo()    {
+                mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm",
+                                        mDENOFResult.getFrontDof() / 1000));
+                mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm",
+                                        mDENOFResult.getObjectDistance() / 1000));
+                mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm",
+                                        mDENOFResult.getBackDof() / 1000));
+
+                mTVDrive.setText(mCSCameraSetting.getDevice().getCamera().getFilmName());
+            }
+
+
+            /**
+             * 添加游标
+             */
             void updateDofView()    {
                 mMVMeter.clearValueTag();
 
                 MeterViewTag mt_f = new MeterViewTag();
                 mt_f.mSZTagName = mSZTagFrontPoint;
                 mt_f.mCRTagColor = mCRDOFFront;
-                mt_f.mTagVal = (int)mDENOFResult.getFrontDof();
+                mt_f.mTagVal = mDENOFResult.getFrontDof() / 1000;
                 mMVMeter.addValueTag(mt_f);
 
                 MeterViewTag mt_od = new MeterViewTag();
                 mt_od.mSZTagName = mSZTagObjectDistance;
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
-                mt_od.mTagVal = (int)mDENOFResult.getObjectDistance();
+                mt_od.mTagVal = mDENOFResult.getObjectDistance() / 1000;
                 mMVMeter.addValueTag(mt_od);
 
                 MeterViewTag mt_b = new MeterViewTag();
                 mt_b.mSZTagName = mSZTagBackPoint;
                 mt_b.mCRTagColor = mCRDOFBack;
-                mt_b.mTagVal = (int)mDENOFResult.getBackDof();
+                mt_b.mTagVal = mDENOFResult.getBackDof() / 1000;
                 mMVMeter.addValueTag(mt_b);
             }
         }
@@ -232,17 +238,12 @@ public class VWDof extends ConstraintLayout {
             dofFar = f.divide(b, RoundingMode.CEILING);
         }
 
-        // change to unit m
-        dofNear = dofNear.divide(new BigDecimal(1000), RoundingMode.CEILING);
-        dofFar = dofFar.divide(new BigDecimal(1000), RoundingMode.CEILING);
-
-        mDENOFResult = new DofChangedEvent(dofNear.floatValue(), f_od / 1000, dofFar.floatValue());
-        mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm", dofNear.floatValue()));
-        mTVObjectDistance.setText(String.format(Locale.CHINA, "%.02fm", f_od / 1000));
-        mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm", dofFar.floatValue()));
+        float dof_n = Math.min(dofNear.floatValue(), f_od);
+        float dof_f = Math.max(dofFar.floatValue(), f_od);
+        mDENOFResult = new DofChangedEvent(dof_n, f_od, dof_f);
 
         // updat ui
-        //invalidate();
+        helper.updateDofInfo();
         helper.updateDofView();
     }
 
@@ -253,73 +254,4 @@ public class VWDof extends ConstraintLayout {
     private void setDofShow(int v) {
         mCLDofInfo.setVisibility(v);
     }
-
-    /**
-     * 触摸监听类
-    private class TouchListener implements OnTouchListener {
-        int lastX;
-        int lastY;
-        int screenWidth;
-        int screenHeight;
-
-        TouchListener() {
-            DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-            screenWidth = dm.widthPixels;
-            screenHeight = dm.heightPixels;
-            Log.d(LOG_TAG, "screen width =" + screenWidth + ",screen height="
-                    + screenHeight);
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            Log.d(LOG_TAG, "TouchListener -- onTouch");
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    lastX = (int) event.getRawX();
-                    lastY = (int) event.getRawY();
-                    Log.d(LOG_TAG, "down x=" + lastX + ", y=" + lastY);
-                    break;
-
-                case MotionEvent.ACTION_MOVE:
-                    int dx = (int) event.getRawX() - lastX;
-                    int dy = (int) event.getRawY() - lastY;
-                    Log.d(LOG_TAG, "move dx=" + dx + ",  dy=" + dy);
-
-                    int left = v.getLeft() + dx;
-                    int top = v.getTop();
-                    int right = v.getRight() + dx;
-                    int bottom = v.getBottom();
-                    Log.d(LOG_TAG, "view  left=" + left + ", top=" + top + ", right="
-                            + right + ",bottom=" + bottom);
-
-                    // set bound
-                    if (left < 0) {
-                        left = 0;
-                        right = left + v.getWidth();
-                    }
-                    if (right > screenWidth) {
-                        right = screenWidth;
-                        left = right - v.getWidth();
-                    }
-
-                    v.layout(left, top, right, top + v.getHeight());
-
-                    lastX = (int) event.getRawX();
-                    lastY = (int) event.getRawY();
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    lastX = (int) event.getRawX();
-                    lastY = (int) event.getRawY();
-                    Log.d(LOG_TAG, "up x=" + lastX + ", y=" + lastY);
-
-                    int mid_x = v.getWidth() / 2 + v.getLeft();
-                    float progress = (float)mid_x / (float)screenWidth;
-                    EventBus.getDefault().post(new ObjectDistanceChangedEvent(progress * 100));
-                    break;
-            }
-            return true;
-        }
-    }
-     */
 }

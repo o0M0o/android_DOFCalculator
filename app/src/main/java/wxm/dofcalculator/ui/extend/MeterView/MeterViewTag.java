@@ -8,6 +8,6 @@ public class MeterViewTag {
     public String   mSZTagName;
     public int      mCRTagColor;
 
-    public int      mTagVal;
+    public float    mTagVal;
     public int      mTagFontSize;
 }

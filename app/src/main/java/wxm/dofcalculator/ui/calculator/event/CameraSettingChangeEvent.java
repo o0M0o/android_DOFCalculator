@@ -2,24 +2,26 @@ package wxm.dofcalculator.ui.calculator.event;
 
 import java.math.BigDecimal;
 
+import wxm.dofcalculator.define.DeviceItem;
+
 /**
  * 相机设定调整事件
  * Created by ookoo on 2017/3/22.
  */
 public class CameraSettingChangeEvent {
-    private BigDecimal  mBDCOC;
     private int         mLFLensFocal;
     private BigDecimal  mBDlensAperture;
 
     private int         mODObjectDistance;
+    private DeviceItem  mDIItem;
 
 
-    public CameraSettingChangeEvent(BigDecimal pa, int lf, BigDecimal la, int od)   {
-        mBDCOC = pa;
+    public CameraSettingChangeEvent(int lf, BigDecimal la, int od, DeviceItem di)   {
         mLFLensFocal = lf;
         mBDlensAperture = la;
 
         mODObjectDistance = od;
+        mDIItem = di;
     }
 
     /**
@@ -27,7 +29,7 @@ public class CameraSettingChangeEvent {
      * @return      弥散直径
      */
     public BigDecimal getCOC()    {
-        return mBDCOC;
+        return mDIItem.getCamera().getCameraCOC();
     }
 
     /**
@@ -53,4 +55,13 @@ public class CameraSettingChangeEvent {
     public int getObjectDistance()   {
         return mODObjectDistance;
     }
+
+    /**
+     * 获取当前摄影设备
+     * @return      设备
+     */
+    public DeviceItem getDevice()   {
+        return mDIItem;
+    }
+
 }

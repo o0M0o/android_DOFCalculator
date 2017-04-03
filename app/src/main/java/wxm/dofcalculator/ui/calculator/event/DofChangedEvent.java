@@ -16,7 +16,7 @@ public class DofChangedEvent {
     }
 
     /**
-     * 得到前景深
+     * 得到前景深，单位mm
      * @return      前景深
      */
     public float getFrontDof()    {
@@ -24,7 +24,7 @@ public class DofChangedEvent {
     }
 
     /**
-     * 得到后景深
+     * 得到后景深，单位mm
      * @return      后景深
      */
     public float getBackDof()    {
@@ -32,7 +32,7 @@ public class DofChangedEvent {
     }
 
     /**
-     * 得到物距
+     * 得到物距，单位mm
      * @return      物距
      */
     public float getObjectDistance()    {

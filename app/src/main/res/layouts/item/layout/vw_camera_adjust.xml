@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="4dp">
 
-
-    <!-- for lens focal -->
+    <!-- for object distance -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cc_object_distance"
         android:layout_width="0dp"
@@ -15,8 +14,8 @@
         android:background="@color/white"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_od_tag"
@@ -36,28 +35,28 @@
             android:text="50m"
             android:textColor="#843900"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp" />
 
         <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:twModeType="5"
-            app:twPostUnit="m"
             app:twLineDivider="16"
             app:twMaxHeight="16"
             app:twMaxValue="100"
             app:twMinHeight="8"
             app:twMinValue="0"
+            app:twModeType="5"
+            app:twPostUnit="m"
             app:twTextSize="9"
             app:twValue="50" />
     </android.support.constraint.ConstraintLayout>
@@ -89,8 +88,8 @@
             android:id="@+id/tv_lf_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#843900"
             android:text="50mm"
+            android:textColor="#843900"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,20 +99,20 @@
         <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_lf_val"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:twModeType="5"
-            app:twPostUnit="mm"
             app:twLineDivider="16"
             app:twMaxHeight="16"
             app:twMaxValue="135"
             app:twMinHeight="6"
             app:twMinValue="50"
+            app:twModeType="5"
+            app:twPostUnit="mm"
             app:twTextSize="9"
             app:twValue="50" />
     </android.support.constraint.ConstraintLayout>
@@ -146,8 +145,8 @@
             android:id="@+id/tv_la_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#843900"
             android:text="F1.2"
+            android:textColor="#843900"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +156,7 @@
         <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_la_val"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginStart="64dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -165,22 +164,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:twLineDivider="24"
-            app:twModeType="1"
             app:twMaxHeight="16"
             app:twMaxValue="12"
             app:twMinHeight="8"
             app:twMinValue="0"
+            app:twModeType="1"
             app:twTextSize="9"
             app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/bt_change_object_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/bt_change_object_distance"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture" />
 
 
 </android.support.constraint.ConstraintLayout>

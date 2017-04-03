@@ -5,96 +5,29 @@
     android:layout_height="wrap_content"
     android:padding="4dp">
 
-    <android.support.constraint.ConstraintLayout
+    <include
         android:id="@+id/cl_dof_info"
+        layout="@layout/vwit_dof_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- for front dof -->
-        <TextView
-            android:id="@+id/tv_front_dof_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="前景深"
-            android:textColor="@color/text_fit"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_front_dof"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="5m"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_front_dof_tag"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- for object distance -->
-        <TextView
-            android:id="@+id/tv_objecet_distance_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:text="物距"
-            android:textColor="@color/text_fit"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_objecet_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="7m"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_objecet_distance_tag"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- for back dof -->
-        <TextView
-            android:id="@+id/tv_back_dof_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="240dp"
-            android:text="后景深"
-            android:textColor="@color/text_fit"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_back_dof"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="9m"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_back_dof_tag"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <wxm.dofcalculator.ui.extend.MeterView.MeterView
         android:id="@+id/evw_meter"
-        android:background="@color/white"
+        android:layout_marginTop="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:layout_width="0dp"
-        android:layout_height="52dp"
-        app:mvModeType="5"
-        app:mvLongLineCount="5"
-        app:mvPostUnit="m"
-        app:mvTextSize="10"
-        app:layout_constraintTop_toBottomOf="@+id/cl_dof_info"
+        android:layout_height="56dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_dof_info"
+        app:mvBaseLineBottomPadding="28"
+        app:mvLongLineCount="5"
+        app:mvModeType="5"
+        app:mvPostUnit="m"
+        app:mvTextSize="10" />
 </android.support.constraint.ConstraintLayout>
