@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SmallButton">
+        <attr name="sbTextColor" format="color" />
+        <attr name="sbTextSize" format="integer" />
+
+        <attr name="sbTextOn" format="string" />
+        <attr name="sbTextOff" format="string" />
+
+        <attr name="sbIsOn" format="boolean" />
+
+        <attr name="sbBackGroundOn" format="reference" />
+        <attr name="sbBackGroundOff" format="reference" />
+    </declare-styleable>
+</resources>

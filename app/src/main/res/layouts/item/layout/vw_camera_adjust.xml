@@ -17,14 +17,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
+            android:id="@+id/sb_ob_step"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/sb_ob_range"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sbIsOn="true"
+            app:sbTextOff="米"
+            app:sbTextOn="分米" />
+
+        <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
+            android:id="@+id/sb_ob_range"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sb_ob_step"
+            app:sbBackGroundOn="@drawable/small_button_off_shape"
+            app:sbBackGroundOff="@drawable/small_button_off_shape"
+            app:sbTextOff="物距"
+            app:sbTextOn="物距" />
+
         <TextView
             android:id="@+id/tv_od_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="@string/tv_object_distance"
             android:textColor="@color/text_fit"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sb_ob_step"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
 
@@ -44,7 +68,7 @@
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="104dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -172,37 +196,4 @@
             app:twTextSize="9"
             app:twValue="1" />
     </android.support.constraint.ConstraintLayout>
-
-    <!--
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cc_od_para"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:padding="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cc_lens_aperture">
-
-        <ToggleButton
-            android:id="@+id/tb_ob_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bt_change_object_distance"
-            android:checked="false"
-            android:textOff="@string/tag_od_meter"
-            android:textOn="@string/tag_od_decimeter"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/bt_change_object_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bt_change_object_distance"
-            app:layout_constraintStart_toEndOf="@id/tb_ob_step"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-    -->
 </android.support.constraint.ConstraintLayout>

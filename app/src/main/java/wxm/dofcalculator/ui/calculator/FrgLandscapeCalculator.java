@@ -60,8 +60,8 @@ public class FrgLandscapeCalculator extends FrgUtilityBase {
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgPortraitCalculator";
-        View rootView = layoutInflater.inflate(R.layout.frg_portrait_calculator, viewGroup, false);
+        LOG_TAG = "FrgLandscapeCalculator";
+        View rootView = layoutInflater.inflate(R.layout.frg_landscape_calculator, viewGroup, false);
         ButterKnife.bind(this, rootView);
 
         int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
@@ -71,7 +71,6 @@ public class FrgLandscapeCalculator extends FrgUtilityBase {
 
         if(null != mDICurDevice)    {
             LensItem li = mDICurDevice.getLens();
-            initLensFocalTMap(li.getMinFocal(), li.getMaxFocal());
         }
         return rootView;
     }
@@ -98,23 +97,5 @@ public class FrgLandscapeCalculator extends FrgUtilityBase {
         BigDecimal aperture = new BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("F") + 1));
 
         EventBus.getDefault().post(new CameraSettingChangeEvent(lf_hot, aperture, od, mDICurDevice));
-    }
-
-
-    /**
-     * 初始化镜头焦距步进值
-     * @param minFocal      最小焦距
-     * @param maxFocal      最大焦距
-     */
-    private void initLensFocalTMap(int minFocal, int maxFocal)  {
-        /*
-        mNMLensFocal.clear();
-        int step_val = 10;
-        int step_count = 10;
-        int step_focal = (maxFocal - minFocal)/ step_count;
-        for(int i = 0; i < step_count; ++i) {
-            mNMLensFocal.put(step_val * i, Integer.toString(minFocal + step_focal * i) + "mm");
-        }
-        */
     }
 }

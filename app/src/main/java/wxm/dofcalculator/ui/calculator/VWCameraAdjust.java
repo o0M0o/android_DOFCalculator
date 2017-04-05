@@ -34,6 +34,7 @@ import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
+import wxm.dofcalculator.ui.extend.SmallButton.SmallButton;
 import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
 
@@ -57,8 +58,8 @@ public class VWCameraAdjust extends ConstraintLayout {
     @BindView(R.id.tw_od_val)
     TuneWheel mTWODTuneWheel;
 
-    @BindView(R.id.tb_ob_step)
-    ToggleButton    mTBODStep;
+    @BindView(R.id.sb_ob_step)
+    SmallButton mSBODStep;
 
     /**
      * 最小和最大物距
@@ -146,10 +147,10 @@ public class VWCameraAdjust extends ConstraintLayout {
             mTVODVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
-        updateObjectDistanceRange();
+        updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
     }
 
-    @OnClick({R.id.bt_change_object_distance})
+    @OnClick({R.id.sb_ob_range})
     public void onChangeODRange(View v) {
         DlgODRange dlg_od = new DlgODRange();
         dlg_od.addDialogListener(new DlgOKOrNOBase.DialogResultListener() {
@@ -157,7 +158,7 @@ public class VWCameraAdjust extends ConstraintLayout {
             public void onDialogPositiveResult(DialogFragment dialogFragment) {
                 mODMin = dlg_od.getODMin();
                 mODMax = dlg_od.getODMax();
-                updateObjectDistanceRange();
+                updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
 
                 EventBus.getDefault().post(
                         new ObjectDistanceRangeChangeEvent(mODMin, mODMax));
@@ -176,21 +177,19 @@ public class VWCameraAdjust extends ConstraintLayout {
      *  切换object distance 步进值
      * @param v     para
      */
-    @OnClick({R.id.tb_ob_step})
+    @OnClick({R.id.sb_ob_step})
     public void onChangeODStep(View v) {
-        updateObjectDistanceRange();
+        updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
     }
 
     /**
      * 设置物距最小，最大值
      */
-    private void updateObjectDistanceRange()    {
-        boolean b_decimeter = mTBODStep.isChecked();
-
+    private void updateObjectDistanceRange(boolean decimeter)    {
         HashMap<String, Object> hm = new HashMap<>();
-        hm.put(TuneWheel.PARA_VAL_MIN, b_decimeter ? mODMin * 10 : mODMin);
-        hm.put(TuneWheel.PARA_VAL_MAX, b_decimeter ? mODMax * 10 : mODMax);
-        mTWODTuneWheel.setTranslateTag(b_decimeter ?
+        hm.put(TuneWheel.PARA_VAL_MIN, decimeter ? mODMin * 10 : mODMin);
+        hm.put(TuneWheel.PARA_VAL_MAX, decimeter ? mODMax * 10 : mODMax);
+        mTWODTuneWheel.setTranslateTag(decimeter ?
                 (TuneWheel.TagTranslate) val ->
                         String.format(Locale.CHINA, "%d.%dm", val / 10, val % 10)
 
