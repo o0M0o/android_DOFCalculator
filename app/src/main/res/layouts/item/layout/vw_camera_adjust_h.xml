@@ -6,11 +6,12 @@
     android:layout_height="wrap_content"
     android:padding="4dp">
 
-    <!-- for small button -->
+    <!-- for object distance -->
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cc_small_button"
+        android:id="@+id/cc_object_distance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:background="@color/white"
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +22,7 @@
             android:id="@+id/sb_ob_step"
             android:layout_width="52dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/sb_ob_range"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:sbIsOn="true"
@@ -34,28 +35,14 @@
             android:layout_width="52dp"
             android:padding="4dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            app:layout_constraintTop_toBottomOf="@id/sb_ob_step"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/sb_ob_step"
-            app:layout_constraintTop_toTopOf="parent"
             app:sbBackGroundOff="@drawable/small_button_off_shape"
             app:sbBackGroundOn="@drawable/small_button_off_shape"
             app:sbTextOff="物距"
             app:sbTextOn="物距" />
-    </android.support.constraint.ConstraintLayout>
 
-
-    <!-- for object distance -->
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cc_object_distance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:background="@color/white"
-        android:padding="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cc_small_button">
 
         <TextView
             android:id="@+id/tv_od_tag"
@@ -64,6 +51,7 @@
             android:text="@string/tv_object_distance"
             android:textColor="@color/text_fit"
             android:textSize="20sp"
+            android:layout_marginStart="68dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
@@ -84,7 +72,7 @@
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="120dp"
             android:background="@drawable/bg_wheel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

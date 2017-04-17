@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/cl_dof_info"
-        layout="@layout/vwit_dof_info"
+        layout="@layout/vwit_dof_info_h"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,7 +16,7 @@
 
     <wxm.dofcalculator.ui.extend.MeterView.MeterView
         android:id="@+id/evw_meter"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="1dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:layout_width="0dp"

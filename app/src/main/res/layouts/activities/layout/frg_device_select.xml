@@ -4,45 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="2dp"
-    android:paddingBottom="2dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
     android:background="@color/aliceblue"
+    android:paddingBottom="2dp"
+    android:paddingEnd="4dp"
+    android:paddingStart="4dp"
+    android:paddingTop="2dp"
     tools:context="wxm.dofcalculator.ui.device.ACDevice">
 
     <ListView
         android:id="@+id/lv_device"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bt_sure"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_sure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/bt_sure"
-        android:text="@string/hint_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lv_device"
+        android:background="@drawable/bt_shape"
+        android:text="@string/hint_sure"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lv_device" />
 
     <Button
         android:id="@+id/bt_delete"
-        android:text="@string/hint_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintEnd_toStartOf="@id/bt_sure"
-        app:layout_constraintTop_toBottomOf="@id/lv_device"
+        android:background="@drawable/bt_shape"
+        android:text="@string/hint_delete"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        app:layout_constraintEnd_toStartOf="@id/bt_sure"
+        app:layout_constraintTop_toBottomOf="@id/lv_device" />
 
 </android.support.constraint.ConstraintLayout>

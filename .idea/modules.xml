@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndriodUtillib/AndriodUtillib.iml" filepath="$PROJECT_DIR$/AndriodUtillib/AndriodUtillib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DofCalculator.iml" filepath="$PROJECT_DIR$/DofCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DOFCalculator.iml" filepath="$PROJECT_DIR$/DOFCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/andriod_dofcalculator.iml" filepath="$PROJECT_DIR$/andriod_dofcalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

@@ -3,7 +3,6 @@ package wxm.dofcalculator.ui.calculator;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import cn.wxm.andriodutillib.ExActivity.BaseAppCompatActivity;
 import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
@@ -37,8 +36,8 @@ public class ACCalculator extends BaseAppCompatActivity {
         if(GlobalDef.INT_INVAILED_ID == d_id)
             return;
 
-        mFGPortraitHolder = new FrgPortraitCalculator();
-        mFGLandscapeHolder = new FrgLandscapeCalculator();
+        mFGPortraitHolder = new FrgCalculatorPortrait();
+        mFGLandscapeHolder = new FrgCalculatorLandscape();
         Bundle arg = new Bundle();
         arg.putInt(KEY_DEVICE_ID, d_id);
         mFGLandscapeHolder.setArguments(arg);
@@ -55,12 +54,8 @@ public class ACCalculator extends BaseAppCompatActivity {
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-
             swapFrg(mFGLandscapeHolder);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-
             swapFrg(mFGPortraitHolder);
         }
     }

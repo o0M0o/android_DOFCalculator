@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="4dp">
 
     <!-- for drive info -->
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="设备"
         android:textColor="@color/text_fit"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,11 +21,12 @@
         android:id="@+id/tv_drive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="80dp"
         android:text="APS-C"
+        android:textColor="#003a6c"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_drive_tag"
-        app:layout_constraintStart_toEndOf="@id/tv_drive_tag"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_drive_tag" />
 
     <!-- for front dof -->
@@ -33,11 +34,10 @@
         android:id="@+id/tv_front_dof_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="前景深"
+        android:layout_marginTop="2dp"
+        android:text="前点位置"
         android:textColor="@color/text_fit"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_drive_tag" />
 
@@ -45,11 +45,12 @@
         android:id="@+id/tv_front_dof"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="80dp"
         android:text="5m"
+        android:textColor="#f05b72"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_front_dof_tag"
-        app:layout_constraintStart_toEndOf="@id/tv_front_dof_tag"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_front_dof_tag" />
 
     <!-- for object distance -->
@@ -57,22 +58,22 @@
         android:id="@+id/tv_objecet_distance_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
         android:text="物距"
         android:textColor="@color/text_fit"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_front_dof_tag" />
+        app:layout_constraintTop_toBottomOf="@id/tv_front_dof_tag" />
 
     <TextView
         android:id="@+id/tv_objecet_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="80dp"
         android:text="7m"
+        android:textColor="#f05b72"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_objecet_distance_tag"
-        app:layout_constraintStart_toEndOf="@id/tv_objecet_distance_tag"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_objecet_distance_tag" />
 
     <!-- for back dof -->
@@ -80,24 +81,22 @@
         android:id="@+id/tv_back_dof_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="240dp"
-        android:text="后景深"
+        android:text="后点位置"
         android:textColor="@color/text_fit"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_front_dof_tag" />
+        app:layout_constraintTop_toBottomOf="@id/tv_objecet_distance_tag" />
 
     <TextView
         android:id="@+id/tv_back_dof"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="80dp"
         android:text="9m"
         android:textSize="12sp"
+        android:textColor="#f05b72"
         app:layout_constraintBottom_toBottomOf="@id/tv_back_dof_tag"
-        app:layout_constraintStart_toEndOf="@id/tv_back_dof_tag"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_back_dof_tag" />
-
-
 </android.support.constraint.ConstraintLayout>

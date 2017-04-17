@@ -3,6 +3,7 @@ package wxm.dofcalculator.ui.calculator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
@@ -43,6 +44,9 @@ import wxm.dofcalculator.utility.ContextUtil;
  * Created by ookoo on 2017/3/24.
  */
 public class VWCameraAdjust extends ConstraintLayout {
+    private final static int        VW_VERTICAL     = 1;
+    private final static int        VW_HORIZONTAL   = 2;
+
     @BindView(R.id.tv_la_val)
     TextView  mTVLAVal;
     @BindView(R.id.tw_la_val)
@@ -61,6 +65,8 @@ public class VWCameraAdjust extends ConstraintLayout {
     @BindView(R.id.sb_ob_step)
     SmallButton mSBODStep;
 
+    private int mAttrOrentation = VW_VERTICAL;
+
     /**
      * 最小和最大物距
      * 单位m
@@ -75,11 +81,26 @@ public class VWCameraAdjust extends ConstraintLayout {
 
     public VWCameraAdjust(Context context) {
         super(context);
+
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust
+                        : R.layout.vw_camera_adjust_h;
+        LayoutInflater.from(getContext()).inflate(vid, this);
         initUIComponent();
     }
 
     public VWCameraAdjust(Context context, AttributeSet attrs){
         super(context, attrs);
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VWCameraAdjust);
+        try {
+            mAttrOrentation = array.getInt(R.styleable.VWCameraAdjust_emCAOrientation, VW_VERTICAL);
+        } finally {
+            array.recycle();
+        }
+
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust
+                        : R.layout.vw_camera_adjust_h;
+        LayoutInflater.from(getContext()).inflate(vid, this);
         initUIComponent();
     }
 
@@ -106,7 +127,6 @@ public class VWCameraAdjust extends ConstraintLayout {
      * 初始化UI元件
      */
     private void initUIComponent()  {
-        LayoutInflater.from(getContext()).inflate(R.layout.vw_camera_adjust, this);
         ButterKnife.bind(this);
 
         // for lens aperture

@@ -15,21 +15,17 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
-import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
 import wxm.dofcalculator.ui.extend.MeterView.MeterView;
 import wxm.dofcalculator.ui.extend.MeterView.MeterViewTag;
-import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
 
 /**
  * extend view for Dof result ui
@@ -37,6 +33,9 @@ import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
  */
 public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";
+
+    private final static int        VW_VERTICAL     = 1;
+    private final static int        VW_HORIZONTAL   = 2;
 
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
@@ -77,25 +76,38 @@ public class VWDof extends ConstraintLayout {
     @BindString(R.string.tag_back_point)
     String  mSZTagBackPoint;
 
+
+    private final static String DEF_SZ = "--";
+
+
+    private int mAttrOrentation = VW_VERTICAL;
+
     public VWDof(Context context) {
         super(context);
         setWillNotDraw(false);
+
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_dof_v : R.layout.vw_dof_h;
+        LayoutInflater.from(context).inflate(vid, this);
         initUIComponent();
     }
 
     public VWDof(Context context, AttributeSet attrs){
         super(context, attrs);
         setWillNotDraw(false);
-        initUIComponent();
 
         //TypedArray是一个用来存放由context.obtainStyledAttributes获得的属性的数组
         //在使用完成后，一定要调用recycle方法
         //属性的名称是styleable中的名称+“_”+属性名称
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VWDof);
         try {
+            mAttrOrentation = array.getInt(R.styleable.VWDof_emOrientation, VW_VERTICAL);
         } finally {
             array.recycle();
         }
+
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_dof_v : R.layout.vw_dof_h;
+        LayoutInflater.from(context).inflate(vid, this);
+        initUIComponent();
     }
 
     @Override
@@ -136,11 +148,16 @@ public class VWDof extends ConstraintLayout {
         if(null == mDENOFResult)    {
             helper.drawBkg();
             if(!isInEditMode()) {
-                setDofShow(View.INVISIBLE);
                 mMVMeter.clearValueTag();
+
+                mTVFrontDof.setText(DEF_SZ);
+                mTVObjectDistance.setText(DEF_SZ);
+                mTVBackDof.setText(DEF_SZ);
+
+                mTVDrive.setText(mCSCameraSetting == null ?
+                            DEF_SZ : mCSCameraSetting.getDevice().getName());
             }
         } else {
-            setDofShow(View.VISIBLE);
             helper.drawRange();
             helper.drawBkg();
         }
@@ -150,7 +167,6 @@ public class VWDof extends ConstraintLayout {
      * 初始化UI元件
      */
     private void initUIComponent()  {
-        LayoutInflater.from(getContext()).inflate(R.layout.vw_dof, this);
         ButterKnife.bind(this);
     }
 
@@ -175,7 +191,7 @@ public class VWDof extends ConstraintLayout {
                 mTVBackDof.setText(String.format(Locale.CHINA, "%.02fm",
                                         mDENOFResult.getBackDof() / 1000));
 
-                mTVDrive.setText(mCSCameraSetting.getDevice().getCamera().getFilmName());
+                mTVDrive.setText(mCSCameraSetting.getDevice().getName());
             }
 
 
@@ -209,8 +225,7 @@ public class VWDof extends ConstraintLayout {
         int lens_focal = mCSCameraSetting.getLensFocal();
         BigDecimal lens_aperture = mCSCameraSetting.getLensAperture();
         BigDecimal pixel_area = mCSCameraSetting.getCOC();
-        int od = mCSCameraSetting.getObjectDistance();
-        float f_od = (float)od;
+        float f_od = (float)mCSCameraSetting.getObjectDistance();
 
         //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
         BigDecimal ff = new BigDecimal(lens_focal * lens_focal);
@@ -219,39 +234,32 @@ public class VWDof extends ConstraintLayout {
                                     .add(new BigDecimal(lens_focal));
 
         // change to unit mm
-        BigDecimal od_mm = new BigDecimal(od);
+        BigDecimal od_mm = new BigDecimal(f_od);
 
         // dofNear = ((hyperFocal - focal) * distance) / (hyperFocal + distance - (2*focal));
         BigDecimal focal = new BigDecimal(lens_focal);
         BigDecimal dofNear_f = hyperFocal.subtract(focal).multiply(od_mm);
         BigDecimal dofNear_b = hyperFocal.add(od_mm).subtract(focal.add(focal));
-        BigDecimal dofNear = dofNear_f.divide(dofNear_b, RoundingMode.CEILING);
+        float dofNear = dofNear_f.divide(dofNear_b, RoundingMode.CEILING).floatValue();
 
         // Prevent 'divide by zero' when calculating far distance.
-        BigDecimal dofFar;
-
+        float dofFar;
         if(Math.abs(hyperFocal.subtract(od_mm).floatValue()) <= 0.00001)    {
-            dofFar = new BigDecimal(10000000);
+            dofFar = f_od + 200000;
         } else  {
             BigDecimal f = hyperFocal.subtract(focal).multiply(od_mm);
             BigDecimal b = hyperFocal.subtract(od_mm);
-            dofFar = f.divide(b, RoundingMode.CEILING);
+            dofFar = f.divide(b, RoundingMode.CEILING).floatValue();
+            if(dofFar <= f_od)
+                dofFar = f_od + 200000;
         }
 
-        float dof_n = Math.min(dofNear.floatValue(), f_od);
-        float dof_f = Math.max(dofFar.floatValue(), f_od);
+        float dof_n = Math.min(dofNear, f_od);
+        float dof_f = Math.max(dofFar, f_od);
         mDENOFResult = new DofChangedEvent(dof_n, f_od, dof_f);
 
         // updat ui
         helper.updateDofInfo();
         helper.updateDofView();
-    }
-
-    /**
-     * 设置是否显示Dof
-     * @param v     gone or visibility
-     */
-    private void setDofShow(int v) {
-        mCLDofInfo.setVisibility(v);
     }
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="4dp">
+
+    <!-- for drive info -->
+    <TextView
+        android:id="@+id/tv_drive_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设备"
+        android:textColor="@color/text_fit"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_drive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:text="APS-C"
+        android:textColor="#003a6c"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_drive_tag"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_drive_tag" />
+
+    <!-- for front dof -->
+    <TextView
+        android:id="@+id/tv_front_dof_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="前点位置"
+        android:textColor="@color/text_fit"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_drive_tag" />
+
+    <TextView
+        android:id="@+id/tv_front_dof"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="5m"
+        android:textColor="#f05b72"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_front_dof_tag"
+        app:layout_constraintStart_toEndOf="@id/tv_front_dof_tag"
+        app:layout_constraintTop_toTopOf="@id/tv_front_dof_tag" />
+
+    <!-- for object distance -->
+    <TextView
+        android:id="@+id/tv_objecet_distance_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="物距"
+        android:textColor="@color/text_fit"
+        android:textSize="13sp"
+        android:layout_marginStart="48dp"
+        app:layout_constraintStart_toEndOf="@id/tv_front_dof"
+        app:layout_constraintTop_toTopOf="@id/tv_front_dof_tag" />
+
+    <TextView
+        android:id="@+id/tv_objecet_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="7m"
+        android:textColor="#f05b72"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_objecet_distance_tag"
+        app:layout_constraintStart_toEndOf="@id/tv_objecet_distance_tag"
+        app:layout_constraintTop_toTopOf="@id/tv_objecet_distance_tag" />
+
+    <!-- for back dof -->
+    <TextView
+        android:id="@+id/tv_back_dof_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:text="后点位置"
+        android:textColor="@color/text_fit"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_objecet_distance_tag"
+        app:layout_constraintStart_toEndOf="@id/tv_objecet_distance"
+        app:layout_constraintTop_toTopOf="@id/tv_objecet_distance_tag" />
+
+    <TextView
+        android:id="@+id/tv_back_dof"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="9m"
+        android:textSize="12sp"
+        android:textColor="#f05b72"
+        app:layout_constraintBottom_toBottomOf="@id/tv_back_dof_tag"
+        app:layout_constraintStart_toEndOf="@id/tv_back_dof_tag"
+        app:layout_constraintTop_toTopOf="@id/tv_back_dof_tag" />
+</android.support.constraint.ConstraintLayout>

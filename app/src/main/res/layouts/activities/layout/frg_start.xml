@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/bt_device_add"
+        android:background="@drawable/bt_shape"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:paddingStart="24dp"
@@ -25,6 +26,7 @@
 
     <Button
         android:id="@+id/bt_device_select"
+        android:background="@drawable/bt_shape"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:paddingStart="24dp"

@@ -27,7 +27,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * first frg for app
  * Created by wxm on 2017/3/11.
  */
-public class FrgLandscapeCalculator extends FrgUtilityBase {
+public class FrgCalculatorPortrait extends FrgUtilityBase {
     @BindView(R.id.evw_dof)
     VWDof           mEVWDof;
 
@@ -60,8 +60,8 @@ public class FrgLandscapeCalculator extends FrgUtilityBase {
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgLandscapeCalculator";
-        View rootView = layoutInflater.inflate(R.layout.frg_landscape_calculator, viewGroup, false);
+        LOG_TAG = "FrgCalculatorPortrait";
+        View rootView = layoutInflater.inflate(R.layout.frg_calculator_portrait, viewGroup, false);
         ButterKnife.bind(this, rootView);
 
         int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);

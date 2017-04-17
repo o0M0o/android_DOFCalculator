@@ -229,7 +229,6 @@ public class MeterView extends View {
                                     (int)n_max + big_unit);
                 }
 
-
                 // 获得显示值
                 int mTotalValue = mAttrMaxValue - mAttrMinValue;
                 while (0 != mTotalValue % mAttrLongLineCount)   {

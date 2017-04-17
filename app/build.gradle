@@ -21,6 +21,7 @@ android {
                             'src/main/res/layouts/activities',
                             'src/main/res/layouts/item',
                             'src/main/res/layouts/dlg',
+                            'src/main/res/layouts/extend',
                             'src/main/res/layouts'
                     ]
         }
