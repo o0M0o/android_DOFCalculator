@@ -333,8 +333,10 @@ public class MeterView extends View {
             private float MeterValueToXPosition(float val)    {
                 val -= mAttrMinValue;
                 int big = (int)(val / mBigUnitVal);
-                int small = (int)(val % mBigUnitVal / mSmallUnitVal);
-                int left = (int)(val % mSmallUnitVal);
+
+                float l_v = val % mBigUnitVal;
+                int small = (int)(l_v / mSmallUnitVal);
+                float left = (l_v % mSmallUnitVal);
 
                 return RulerValueToXPosition(big, small, left);
             }
@@ -346,7 +348,7 @@ public class MeterView extends View {
              * @param left      剩余值
              * @return          x坐标
              */
-            private float RulerValueToXPosition(int big, int small, int left) {
+            private float RulerValueToXPosition(int big, int small, float left) {
                 float x_big = 0 == big ?
                                 mLongLineWidth / 2 + PAD_START
                                 : (mAttrLongLineCount == big ?

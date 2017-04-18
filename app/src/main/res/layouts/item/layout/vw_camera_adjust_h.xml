@@ -20,15 +20,16 @@
 
         <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
             android:id="@+id/sb_ob_step"
+            android:visibility="gone"
             android:layout_width="52dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/sb_ob_range"
+            app:layout_constraintBottom_toTopOf="@+id/sb_ob_range"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:sbIsOn="true"
+            app:sbIsOn="false"
             android:padding="4dp"
-            app:sbTextOff="米"
-            app:sbTextOn="分米" />
+            app:sbTextOff="@string/tag_meter"
+            app:sbTextOn="@string/tag_decimeter" />
 
         <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
             android:id="@+id/sb_ob_range"
@@ -40,8 +41,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:sbBackGroundOff="@drawable/small_button_off_shape"
             app:sbBackGroundOn="@drawable/small_button_off_shape"
-            app:sbTextOff="物距"
-            app:sbTextOn="物距" />
+            app:sbTextOff="@string/tv_object_distance"
+            app:sbTextOn="@string/tv_object_distance" />
 
 
         <TextView
@@ -78,15 +79,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:twLineDivider="16"
+            app:twLineDivider="32"
             app:twMaxHeight="16"
-            app:twMaxValue="100"
+            app:twMaxValue="10"
             app:twMinHeight="8"
             app:twMinValue="0"
-            app:twModeType="5"
+            app:twModeType="1"
             app:twPostUnit="m"
             app:twTextSize="9"
-            app:twValue="50" />
+            app:twValue="5" />
     </android.support.constraint.ConstraintLayout>
 
     <!-- for lens focal -->
@@ -191,7 +192,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:twLineDivider="24"
+            app:twLineDivider="28"
             app:twMaxHeight="16"
             app:twMaxValue="12"
             app:twMinHeight="8"

@@ -12,28 +12,23 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
-import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
-import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
 import wxm.dofcalculator.ui.extend.SmallButton.SmallButton;
 import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
@@ -65,14 +60,26 @@ public class VWCameraAdjust extends ConstraintLayout {
     @BindView(R.id.sb_ob_step)
     SmallButton mSBODStep;
 
+    @BindString(R.string.tag_decimeter)
+    String  TAG_DECIMETER;
+
     private int mAttrOrentation = VW_VERTICAL;
+
+    /**
+     * 物距尺最大最小原始值
+     */
+    private final static int OB_MIN_VAL = 0;
+    private final static int OB_MAX_VAL = 10;
+
+    private final static double INDEX_NUM = 1.8;
+    private final static double INDEX_MAX = Math.pow(INDEX_NUM, OB_MAX_VAL);
 
     /**
      * 最小和最大物距
      * 单位m
      */
     private int     mODMin = 0;
-    private int     mODMax = 100;
+    private int     mODMax = 50;
 
     private final static String[] LENS_APERTURE_ARR = {
             "F1.0", "F1.4", "F2.0", "F2.8", "F4.0",
@@ -82,7 +89,7 @@ public class VWCameraAdjust extends ConstraintLayout {
     public VWCameraAdjust(Context context) {
         super(context);
 
-        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust_v
                         : R.layout.vw_camera_adjust_h;
         LayoutInflater.from(getContext()).inflate(vid, this);
         initUIComponent();
@@ -98,7 +105,7 @@ public class VWCameraAdjust extends ConstraintLayout {
             array.recycle();
         }
 
-        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust
+        int vid = mAttrOrentation == VW_VERTICAL ? R.layout.vw_camera_adjust_v
                         : R.layout.vw_camera_adjust_h;
         LayoutInflater.from(getContext()).inflate(vid, this);
         initUIComponent();
@@ -167,9 +174,13 @@ public class VWCameraAdjust extends ConstraintLayout {
             mTVODVal.setText(valTag);
             EventBus.getDefault().post(new AttrChangedEvent(0));
         });
-        updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
+        updateObjectDistanceRange(mSBODStep.getCurTxt().equals(TAG_DECIMETER));
     }
 
+    /**
+     * 切换物距范围
+     * @param v     参数
+     */
     @OnClick({R.id.sb_ob_range})
     public void onChangeODRange(View v) {
         DlgODRange dlg_od = new DlgODRange();
@@ -178,7 +189,7 @@ public class VWCameraAdjust extends ConstraintLayout {
             public void onDialogPositiveResult(DialogFragment dialogFragment) {
                 mODMin = dlg_od.getODMin();
                 mODMax = dlg_od.getODMax();
-                updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
+                updateObjectDistanceRange(mSBODStep.getCurTxt().equals(TAG_DECIMETER));
 
                 EventBus.getDefault().post(
                         new ObjectDistanceRangeChangeEvent(mODMin, mODMax));
@@ -199,23 +210,37 @@ public class VWCameraAdjust extends ConstraintLayout {
      */
     @OnClick({R.id.sb_ob_step})
     public void onChangeODStep(View v) {
-        updateObjectDistanceRange(mSBODStep.getCurTxt().equals("分米"));
+        updateObjectDistanceRange(mSBODStep.getCurTxt().equals(TAG_DECIMETER));
     }
 
     /**
      * 设置物距最小，最大值
      */
     private void updateObjectDistanceRange(boolean decimeter)    {
-        HashMap<String, Object> hm = new HashMap<>();
-        hm.put(TuneWheel.PARA_VAL_MIN, decimeter ? mODMin * 10 : mODMin);
-        hm.put(TuneWheel.PARA_VAL_MAX, decimeter ? mODMax * 10 : mODMax);
         mTWODTuneWheel.setTranslateTag(decimeter ?
-                (TuneWheel.TagTranslate) val ->
-                        String.format(Locale.CHINA, "%d.%dm", val / 10, val % 10)
+                (TuneWheel.TagTranslate) val -> {
+                    double m_v;
+                    if(OB_MIN_VAL == val)
+                        m_v = mODMin;
+                    else if(OB_MAX_VAL == val)
+                        m_v = mODMax;
+                    else
+                        m_v = mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, val) / INDEX_MAX);
 
-                : (TuneWheel.TagTranslate) val ->
-                        String.format(Locale.CHINA, "%dm", val));
-        mTWODTuneWheel.adjustPara(hm);
+                    return String.format(Locale.CHINA, m_v > 1 ? "%.00fm" : "%.02fm", m_v);
+                }
+
+                : (TuneWheel.TagTranslate) val ->   {
+                    double m_v;
+                    if(0 == val)
+                        m_v = mODMin;
+                    else if(OB_MAX_VAL == val)
+                        m_v = mODMax;
+                    else
+                        m_v = mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, val) / INDEX_MAX);
+
+                    return String.format(Locale.CHINA, m_v > 1 ? "%.00fm" : "%.02fm", m_v);
+                });
 
         mTVODVal.setText(mTWODTuneWheel.getCurValueTag());
     }
