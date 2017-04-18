@@ -2,6 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
+    signingConfigs {
+        defkey {
+            keyAlias 'defkey'
+            keyPassword 'hugo99505'
+            storeFile file('H:/backup/appkey/andriodapp-key.jks')
+            storePassword 'hugo99505'
+        }
+        longTimeKey {
+            keyAlias 'andriodapp-key-longtime'
+            keyPassword 'w789065'
+            storeFile file('H:/backup/appkey/andriodapp-key-longtime.jks')
+            storePassword 'w127865'
+        }
+    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -11,6 +26,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.longTimeKey
     }
 
     sourceSets {
@@ -29,7 +45,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "Boolean", "FILL_TESTDATA", "false"
@@ -41,7 +57,9 @@ android {
     }
 
     productFlavors {
-        yyb_DOFCalculator{}
+        yyb_DOFCalculator {
+            signingConfig signingConfigs.longTimeKey
+        }
     }
 
 
@@ -71,12 +89,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    compile 'com.android.support:design:25.2.0'
-
+    compile 'com.android.support:design:25.3.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
