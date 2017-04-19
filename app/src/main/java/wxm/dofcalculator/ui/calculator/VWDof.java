@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,8 +23,8 @@ import butterknife.ButterKnife;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
-import wxm.dofcalculator.ui.extend.MeterView.MeterView;
-import wxm.dofcalculator.ui.extend.MeterView.MeterViewTag;
+import wxm.dofcalculator.ui.base.extend.MeterView.MeterView;
+import wxm.dofcalculator.ui.base.extend.MeterView.MeterViewTag;
 
 /**
  * extend view for Dof result ui

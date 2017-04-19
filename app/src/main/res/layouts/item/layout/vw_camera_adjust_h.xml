@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
+        <wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton
             android:id="@+id/sb_ob_step"
             android:visibility="gone"
             android:layout_width="52dp"
@@ -31,7 +31,7 @@
             app:sbTextOff="@string/tag_meter"
             app:sbTextOn="@string/tag_decimeter" />
 
-        <wxm.dofcalculator.ui.extend.SmallButton.SmallButton
+        <wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton
             android:id="@+id/sb_ob_range"
             android:layout_width="52dp"
             android:padding="4dp"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
+        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -125,7 +125,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_lf_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
+        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_lf_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -182,7 +182,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_la_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel
+        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
             android:id="@+id/tw_la_val"
             android:layout_width="0dp"
             android:layout_height="50dp"

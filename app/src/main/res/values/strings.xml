@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DOFCalculator</string>
+    <string name="app_name">景深计算</string>
     <string name="hint_device_add">添加摄影设备</string>
     <string name="hint_device_select">选择摄影设备</string>
     <string name="label_device">设备</string>
@@ -9,6 +9,20 @@
     <string name="hint_lens_name">镜头名</string>
     <string name="hint_lens_max_focal">最大焦距</string>
     <string name="hint_lens_min_focal">最小焦距</string>
+
+    <string name="contact_email">fly_in_wind@qq.com</string>
+    <string name="contact_studio">oko studio</string>
+    <string name="cn_contact_writer">联系作者</string>
+    <string name="cn_share_app">分享应用</string>
+
+    <string name="navigation_drawer_open">打开导航绘图</string>
+    <string name="navigation_drawer_close">关闭导航绘图</string>
+
+    <string name="cn_setting">设定</string>
+    <string name="cn_help">帮助</string>
+    <string name="cn_feedback">反馈</string>
+
+    <string name="cn_accept">确认</string>
     <string name="cn_giveup">放弃</string>
     <string name="cn_save">保存</string>
 
@@ -47,4 +61,17 @@
 
     <string name="tag_decimeter">分米</string>
     <string name="tag_meter">米</string>
+
+    <string name="cn_usr_message">请输入您的意见或建议</string>
+
+    <!-- for send message -->
+    <string name="url_post_send_message">
+        http://www.wxmandriodapp.com:8080/KeepAccountServer/def/UMUtility
+    </string>
+    <string name="col_usr">usr</string>
+    <string name="col_message">message</string>
+    <string name="col_app_name">app_name</string>
+    <string name="col_val_app_name">DOFCalculator</string>
+    <string name="label_start_page">首页</string>
+    <string name="cn_other">其它</string>
 </resources>

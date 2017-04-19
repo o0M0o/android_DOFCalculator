@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_bold"
+            android:title="@string/cn_help" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_setting"
+            android:title="@string/cn_setting" />
+    </group>
+
+    <item android:title="@string/cn_other">
+        <menu>
+            <item
+                android:id="@+id/nav_share_app"
+                android:icon="@drawable/ic_share"
+                android:title="@string/cn_share_app" />
+            <item
+                android:id="@+id/nav_contact_writer"
+                android:icon="@drawable/ic_msg"
+                android:title="@string/cn_contact_writer" />
+        </menu>
+    </item>
+</menu>

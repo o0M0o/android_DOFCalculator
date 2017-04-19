@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.extend.SmallButton;
+package wxm.dofcalculator.ui.base.extend.SmallButton;
 
 
 import android.content.Context;
@@ -11,10 +11,8 @@ import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.util.UtilFun;

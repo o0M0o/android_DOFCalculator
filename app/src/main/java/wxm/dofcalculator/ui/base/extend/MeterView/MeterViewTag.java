@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.extend.MeterView;
+package wxm.dofcalculator.ui.base.extend.MeterView;
 
 /**
  * MeterView Tag类

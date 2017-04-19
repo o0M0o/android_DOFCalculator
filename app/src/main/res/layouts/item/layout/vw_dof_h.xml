@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <wxm.dofcalculator.ui.extend.MeterView.MeterView
+    <wxm.dofcalculator.ui.base.extend.MeterView.MeterView
         android:id="@+id/evw_meter"
         android:layout_marginTop="1dp"
         android:paddingStart="8dp"

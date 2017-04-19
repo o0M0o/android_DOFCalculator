@@ -99,6 +99,8 @@ dependencies {
     compile 'com.trello:rxlifecycle:0.5.0'
     compile project(':AndriodUtillib')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
 }
 
 

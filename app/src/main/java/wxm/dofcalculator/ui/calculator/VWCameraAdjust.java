@@ -30,8 +30,8 @@ import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
-import wxm.dofcalculator.ui.extend.SmallButton.SmallButton;
-import wxm.dofcalculator.ui.extend.TuneWheel.TuneWheel;
+import wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton;
+import wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**

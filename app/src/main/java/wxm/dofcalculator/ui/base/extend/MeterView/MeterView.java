@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.extend.MeterView;
+package wxm.dofcalculator.ui.base.extend.MeterView;
 
 
 import android.content.Context;
@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
-import butterknife.BindString;
 import butterknife.ButterKnife;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
