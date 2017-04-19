@@ -19,6 +19,7 @@ import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.dialog.UsrMessage.DlgUsrMessage;
+import wxm.dofcalculator.ui.setting.ACSetting;
 
 
 /**
@@ -61,10 +62,8 @@ public class ACStart extends AppCompatActivity
             break;
 
             case R.id.nav_setting: {
-                /*
                 Intent intent = new Intent(this, ACSetting.class);
                 startActivityForResult(intent, 1);
-                */
             }
             break;
 
