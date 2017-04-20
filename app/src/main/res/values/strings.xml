@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">景深计算</string>
+    <string name="app_name">景深辅助工具</string>
     <string name="hint_device_add">添加摄影设备</string>
     <string name="hint_device_select">选择摄影设备</string>
     <string name="label_device">设备</string>

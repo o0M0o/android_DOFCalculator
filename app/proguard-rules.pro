@@ -57,6 +57,16 @@
     *;
 }
 
+-dontwarn java.nio.**
+-keep class java.nio.** {
+    *;
+}
+
+-dontwarn org.codehaus.**
+-keep class org.codehaus.** {
+    *;
+}
+
 -keepattributes *Annotation*
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
