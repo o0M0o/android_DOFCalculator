@@ -84,9 +84,9 @@ public class DlgUsrMessage extends DlgOKOrNOBase {
 
     @Override
     protected View InitDlgView() {
-        InitDlgTitle(mSZUsrMessage, mSZAccept, mSZGiveUp);
         View vw = View.inflate(getActivity(), R.layout.dlg_send_message, null);
         ButterKnife.bind(this, vw);
+        InitDlgTitle(mSZUsrMessage, mSZAccept, mSZGiveUp);
 
         // for progress
         mHDProgress = new LocalMsgHandler(this);

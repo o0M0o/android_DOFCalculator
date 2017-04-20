@@ -74,7 +74,9 @@
     <string name="col_message">message</string>
     <string name="col_app_name">app_name</string>
     <string name="col_val_app_name">DOFCalculator</string>
-    <string name="label_start_page">首页</string>
+    <string name="label_start_page">景深计算</string>
     <string name="cn_other">其它</string>
     <string name="label_setting">设定</string>
+    <string name="hint_usr_message">建议/意见</string>
+    <string name="label_help">帮助</string>
 </resources>

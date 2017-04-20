@@ -19,6 +19,7 @@ import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
 import cn.wxm.andriodutillib.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.dialog.UsrMessage.DlgUsrMessage;
+import wxm.dofcalculator.ui.help.ACHelp;
 import wxm.dofcalculator.ui.setting.ACSetting;
 
 
@@ -52,12 +53,10 @@ public class ACStart extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_help: {
-                /*
                 Intent intent = new Intent(this, ACHelp.class);
                 intent.putExtra(ACHelp.STR_HELP_TYPE, ACHelp.STR_HELP_START);
 
                 startActivityForResult(intent, 1);
-                */
             }
             break;
 
