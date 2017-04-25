@@ -23,8 +23,8 @@ import butterknife.ButterKnife;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent;
-import wxm.dofcalculator.ui.base.extend.MeterView.MeterView;
-import wxm.dofcalculator.ui.base.extend.MeterView.MeterViewTag;
+import wxm.uilib.DistanceMeter.DistanceMeter;
+import wxm.uilib.DistanceMeter.DistanceMeterTag;
 
 /**
  * extend view for Dof result ui
@@ -40,7 +40,7 @@ public class VWDof extends ConstraintLayout {
     protected CameraSettingChangeEvent mCSCameraSetting;
 
     @BindView(R.id.evw_meter)
-    MeterView   mMVMeter;
+    DistanceMeter mMVMeter;
 
     @BindView(R.id.cl_dof_info)
     ConstraintLayout      mCLDofInfo;
@@ -200,19 +200,19 @@ public class VWDof extends ConstraintLayout {
             void updateDofView()    {
                 mMVMeter.clearValueTag();
 
-                MeterViewTag mt_f = new MeterViewTag();
+                DistanceMeterTag mt_f = new DistanceMeterTag();
                 mt_f.mSZTagName = mSZTagFrontPoint;
                 mt_f.mCRTagColor = mCRDOFFront;
                 mt_f.mTagVal = mDENOFResult.getFrontDof() / 1000;
                 mMVMeter.addValueTag(mt_f);
 
-                MeterViewTag mt_od = new MeterViewTag();
+                DistanceMeterTag mt_od = new DistanceMeterTag();
                 mt_od.mSZTagName = mSZTagObjectDistance;
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
                 mt_od.mTagVal = mDENOFResult.getObjectDistance() / 1000;
                 mMVMeter.addValueTag(mt_od);
 
-                MeterViewTag mt_b = new MeterViewTag();
+                DistanceMeterTag mt_b = new DistanceMeterTag();
                 mt_b.mSZTagName = mSZTagBackPoint;
                 mt_b.mCRTagColor = mCRDOFBack;
                 mt_b.mTagVal = mDENOFResult.getBackDof() / 1000;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.preference.TwoStatePreference;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -30,9 +31,9 @@ import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
-import wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton;
-import wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel;
 import wxm.dofcalculator.utility.ContextUtil;
+import wxm.uilib.TuneWheel.TuneWheel;
+import wxm.uilib.TwoStateButton.TwoStateButton;
 
 /**
  * 相机设定视图
@@ -58,7 +59,7 @@ public class VWCameraAdjust extends ConstraintLayout {
     TuneWheel mTWODTuneWheel;
 
     @BindView(R.id.sb_ob_step)
-    SmallButton mSBODStep;
+    TwoStateButton mSBODStep;
 
     @BindString(R.string.tag_decimeter)
     String  TAG_DECIMETER;

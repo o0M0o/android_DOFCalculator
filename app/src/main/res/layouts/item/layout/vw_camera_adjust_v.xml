@@ -17,32 +17,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton
+        <wxm.uilib.TwoStateButton.TwoStateButton
             android:id="@+id/sb_ob_step"
-            android:visibility="gone"
             android:layout_width="52dp"
             android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:sbIsOn="false"
-            android:padding="4dp"
             app:sbTextOff="@string/tag_meter"
             app:sbTextOn="@string/tag_decimeter" />
 
-        <wxm.dofcalculator.ui.base.extend.SmallButton.SmallButton
+        <wxm.uilib.TwoStateButton.TwoStateButton
             android:id="@+id/sb_ob_range"
-            android:layout_width="52dp"
-            android:padding="4dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/sb_ob_step"
             app:layout_constraintTop_toTopOf="parent"
             app:sbBackGroundOff="@drawable/small_button_off_shape"
             app:sbBackGroundOn="@drawable/small_button_off_shape"
             app:sbTextOff="@string/tv_object_distance"
-            app:sbTextOn="@string/tv_object_distance" />
+            app:sbTextOn="@string/tv_object_distance"
+            app:sbTextSize="14sp" />
     </android.support.constraint.ConstraintLayout>
 
 
@@ -81,7 +82,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_od_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
+        <wxm.uilib.TuneWheel.TuneWheel
             android:id="@+id/tw_od_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -91,15 +92,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:twCurValue="5"
             app:twLineDivider="32"
-            app:twMaxHeight="16"
+            app:twLongLineLength="16"
             app:twMaxValue="10"
-            app:twMinHeight="8"
             app:twMinValue="0"
-            app:twModeType="1"
             app:twPostUnit="m"
-            app:twTextSize="9"
-            app:twValue="5" />
+            app:twShortLineCount="1"
+            app:twShortLineLength="8"
+            app:twTextSize="9sp"
+            app:twUseCurTag="false" />
     </android.support.constraint.ConstraintLayout>
 
     <!-- for lens focal -->
@@ -137,7 +139,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_lf_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
+        <wxm.uilib.TuneWheel.TuneWheel
             android:id="@+id/tw_lf_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -147,15 +149,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:twCurValue="50"
             app:twLineDivider="16"
-            app:twMaxHeight="16"
+            app:twLongLineLength="16"
             app:twMaxValue="135"
-            app:twMinHeight="6"
             app:twMinValue="50"
-            app:twModeType="5"
             app:twPostUnit="mm"
-            app:twTextSize="9"
-            app:twValue="50" />
+            app:twShortLineCount="5"
+            app:twShortLineLength="6"
+            app:twTextSize="9sp"
+            app:twUseCurTag="false" />
     </android.support.constraint.ConstraintLayout>
 
 
@@ -194,7 +197,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_la_tag"
             tools:layout_editor_absoluteX="0dp" />
 
-        <wxm.dofcalculator.ui.base.extend.TuneWheel.TuneWheel
+        <wxm.uilib.TuneWheel.TuneWheel
             android:id="@+id/tw_la_val"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -204,13 +207,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:twCurValue="1"
             app:twLineDivider="28"
-            app:twMaxHeight="16"
+            app:twLongLineLength="16"
             app:twMaxValue="12"
-            app:twMinHeight="8"
             app:twMinValue="0"
-            app:twModeType="1"
-            app:twTextSize="9"
-            app:twValue="1" />
+            app:twShortLineCount="1"
+            app:twShortLineLength="8"
+            app:twTextSize="9sp"
+            app:twUseCurTag="false" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
