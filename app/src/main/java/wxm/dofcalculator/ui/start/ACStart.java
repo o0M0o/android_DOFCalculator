@@ -15,8 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
-import cn.wxm.andriodutillib.util.UtilFun;
+import wxm.androidutil.Dialog.DlgOKOrNOBase;
+import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.dialog.UsrMessage.DlgUsrMessage;
 import wxm.dofcalculator.ui.help.ACHelp;

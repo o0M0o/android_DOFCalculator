@@ -6,9 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import cn.wxm.andriodutillib.ExActivity.BaseAppCompatActivity;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
-import cn.wxm.andriodutillib.util.UtilFun;
+import wxm.androidutil.ExActivity.BaseAppCompatActivity;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.ui.base.IFFrgEdit;

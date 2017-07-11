@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import cn.wxm.andriodutillib.ExActivity.BaseAppCompatActivity;
+import wxm.androidutil.ExActivity.BaseAppCompatActivity;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.GlobalDef;
 

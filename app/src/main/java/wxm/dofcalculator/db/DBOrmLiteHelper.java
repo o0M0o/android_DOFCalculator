@@ -1,7 +1,6 @@
 package wxm.dofcalculator.db;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

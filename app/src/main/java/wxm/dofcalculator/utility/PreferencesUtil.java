@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import wxm.androidutil.util.UiUtil;
+import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 
 
@@ -35,11 +37,11 @@ public class PreferencesUtil {
         SharedPreferences param = ContextUtil.getInstance()
                 .getSharedPreferences(PROPERTIES_NAME, Context.MODE_PRIVATE);
 
-        Resources res = ContextUtil.getInstance().getResources();
-        String sb = SET_PAY_COLOR + ":" + String.valueOf(res.getColor(R.color.sienna)) +
-                " " + SET_INCOME_COLOR + ":" + String.valueOf(res.getColor(R.color.teal)) +
-                " " + SET_BUDGET_UESED_COLOR + ":" + String.valueOf(res.getColor(R.color.sienna)) +
-                " " + SET_BUDGET_BALANCE_COLOR + ":" + String.valueOf(res.getColor(R.color.teal));
+        Context ct = ContextUtil.getInstance();
+        String sb = SET_PAY_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.sienna)) +
+                " " + SET_INCOME_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.teal)) +
+                " " + SET_BUDGET_UESED_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.sienna)) +
+                " " + SET_BUDGET_BALANCE_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.teal));
 
         String load = param.getString(SET_CHART_COLOR, sb);
         return parseChartColors(load);

@@ -1,7 +1,5 @@
 package wxm.dofcalculator.ui.calculator.event;
 
-import java.math.BigDecimal;
-
 /**
  * 物距范围调整事件
  * Created by ookoo on 2017/3/22.

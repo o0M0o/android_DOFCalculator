@@ -1,16 +1,12 @@
 package wxm.dofcalculator.ui.device;
 
-import android.bluetooth.BluetoothClass;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -27,10 +23,10 @@ import java.util.Map;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import cn.wxm.andriodutillib.util.FastViewHolder;
+import wxm.androidutil.util.FastViewHolder;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
-import cn.wxm.andriodutillib.util.UtilFun;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.db.DBDataChangeEvent;
 import wxm.dofcalculator.define.CameraItem;

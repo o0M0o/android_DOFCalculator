@@ -10,7 +10,7 @@ import android.webkit.WebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.dofcalculator.R;
 
 /**

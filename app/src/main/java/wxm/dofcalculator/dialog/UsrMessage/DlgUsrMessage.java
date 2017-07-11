@@ -1,6 +1,7 @@
 package wxm.dofcalculator.dialog.UsrMessage;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Message;
@@ -18,11 +19,11 @@ import java.io.IOException;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.Dialog.DlgOKOrNOBase;
-import cn.wxm.andriodutillib.util.PackageUtil;
-import cn.wxm.andriodutillib.util.SIMCardUtil;
-import cn.wxm.andriodutillib.util.UtilFun;
-import cn.wxm.andriodutillib.util.WRMsgHandler;
+import wxm.androidutil.Dialog.DlgOKOrNOBase;
+import wxm.androidutil.util.PackageUtil;
+import wxm.androidutil.util.SIMCardUtil;
+import wxm.androidutil.util.UtilFun;
+import wxm.androidutil.util.WRMsgHandler;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -157,7 +158,7 @@ public class DlgUsrMessage extends DlgOKOrNOBase {
             mPDDlg.setMessage("发送进度");
             // 设置对话框不能用“取消”按钮关闭
             mPDDlg.setCancelable(true);
-            mPDDlg.setButton("取消", (dialogInterface, i) -> {
+            mPDDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", (dialogInterface, i) -> {
             });
 
             // 设置对话框的进度条风格

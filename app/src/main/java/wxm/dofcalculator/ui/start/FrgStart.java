@@ -11,7 +11,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.dofcalculator.R;
 
 import wxm.dofcalculator.ui.device.ACDevice;

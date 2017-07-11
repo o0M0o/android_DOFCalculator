@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import cn.wxm.andriodutillib.ExActivity.BaseAppCompatActivity;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.ExActivity.BaseAppCompatActivity;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.dofcalculator.define.GlobalDef;
 
 /**

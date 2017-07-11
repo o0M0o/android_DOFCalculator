@@ -3,28 +3,23 @@ package wxm.dofcalculator.ui.device;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 
 import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
-import cn.wxm.andriodutillib.util.UtilFun;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.CameraItem;
 import wxm.dofcalculator.define.DeviceItem;

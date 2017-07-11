@@ -1,6 +1,6 @@
 package wxm.dofcalculator.ui.help;
 
-import cn.wxm.andriodutillib.ExActivity.BaseAppCompatActivity;
+import wxm.androidutil.ExActivity.BaseAppCompatActivity;
 
 /**
  * 本activity用于展示应用帮助信息

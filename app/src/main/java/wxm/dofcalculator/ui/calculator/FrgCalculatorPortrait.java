@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.wxm.andriodutillib.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
@@ -69,9 +69,6 @@ public class FrgCalculatorPortrait extends FrgUtilityBase {
             mDICurDevice = ContextUtil.getDUDevice().getData(d_id);
         }
 
-        if(null != mDICurDevice)    {
-            LensItem li = mDICurDevice.getLens();
-        }
         return rootView;
     }
 

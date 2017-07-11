@@ -1,22 +1,12 @@
 package wxm.dofcalculator.define;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
-import cn.wxm.andriodutillib.DBHelper.IDBRow;
-import cn.wxm.andriodutillib.util.UtilFun;
+import wxm.androidutil.DBHelper.IDBRow;
 
 /**
  * camera数据类
@@ -25,8 +15,6 @@ import cn.wxm.andriodutillib.util.UtilFun;
 @DatabaseTable(tableName = "tbCamera")
 public class CameraItem
         implements IDBRow<Integer> {
-    private static final String TAG = "CameraItem";
-
     public final static String FIELD_NAME       = "name";
     public final static String FIELD_ID         = "_id";
 

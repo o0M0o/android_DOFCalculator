@@ -6,9 +6,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import cn.wxm.andriodutillib.DBHelper.DBUtilityBase;
+import wxm.androidutil.DBHelper.DBUtilityBase;
 import wxm.dofcalculator.define.DeviceItem;
-import wxm.dofcalculator.define.LensItem;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**

@@ -1,7 +1,6 @@
 package wxm.dofcalculator.utility;
 
 import android.app.Application;
-import android.util.Log;
 
 import wxm.dofcalculator.db.CameraDBUtility;
 import wxm.dofcalculator.db.DBOrmLiteHelper;
