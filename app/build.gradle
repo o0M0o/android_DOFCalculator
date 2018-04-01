@@ -1,32 +1,33 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     signingConfigs {
         defkey {
             keyAlias 'defkey'
             keyPassword 'hugo99505'
-            storeFile file('H:/backup/appkey/andriodapp-key.jks')
+            storeFile file('E:/backup/appkey/andriodapp-key.jks')
             storePassword 'hugo99505'
         }
         longTimeKey {
             keyAlias 'andriodapp-key-longtime'
             keyPassword 'w789065'
-            storeFile file('H:/backup/appkey/andriodapp-key-longtime.jks')
+            storeFile file('E:/backup/appkey/andriodapp-key-longtime.jks')
             storePassword 'w127865'
         }
     }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "wxm.dofcalculator"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.longTimeKey
+
+        flavorDimensions "versionCode"
     }
 
     sourceSets {
@@ -68,8 +69,8 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 //这里修改apk文件名
-                def fileName = "${variant.productFlavors[0].name}-${ variant.buildType.name }-${defaultConfig.versionName}-${releaseTime()}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
+                def fileName = "${variant.productFlavors[0].name}-${defaultConfig.versionName}-${releaseTime() }.apk"
+                output.outputFileName = fileName
             }
         }
     }
@@ -85,22 +86,22 @@ static def releaseTime() {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:design:25.3.1'
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
-    compile 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.trello:rxlifecycle:0.5.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
-    compile project(':androidutil')
-    compile project(':uilib')
+    implementation 'io.reactivex:rxandroid:1.1.0'
+    implementation 'com.trello:rxlifecycle:0.5.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
+    implementation project(':androidutil')
+    implementation project(':uilib')
 }
 
 

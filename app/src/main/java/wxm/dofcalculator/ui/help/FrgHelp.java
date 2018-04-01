@@ -1,59 +1,27 @@
 package wxm.dofcalculator.ui.help;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
-import wxm.dofcalculator.R;
+import wxm.androidutil.FrgWebView.FrgWebView;
 
 /**
  * for help
  * Created by ookoo on 2016/11/29.
  */
-public class FrgHelp extends FrgUtilityBase {
 
-    //private static String LOG_TAG = "ACHelp";
-    private static final String ENCODING = "utf-8";
-    //private static final String MIMETYPE = "text/html; charset=UTF-8";
-
-    // for ui
-    @BindView(R.id.wv_help)
-    WebView     mWVHelp;
-
+public class FrgHelp extends FrgWebView {
     @Override
     protected View inflaterView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        View rootView = super.inflaterView(inflater, container, bundle);
         LOG_TAG = "FrgHelp";
-        View rootView = inflater.inflate(R.layout.frg_help, container, false);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
-    protected void initUiComponent(View view) {
-    }
-
-    @Override
     protected void loadUI() {
-        load_help("file:///android_asset/help_main.html");
+        loadPage("file:///android_asset/help_main.html", null);
     }
-
-    /// PRIVATE BEGIN
-    /**
-     * 加载帮助html
-     * @param url  帮助html路径
-     */
-    private void load_help(String url) {
-        WebSettings wSet = mWVHelp.getSettings();
-        wSet.setDefaultTextEncodingName(ENCODING);
-
-        mWVHelp.loadUrl(url);
-    }
-    /// PRIVATE END
 }

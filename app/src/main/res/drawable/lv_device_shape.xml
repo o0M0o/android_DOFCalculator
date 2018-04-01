@@ -3,14 +3,14 @@
     <item android:state_selected="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="#fedcbd" />
-            <corners android:radius="8dp" />
+            <corners android:radius="2dp" />
             <stroke android:width="2px" android:color="#a2b5cd" />
         </shape>
     </item>
     <item>
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/white" />
-            <corners android:radius="8dp" />
+            <corners android:radius="2dp" />
             <stroke android:width="2px" android:color="#a2b5cd" />
         </shape>
     </item>
