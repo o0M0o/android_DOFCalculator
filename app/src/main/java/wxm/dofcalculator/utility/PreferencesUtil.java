@@ -15,8 +15,8 @@ import wxm.dofcalculator.R;
 
 
 /**
- * 配置管理类
- * Created by 123 on 2017/4/20.
+ * for preferences
+ * Created by WangXM on2017/4/20.
  */
 public class PreferencesUtil {
     private final static String PROPERTIES_NAME = "DOFCalculator_properties";

@@ -6,7 +6,7 @@ import wxm.dofcalculator.define.DeviceItem;
 
 /**
  * 相机设定调整事件
- * Created by ookoo on 2017/3/22.
+ * Created by WangXM on2017/3/22.
  */
 public class CameraSettingChangeEvent {
     private int         mLFLensFocal;

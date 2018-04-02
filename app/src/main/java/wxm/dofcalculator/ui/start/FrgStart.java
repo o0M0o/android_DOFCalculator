@@ -19,7 +19,7 @@ import wxm.dofcalculator.utility.ContextUtil;
 
 /**
  * first frg for app
- * Created by wxm on 2017/3/11.
+ * Created by WangXM on2017/3/11.
  */
 public class FrgStart extends FrgUtilityBase {
 

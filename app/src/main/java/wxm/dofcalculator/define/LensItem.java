@@ -7,8 +7,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import wxm.androidutil.DBHelper.IDBRow;
 
 /**
- * camera数据类
- * Created by 123 on 2016/9/1.
+ * lens data
+ * Created by WangXM on2016/9/1.
  */
 @DatabaseTable(tableName = "tbLens")
 public class LensItem
@@ -25,13 +25,13 @@ public class LensItem
     private String name;
 
     /**
-     * 镜头最大焦距，单位为mm
+     * max focal length for lens (unit : mm)
      */
     @DatabaseField(columnName = "maxFocal", dataType = DataType.INTEGER, canBeNull = false)
     private int maxFocal;
 
     /**
-     * 镜头最小焦距，单位为mm
+     * min focal length for lens (unit : mm)
      */
     @DatabaseField(columnName = "minFocal", dataType = DataType.INTEGER, canBeNull = false)
     private int minFocal;

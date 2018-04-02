@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.calculator;
+package wxm.dofcalculator.ui.calculator.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,6 +28,7 @@ import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange;
+import wxm.dofcalculator.ui.calculator.ACCalculator;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent;
 import wxm.dofcalculator.utility.ContextUtil;
@@ -36,7 +37,7 @@ import wxm.uilib.TwoStateButton.TwoStateButton;
 
 /**
  * 相机设定视图
- * Created by ookoo on 2017/3/24.
+ * Created by WangXM on2017/3/24.
  */
 public class VWCameraAdjust extends ConstraintLayout {
     private final static int        VW_VERTICAL     = 1;

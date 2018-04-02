@@ -18,21 +18,22 @@ import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
-import wxm.dofcalculator.define.LensItem;
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent;
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent;
+import wxm.dofcalculator.ui.calculator.view.VWCameraAdjust;
+import wxm.dofcalculator.ui.calculator.view.VWDof;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
  * first frg for app
- * Created by wxm on 2017/3/11.
+ * Created by WangXM on2017/3/11.
  */
 public class FrgCalculatorPortrait extends FrgUtilityBase {
     @BindView(R.id.evw_dof)
-    VWDof           mEVWDof;
+    VWDof mEVWDof;
 
     @BindView(R.id.eca_adjust)
-    VWCameraAdjust  mEVWCamera;
+    VWCameraAdjust mEVWCamera;
 
     private DeviceItem mDICurDevice;
 

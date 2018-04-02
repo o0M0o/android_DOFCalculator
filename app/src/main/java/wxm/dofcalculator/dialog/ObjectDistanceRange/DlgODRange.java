@@ -12,8 +12,8 @@ import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 
 /**
- * 物距范围选择对话框
- * Created by ookoo on 2016/11/1.
+ * for select object distance
+ * Created by WangXM on2016/11/1.
  */
 public class DlgODRange extends DlgOKOrNOBase {
     @BindView(R.id.ti_od_min)

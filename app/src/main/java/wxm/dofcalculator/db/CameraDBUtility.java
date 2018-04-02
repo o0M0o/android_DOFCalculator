@@ -12,7 +12,7 @@ import wxm.dofcalculator.define.CameraItem;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
- * CameraItem数据工具类
+ * camera db utility
  * Created by WangXM on 2017/03/13.
  */
 public class CameraDBUtility extends DBUtilityBase<CameraItem, Integer> {

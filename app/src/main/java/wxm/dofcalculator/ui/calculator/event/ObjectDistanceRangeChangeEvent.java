@@ -2,7 +2,7 @@ package wxm.dofcalculator.ui.calculator.event;
 
 /**
  * 物距范围调整事件
- * Created by ookoo on 2017/3/22.
+ * Created by WangXM on2017/3/22.
  */
 public class ObjectDistanceRangeChangeEvent {
     private int         mODMin;

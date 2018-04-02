@@ -2,7 +2,7 @@ package wxm.dofcalculator.ui.calculator.event;
 
 /**
  * 景深变化事件
- * Created by ookoo on 2017/3/20.
+ * Created by WangXM on2017/3/20.
  */
 public class DofChangedEvent {
     private float mNMFrontDof;

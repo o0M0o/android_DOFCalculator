@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.calculator;
+package wxm.dofcalculator.ui.calculator.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -28,7 +28,7 @@ import wxm.uilib.DistanceMeter.DistanceMeterTag;
 
 /**
  * extend view for Dof result ui
- * Created by ookoo on 2017/3/19.
+ * Created by WangXM on2017/3/19.
  */
 public class VWDof extends ConstraintLayout {
     private final static String     LOG_TAG = "DOFVW";

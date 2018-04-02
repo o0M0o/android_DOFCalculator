@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import wxm.androidutil.DBHelper.IDBRow;
 
 /**
- * camera数据类
- * Created by 123 on 2016/9/1.
+ * camera data
+ * Created by WangXM on2016/9/1.
  */
 @DatabaseTable(tableName = "tbCamera")
 public class CameraItem
@@ -28,13 +28,13 @@ public class CameraItem
     private String filmName;
 
     /**
-     * 相机底片对角线尺寸，单位为mm
+     * camera film size (unit : mm)
      */
     @DatabaseField(columnName = "filmSize", dataType = DataType.INTEGER, canBeNull = false)
     private int filmSize;
 
     /**
-     * 相机底片像素数量
+     * pixel count for camera
      */
     @DatabaseField(columnName = "pixelCount", dataType = DataType.INTEGER, canBeNull = false)
     private int pixelCount;
@@ -81,8 +81,8 @@ public class CameraItem
     }
 
     /**
-     * 获取弥散圆直径，单位毫米
-     * @return   弥散圆直径
+     * get COC (circle of confusion, unit : mm)
+     * @return      COC diameter
      */
     public BigDecimal getCameraCOC()    {
         return new BigDecimal((float)filmSize/1730);

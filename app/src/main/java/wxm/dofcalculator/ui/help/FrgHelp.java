@@ -9,7 +9,7 @@ import wxm.androidutil.FrgWebView.FrgWebView;
 
 /**
  * for help
- * Created by ookoo on 2016/11/29.
+ * Created by WangXM on2016/11/29.
  */
 
 public class FrgHelp extends FrgWebView {

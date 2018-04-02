@@ -1,23 +1,20 @@
 package wxm.dofcalculator.ui.help;
 
-import wxm.androidutil.ExActivity.BaseAppCompatActivity;
+
+import android.os.Bundle;
+
+import wxm.androidutil.Switcher.ACSwitcherActivity;
 
 /**
- * 本activity用于展示应用帮助信息
- * 为优化代码架构，activity启动时根据intent参数加载不同帮助信息
+ * help UI
  */
-public class ACHelp extends BaseAppCompatActivity {
+public class ACHelp extends ACSwitcherActivity<FrgHelp> {
     public static final String STR_HELP_TYPE            = "HELP_TYPE";
     public static final String STR_HELP_START           = "help_start";
 
     @Override
-    protected void leaveActivity() {
-        finish();
-    }
-
-    @Override
-    protected void initFrgHolder() {
-        LOG_TAG = "ACHelp";
-        mFGHolder = new FrgHelp();
+    protected void initUi(Bundle savedInstanceState)    {
+        super.initUi(savedInstanceState);
+        addFragment(new FrgHelp());
     }
 }

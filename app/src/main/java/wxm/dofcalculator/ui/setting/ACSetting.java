@@ -2,25 +2,30 @@ package wxm.dofcalculator.ui.setting;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import wxm.androidutil.ExActivity.BaseAppCompatActivity;
+import wxm.androidutil.Switcher.ACSwitcherActivity;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.GlobalDef;
+import wxm.dofcalculator.ui.setting.page.TFSettingBase;
+import wxm.dofcalculator.ui.setting.page.TFSettingCheckVersion;
+import wxm.dofcalculator.ui.setting.page.TFSettingMain;
 
 /**
  * for app setting
  */
-public class ACSetting extends BaseAppCompatActivity {
-    private FrgSetting mFGSetting = new FrgSetting();
+public class ACSetting extends ACSwitcherActivity<TFSettingBase> {
+    private TFSettingCheckVersion   mTFCheckVersion = new TFSettingCheckVersion();
+    private TFSettingMain mTFMain         = new TFSettingMain();
 
     @Override
     protected void leaveActivity() {
-        if(FrgSetting.PAGE_IDX_MAIN != mFGSetting.getCurrentItem()) {
-            mFGSetting.change_page(FrgSetting.PAGE_IDX_MAIN);
+        if(mTFMain != getHotFragment())    {
+            switchToFragment(mTFMain);
         } else {
             int ret_data = GlobalDef.INTRET_GIVEUP;
             Intent data = new Intent();
@@ -30,9 +35,10 @@ public class ACSetting extends BaseAppCompatActivity {
     }
 
     @Override
-    protected void initFrgHolder() {
-        LOG_TAG = "ACSetting";
-        mFGHolder = mFGSetting;
+    protected void initUi(Bundle savedInstanceState)    {
+        super.initUi(savedInstanceState);
+        addFragment(mTFMain);
+        addFragment(mTFCheckVersion);
     }
 
     @Override
@@ -47,21 +53,21 @@ public class ACSetting extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mi_save: {
-                if(FrgSetting.PAGE_IDX_MAIN != mFGSetting.getCurrentItem()) {
-                    final TFSettingBase tb = mFGSetting.getCurrentPage();
+                if(mTFMain != getHotFragment())    {
+                    final TFSettingBase tb = getHotFragment();
                     if(tb.isSettingDirty()) {
                         Dialog alertDialog = new AlertDialog.Builder(this).
                                 setTitle("配置已经更改").
                                 setMessage("是否保存更改的配置?").
                                 setPositiveButton("是", (dialog, which) -> {
                                     tb.updateSetting();
-                                    mFGSetting.change_page(FrgSetting.PAGE_IDX_MAIN);
+                                    switchToFragment(mTFMain);
                                 }).
-                                setNegativeButton("否", (dialog, which) -> mFGSetting.change_page(FrgSetting.PAGE_IDX_MAIN)).
+                                setNegativeButton("否", (dialog, which) -> switchToFragment(mTFMain)).
                                 create();
                         alertDialog.show();
                     } else  {
-                        mFGSetting.change_page(FrgSetting.PAGE_IDX_MAIN);
+                        switchToFragment(mTFMain);
                     }
                 } else  {
                     int ret_data = GlobalDef.INTRET_SURE;
@@ -73,14 +79,7 @@ public class ACSetting extends BaseAppCompatActivity {
             break;
 
             case R.id.mi_giveup:    {
-                if(FrgSetting.PAGE_IDX_MAIN != mFGSetting.getCurrentItem()) {
-                    mFGSetting.change_page(FrgSetting.PAGE_IDX_MAIN);
-                } else {
-                    int ret_data = GlobalDef.INTRET_GIVEUP;
-                    Intent data = new Intent();
-                    setResult(ret_data, data);
-                    finish();
-                }
+                leaveActivity();
             }
             break;
 
@@ -92,11 +91,7 @@ public class ACSetting extends BaseAppCompatActivity {
         return true;
     }
 
-    /**
-     * 切换到新页面
-     * @param new_page 新页面postion
-     */
-    public void change_page(int new_page)  {
-        mFGSetting.setCurrentItem(new_page);
+    public void switchToCheckVersionPage()  {
+        switchToFragment(mTFCheckVersion);
     }
 }

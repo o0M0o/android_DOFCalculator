@@ -7,8 +7,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import wxm.androidutil.DBHelper.IDBRow;
 
 /**
- * camera数据类
- * Created by 123 on 2016/9/1.
+ * device data(camera & lens)
+ * Created by WangXM on2016/9/1.
  */
 @DatabaseTable(tableName = "tbDevice")
 public class DeviceItem

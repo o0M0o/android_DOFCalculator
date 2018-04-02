@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.setting;
+package wxm.dofcalculator.ui.setting.page;
 
 
 import android.os.Bundle;
@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import wxm.dofcalculator.R;
+import wxm.dofcalculator.ui.setting.ACSetting;
 
 /**
  * 设置主页面
- * Created by 123 on 2016/10/10.
+ * Created by WangXM on2016/10/10.
  */
 public class TFSettingMain extends TFSettingBase {
 
@@ -34,7 +35,7 @@ public class TFSettingMain extends TFSettingBase {
     public void onIVClick(View v) {
         switch (v.getId()) {
             case R.id.rl_check_version: {
-                toPageByIdx(FrgSetting.PAGE_IDX_CHECK_VERSION);
+                ((ACSetting)getActivity()).switchToCheckVersionPage();
             }
             break;
         }

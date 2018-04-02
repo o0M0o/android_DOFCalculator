@@ -11,7 +11,7 @@ import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
- * Device数据工具类
+ * device db utility
  * Created by WangXM on 2017/03/13.
  */
 public class DeviceDBUtility extends DBUtilityBase<DeviceItem, Integer> {
@@ -19,14 +19,9 @@ public class DeviceDBUtility extends DBUtilityBase<DeviceItem, Integer> {
         super();
     }
 
-    /**
-     * 数据库中数据条数
-     * @return  数据总条数
-     */
     public int getCount()   {
         return getAllData().size();
     }
-
 
     @Override
     protected RuntimeExceptionDao<DeviceItem, Integer> getDBHelper() {

@@ -29,7 +29,7 @@ import wxm.dofcalculator.utility.ContextUtil;
 
 /**
  * frg for device add
- * Created by wxm on 2017/3/11.
+ * Created by WangXM on2017/3/11.
  */
 public class FrgDeviceAdd
         extends FrgUtilityBase

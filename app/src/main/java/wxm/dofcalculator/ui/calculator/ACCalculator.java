@@ -10,7 +10,7 @@ import wxm.dofcalculator.define.GlobalDef;
 
 /**
  * UI for device
- * Created by wxm on 2017/3/12.
+ * Created by WangXM on2017/3/12.
  */
 public class ACCalculator extends ACRxSwitcherActivity<FrgUtilityBase> {
     // for invoke parameter

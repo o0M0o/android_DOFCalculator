@@ -11,7 +11,7 @@ import wxm.dofcalculator.define.LensItem;
 import wxm.dofcalculator.utility.ContextUtil;
 
 /**
- * CameraItem数据工具类
+ * lens db utility
  * Created by WangXM on 2017/03/13.
  */
 public class LensDBUtility extends DBUtilityBase<LensItem, Integer> {

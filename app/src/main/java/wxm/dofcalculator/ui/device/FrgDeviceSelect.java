@@ -38,7 +38,7 @@ import wxm.dofcalculator.utility.ContextUtil;
 
 /**
  * frg for device select
- * Created by wxm on 2017/3/11.
+ * Created by WangXM on2017/3/11.
  */
 public class FrgDeviceSelect
         extends FrgUtilityBase  {
@@ -194,7 +194,7 @@ public class FrgDeviceSelect
 
     /**
      * adapter for device
-     * Created by ookoo on 2017/1/23.
+     * Created by WangXM on2017/1/23.
      */
     public class AdapterDevice extends SimpleAdapter {
         private final static String LOG_TAG = "AdapterDevice";

@@ -18,7 +18,7 @@ import wxm.dofcalculator.define.LensItem;
 
 /**
  * db ormlite helper
- * Created by 123 on 2016/8/5.
+ * Created by WangXM on2016/8/5.
  */
 public class DBOrmLiteHelper extends OrmLiteSqliteOpenHelper {
     private static final String TAG = "DBOrmLiteHelper";
@@ -95,9 +95,6 @@ public class DBOrmLiteHelper extends OrmLiteSqliteOpenHelper {
     }
 
 
-    /**
-     * 创建表并完成初始化工作
-     */
     private void CreateAndInitTable()   {
         try {
             TableUtils.createTable(connectionSource, CameraItem.class);
@@ -114,7 +111,7 @@ public class DBOrmLiteHelper extends OrmLiteSqliteOpenHelper {
 
 
     /**
-     * 填充测试数据
+     * add test data(if need)
      */
     private void AddTestData()  {
     }

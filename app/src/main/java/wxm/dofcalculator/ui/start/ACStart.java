@@ -25,7 +25,7 @@ import wxm.dofcalculator.ui.setting.ACSetting;
 
 /**
  * UI for App start
- * Created by wxm on 2017/3/12.
+ * Created by WangXM on2017/3/12.
  */
 public class ACStart extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {

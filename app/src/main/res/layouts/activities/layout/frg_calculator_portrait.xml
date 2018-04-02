@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context="wxm.dofcalculator.ui.calculator.ACCalculator">
 
-    <wxm.dofcalculator.ui.calculator.VWDof
+    <wxm.dofcalculator.ui.calculator.view.VWDof
         android:id="@+id/evw_dof"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@+id/eca_adjust"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <wxm.dofcalculator.ui.calculator.VWCameraAdjust
+    <wxm.dofcalculator.ui.calculator.view.VWCameraAdjust
         android:id="@+id/eca_adjust"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

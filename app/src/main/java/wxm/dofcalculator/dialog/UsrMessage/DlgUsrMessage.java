@@ -36,8 +36,8 @@ import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.READ_SMS;
 
 /**
- * 提交用户消息
- * Created by ookoo on 2017/1/9.
+ * send user message
+ * Created by WangXM on2017/1/9.
  */
 public class DlgUsrMessage extends DlgOKOrNOBase {
     // for progress dialog when send http post

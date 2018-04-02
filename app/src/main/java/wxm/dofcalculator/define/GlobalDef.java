@@ -1,8 +1,8 @@
 package wxm.dofcalculator.define;
 
 /**
- * App全局定义
- * Created by wxm on 2017/3/13.
+ * global define
+ * Created by WangXM on2017/3/13.
  */
 public class GlobalDef {
     public static final String PACKAGE_NAME = "wxm.dofcalculator";

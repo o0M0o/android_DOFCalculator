@@ -1,8 +1,8 @@
 package wxm.dofcalculator.db;
 
 /**
- * 数据库中数据变化后通知类
- * Created by User on 2017/2/14.
+ * event for db change
+ * Created by WangXM on2017/2/14.
  */
 public class DBDataChangeEvent {
     public DBDataChangeEvent()  {

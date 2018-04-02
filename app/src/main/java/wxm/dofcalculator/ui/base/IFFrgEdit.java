@@ -2,7 +2,7 @@ package wxm.dofcalculator.ui.base;
 
 /**
  * 编辑类Frgament的接口定义
- * Created by wxm on 2017/3/13.
+ * Created by WangXM on2017/3/13.
  */
 public interface IFFrgEdit {
     /**

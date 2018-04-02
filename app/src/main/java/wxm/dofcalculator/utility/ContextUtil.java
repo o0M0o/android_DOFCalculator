@@ -10,7 +10,7 @@ import wxm.dofcalculator.db.LensDBUtility;
 /**
  * 获取全局context
  * 获取全局辅助类
- * Created by 123 on 2016/5/7.
+ * Created by WangXM on2016/5/7.
  */
 public class ContextUtil extends Application {
     private static final String TAG = "ContextUtil";

@@ -1,4 +1,4 @@
-package wxm.dofcalculator.ui.setting;
+package wxm.dofcalculator.ui.setting.page;
 
 
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import wxm.dofcalculator.define.GlobalDef;
 
 /**
  * 检查版本设置页面
- * Created by 123 on 2016/10/10.
+ * Created by WangXM on2016/10/10.
  */
 public class TFSettingCheckVersion extends TFSettingBase {
     @BindView(R.id.tv_ver_number)

@@ -2,12 +2,13 @@ package wxm.dofcalculator.ui.device;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import wxm.androidutil.ExActivity.BaseAppCompatActivity;
 import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.Switcher.ACSwitcherActivity;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.GlobalDef;
@@ -15,9 +16,9 @@ import wxm.dofcalculator.ui.base.IFFrgEdit;
 
 /**
  * UI for device
- * Created by wxm on 2017/3/12.
+ * Created by WangXM on2017/3/12.
  */
-public class ACDevice extends BaseAppCompatActivity {
+public class ACDevice extends ACSwitcherActivity<FrgUtilityBase> {
     // for invoke parameter
     public final static String KEY_INVOKE_TYPE  = "invoke_type";
     public final static int VAL_DEVICE_ADD      = 1;
@@ -27,14 +28,17 @@ public class ACDevice extends BaseAppCompatActivity {
     private int  mInvokeType = VAL_NULL;
 
     @Override
-    protected void leaveActivity() {
+    protected void leaveActivity()  {
+        int ret_data = GlobalDef.INTRET_GIVEUP;
+
+        Intent data = new Intent();
+        setResult(ret_data, data);
         finish();
     }
 
     @Override
-    protected void initFrgHolder() {
-        LOG_TAG = "ACDevice";
-
+    protected void initUi(Bundle savedInstanceState)    {
+        super.initUi(savedInstanceState);
         Intent it = getIntent();
         if(null == it)
             return;
@@ -42,22 +46,21 @@ public class ACDevice extends BaseAppCompatActivity {
         mInvokeType = it.getIntExtra(KEY_INVOKE_TYPE, VAL_NULL);
         switch (mInvokeType)    {
             case VAL_DEVICE_ADD :
-                mFGHolder = new FrgDeviceAdd();
+                addFragment(new FrgDeviceAdd());
                 break;
 
             case VAL_DEVICE_SELECTED :
-                mFGHolder = new FrgDeviceSelect();
+                addFragment(new FrgDeviceSelect());
                 break;
-
-            case VAL_NULL :
         }
+
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         // TODO Auto-generated method stub
         super.onConfigurationChanged(newConfig);
-        ((FrgUtilityBase)mFGHolder).refreshUI();
+        getHotFragment().refreshUI();
     }
 
     @Override
@@ -74,7 +77,7 @@ public class ACDevice extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mi_save: {
-                IFFrgEdit ie = UtilFun.cast_t(mFGHolder);
+                IFFrgEdit ie = UtilFun.cast_t(getHotFragment());
                 if(ie.onAccept())   {
                     finish();
                 }
@@ -82,11 +85,7 @@ public class ACDevice extends BaseAppCompatActivity {
             break;
 
             case R.id.mi_giveup: {
-                int ret_data = GlobalDef.INTRET_GIVEUP;
-
-                Intent data = new Intent();
-                setResult(ret_data, data);
-                finish();
+                leaveActivity();
             }
             break;
 
