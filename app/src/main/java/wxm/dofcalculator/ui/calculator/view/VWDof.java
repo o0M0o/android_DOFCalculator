@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.BindColor;
@@ -33,6 +34,8 @@ import wxm.uilib.DistanceMeter.DistanceMeterTag;
 public class VWDof extends ConstraintLayout {
     private final static int        VW_VERTICAL     = 1;
     private final static int        VW_HORIZONTAL   = 2;
+
+    private final static int        SETP_VAL = 20;
 
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
@@ -195,6 +198,14 @@ public class VWDof extends ConstraintLayout {
              */
             void updateDofView()    {
                 mMVMeter.clearValueTag();
+
+                int cur_max = (((int)mDENOFResult.getBackDof() / 1000) / SETP_VAL + 2) * SETP_VAL;
+                int cur_min = Math.max(0,
+                                (((int)mDENOFResult.getFrontDof() / 1000) / SETP_VAL - 2) * SETP_VAL);
+                HashMap<String, Object> hm = new HashMap<>();
+                hm.put(DistanceMeter.PARA_VAL_MAX, cur_max);
+                hm.put(DistanceMeter.PARA_VAL_MIN, cur_min);
+                mMVMeter.adjustPara(hm);
 
                 DistanceMeterTag mt_f = new DistanceMeterTag();
                 mt_f.mSZTagName = mSZTagFrontPoint;
