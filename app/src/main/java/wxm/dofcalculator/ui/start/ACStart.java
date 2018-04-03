@@ -31,7 +31,6 @@ public class ACStart extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
     private FrgStart    mFGStart;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +107,7 @@ public class ACStart extends AppCompatActivity
         // load fragment
         if(null == savedInstanceState)  {
             mFGStart = new FrgStart();
-            FragmentTransaction ft =  getFragmentManager().beginTransaction();
+            android.support.v4.app.FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fl_holder, mFGStart);
             ft.commit();
         }

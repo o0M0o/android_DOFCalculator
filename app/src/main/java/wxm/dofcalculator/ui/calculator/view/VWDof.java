@@ -31,8 +31,6 @@ import wxm.uilib.DistanceMeter.DistanceMeterTag;
  * Created by WangXM on2017/3/19.
  */
 public class VWDof extends ConstraintLayout {
-    private final static String     LOG_TAG = "DOFVW";
-
     private final static int        VW_VERTICAL     = 1;
     private final static int        VW_HORIZONTAL   = 2;
 
@@ -75,9 +73,7 @@ public class VWDof extends ConstraintLayout {
     @BindString(R.string.tag_back_point)
     String  mSZTagBackPoint;
 
-
     private final static String DEF_SZ = "--";
-
 
     private int mAttrOrentation = VW_VERTICAL;
 

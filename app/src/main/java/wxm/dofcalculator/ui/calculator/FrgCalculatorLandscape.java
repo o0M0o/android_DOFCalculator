@@ -2,6 +2,7 @@ package wxm.dofcalculator.ui.calculator;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
@@ -28,7 +29,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * first frg for app
  * Created by WangXM on2017/3/11.
  */
-public class FrgCalculatorLandscape extends FrgUtilityBase {
+public class FrgCalculatorLandscape extends FrgUtilitySupportBase {
     @BindView(R.id.evw_dof)
     VWDof mEVWDof;
 
@@ -37,16 +38,15 @@ public class FrgCalculatorLandscape extends FrgUtilityBase {
 
     private DeviceItem mDICurDevice;
 
-    @Override
-    protected void enterActivity()  {
-        super.enterActivity();
+    public FrgCalculatorLandscape() {
+        super();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void leaveActivity()  {
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        super.leaveActivity();
+        super.onDestroy();
     }
 
     /**
@@ -55,15 +55,14 @@ public class FrgCalculatorLandscape extends FrgUtilityBase {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAttrChangeEvent(AttrChangedEvent event) {
-        updateResultUI();
+        if(isVisible()) {
+            updateResultUI();
+        }
     }
-
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgCalculatorLandscape";
         View rootView = layoutInflater.inflate(R.layout.frg_calculator_landscape, viewGroup, false);
-        ButterKnife.bind(this, rootView);
 
         int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
         if(GlobalDef.INT_INVAILED_ID != d_id)   {
@@ -74,14 +73,9 @@ public class FrgCalculatorLandscape extends FrgUtilityBase {
     }
 
     @Override
-    protected void initUiComponent(View view) {
-    }
-
-    @Override
-    protected void loadUI() {
+    protected void loadUI(Bundle savedInstanceState) {
         //updateResultUI();
     }
-
 
     /**
      * 更新结果UI

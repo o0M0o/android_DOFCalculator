@@ -13,8 +13,7 @@ public class ACHelp extends ACSwitcherActivity<FrgHelp> {
     public static final String STR_HELP_START           = "help_start";
 
     @Override
-    protected void initUi(Bundle savedInstanceState)    {
-        super.initUi(savedInstanceState);
+    protected void setupFragment(Bundle bundle) {
         addFragment(new FrgHelp());
     }
 }

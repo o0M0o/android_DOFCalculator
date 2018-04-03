@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.androidutil.Switcher.ACSwitcherActivity;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
@@ -18,7 +18,7 @@ import wxm.dofcalculator.ui.base.IFFrgEdit;
  * UI for device
  * Created by WangXM on2017/3/12.
  */
-public class ACDevice extends ACSwitcherActivity<FrgUtilityBase> {
+public class ACDevice extends ACSwitcherActivity<FrgUtilitySupportBase> {
     // for invoke parameter
     public final static String KEY_INVOKE_TYPE  = "invoke_type";
     public final static int VAL_DEVICE_ADD      = 1;
@@ -37,8 +37,7 @@ public class ACDevice extends ACSwitcherActivity<FrgUtilityBase> {
     }
 
     @Override
-    protected void initUi(Bundle savedInstanceState)    {
-        super.initUi(savedInstanceState);
+    protected void setupFragment(Bundle savedInstanceState)    {
         Intent it = getIntent();
         if(null == it)
             return;
@@ -53,7 +52,6 @@ public class ACDevice extends ACSwitcherActivity<FrgUtilityBase> {
                 addFragment(new FrgDeviceSelect());
                 break;
         }
-
     }
 
     @Override

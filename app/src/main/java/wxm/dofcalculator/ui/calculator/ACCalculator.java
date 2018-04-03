@@ -4,25 +4,24 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.androidutil.Switcher.ACRxSwitcherActivity;
+import wxm.androidutil.Switcher.ACSwitcherActivity;
 import wxm.dofcalculator.define.GlobalDef;
 
 /**
  * UI for device
  * Created by WangXM on2017/3/12.
  */
-public class ACCalculator extends ACRxSwitcherActivity<FrgUtilityBase> {
+public class ACCalculator extends ACSwitcherActivity<FrgUtilitySupportBase> {
     // for invoke parameter
     public final static String KEY_DEVICE_ID  = "device_id";
 
-    private FrgUtilityBase  mFGPortraitHolder;
-    private FrgUtilityBase  mFGLandscapeHolder;
+    private FrgUtilitySupportBase  mFGPortraitHolder;
+    private FrgUtilitySupportBase  mFGLandscapeHolder;
 
     @Override
-    protected void initUi(Bundle savedInstanceState)    {
-        super.initUi(savedInstanceState);
-
+    protected void setupFragment(Bundle savedInstanceState)    {
         Intent it = getIntent();
         if(null == it)
             return;

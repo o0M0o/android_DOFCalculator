@@ -21,7 +21,7 @@ public class FrgHelp extends FrgWebView {
     }
 
     @Override
-    protected void loadUI() {
+    protected void loadUI(Bundle bundle) {
         loadPage("file:///android_asset/help_main.html", null);
     }
 }

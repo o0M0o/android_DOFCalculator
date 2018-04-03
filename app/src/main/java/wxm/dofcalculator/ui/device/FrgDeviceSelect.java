@@ -23,9 +23,8 @@ import java.util.Map;
 
 import butterknife.BindArray;
 import butterknife.BindView;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.androidutil.util.FastViewHolder;
-import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.db.DBDataChangeEvent;
@@ -41,7 +40,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * Created by WangXM on2017/3/11.
  */
 public class FrgDeviceSelect
-        extends FrgUtilityBase  {
+        extends FrgUtilitySupportBase {
     private final static String  KEY_DEVICE_NAME = "device_name";
     private final static String  KEY_DEVICE_ID   = "device_id";
     private final static String  KEY_CAMERA_INFO = "camera_info";
@@ -59,30 +58,24 @@ public class FrgDeviceSelect
     @BindArray(R.array.sensor_size)
     String[]    mSASensorSize;
 
-    @Override
-    protected void enterActivity()  {
-        super.enterActivity();
-
+    public FrgDeviceSelect() {
+        super();
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void leaveActivity()  {
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
-
-        super.leaveActivity();
+        super.onDestroy();
     }
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgDeviceSelect";
-        View rootView = layoutInflater.inflate(R.layout.frg_device_select, viewGroup, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+        return layoutInflater.inflate(R.layout.frg_device_select, viewGroup, false);
     }
 
     @Override
-    protected void initUiComponent(View view) {
+    protected void loadUI(Bundle savedInstanceState) {
         mBUSure.setVisibility(View.GONE);
         mBUDelete.setVisibility(View.GONE);
 
@@ -106,7 +99,7 @@ public class FrgDeviceSelect
             if(GlobalDef.INT_INVAILED_ID != id) {
                 DeviceItem di = ContextUtil.getDUDevice().getData(id);
                 String al_del = String.format(Locale.CHINA,
-                                    "是否删除设备'%s'", di.getName());
+                        "是否删除设备'%s'", di.getName());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(al_del).setTitle("警告")
@@ -118,17 +111,13 @@ public class FrgDeviceSelect
         });
     }
 
-    @Override
-    protected void loadUI() {
-    }
-
     /**
      * 过滤视图事件
      * @param event     事件
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFilterShowEvent(DBDataChangeEvent event) {
-        initUiComponent(getView());
+        loadUI(null);
     }
 
     /**

@@ -11,7 +11,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.dofcalculator.R;
 
 import wxm.dofcalculator.ui.device.ACDevice;
@@ -21,8 +21,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * first frg for app
  * Created by WangXM on2017/3/11.
  */
-public class FrgStart extends FrgUtilityBase {
-
+public class FrgStart extends FrgUtilitySupportBase {
     @BindView(R.id.bt_device_add)
     Button mBTDeviceAdd;
 
@@ -38,14 +37,9 @@ public class FrgStart extends FrgUtilityBase {
     }
 
     @Override
-    protected void initUiComponent(View view) {
-    }
-
-    @Override
-    protected void loadUI() {
-        mBTDeviceSelect.setVisibility(0 == ContextUtil.getDUDevice().getCount() ?
-                View.GONE
-                : View.VISIBLE);
+    protected void loadUI(Bundle bundle) {
+        mBTDeviceSelect.setVisibility(0 == ContextUtil.getDUDevice().getCount()
+                        ? View.GONE : View.VISIBLE);
     }
 
     @OnClick({R.id.bt_device_add, R.id.bt_device_select})

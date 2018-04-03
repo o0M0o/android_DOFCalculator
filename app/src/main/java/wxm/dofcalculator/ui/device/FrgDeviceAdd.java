@@ -18,7 +18,7 @@ import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilityBase;
+import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.CameraItem;
@@ -32,9 +32,8 @@ import wxm.dofcalculator.utility.ContextUtil;
  * Created by WangXM on2017/3/11.
  */
 public class FrgDeviceAdd
-        extends FrgUtilityBase
+        extends FrgUtilitySupportBase
         implements IFFrgEdit {
-
     // for device
     @BindView(R.id.et_device_name)
     TextInputEditText   mETDeviceName;
@@ -45,7 +44,6 @@ public class FrgDeviceAdd
 
     @BindView(R.id.sp_sensor_size)
     Spinner             mSPSensorSize;
-
 
     // for lens
     @BindView(R.id.et_lens_name)
@@ -92,14 +90,11 @@ public class FrgDeviceAdd
 
     @Override
     protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgDeviceAdd";
-        View rootView = layoutInflater.inflate(R.layout.frg_device_add, viewGroup, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+        return layoutInflater.inflate(R.layout.frg_device_add, viewGroup, false);
     }
 
     @Override
-    protected void initUiComponent(View view) {
+    protected void loadUI(Bundle savedInstanceState) {
         String[] org_arr = new String[mSASensorSize.length];
         for(int i = 0; i < org_arr.length; ++i) {
             String org = mSASensorSize[i];
@@ -108,13 +103,9 @@ public class FrgDeviceAdd
 
         // for sensor size
         ArrayAdapter<CharSequence> ap_sensor_size = new ArrayAdapter<>(getActivity(),
-                                                android.R.layout.simple_spinner_item, org_arr);
+                android.R.layout.simple_spinner_item, org_arr);
         ap_sensor_size.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSPSensorSize.setAdapter(ap_sensor_size);
-    }
-
-    @Override
-    protected void loadUI() {
     }
 
 

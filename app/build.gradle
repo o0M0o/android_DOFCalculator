@@ -88,24 +88,20 @@ static def releaseTime() {
 dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.jakewharton:butterknife:8.5.1'
     implementation 'com.squareup.okhttp3:okhttp:3.7.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
-
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'io.reactivex:rxjava:1.1.1'
     implementation 'com.trello:rxlifecycle:0.5.0'
     implementation 'com.trello:rxlifecycle-components:0.5.0'
-
     implementation project(':uilib')
     implementation project(':androidutil')
 }

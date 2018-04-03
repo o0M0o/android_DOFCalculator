@@ -35,8 +35,7 @@ public class ACSetting extends ACSwitcherActivity<TFSettingBase> {
     }
 
     @Override
-    protected void initUi(Bundle savedInstanceState)    {
-        super.initUi(savedInstanceState);
+    protected void setupFragment(Bundle bundle) {
         addFragment(mTFMain);
         addFragment(mTFCheckVersion);
     }
