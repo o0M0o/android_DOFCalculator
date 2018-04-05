@@ -146,7 +146,7 @@ public class VWDof extends ConstraintLayout {
         if(null == mDENOFResult)    {
             helper.drawBkg();
             if(!isInEditMode()) {
-                mMVMeter.clearValueTag();
+                mMVMeter.clearCursor();
 
                 mTVFrontDof.setText(DEF_SZ);
                 mTVObjectDistance.setText(DEF_SZ);
@@ -197,7 +197,7 @@ public class VWDof extends ConstraintLayout {
              * 添加游标
              */
             void updateDofView()    {
-                mMVMeter.clearValueTag();
+                mMVMeter.clearCursor();
 
                 int cur_max = (((int)mDENOFResult.getBackDof() / 1000) / SETP_VAL + 2) * SETP_VAL;
                 int cur_min = Math.max(0,
@@ -205,25 +205,24 @@ public class VWDof extends ConstraintLayout {
                 HashMap<String, Object> hm = new HashMap<>();
                 hm.put(DistanceMeter.PARA_VAL_MAX, cur_max);
                 hm.put(DistanceMeter.PARA_VAL_MIN, cur_min);
-                mMVMeter.adjustPara(hm);
+                mMVMeter.adjustAttribute(hm);
 
                 DistanceMeterTag mt_f = new DistanceMeterTag();
                 mt_f.mSZTagName = mSZTagFrontPoint;
                 mt_f.mCRTagColor = mCRDOFFront;
                 mt_f.mTagVal = mDENOFResult.getFrontDof() / 1000;
-                mMVMeter.addValueTag(mt_f);
 
                 DistanceMeterTag mt_od = new DistanceMeterTag();
                 mt_od.mSZTagName = mSZTagObjectDistance;
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
                 mt_od.mTagVal = mDENOFResult.getObjectDistance() / 1000;
-                mMVMeter.addValueTag(mt_od);
 
                 DistanceMeterTag mt_b = new DistanceMeterTag();
                 mt_b.mSZTagName = mSZTagBackPoint;
                 mt_b.mCRTagColor = mCRDOFBack;
                 mt_b.mTagVal = mDENOFResult.getBackDof() / 1000;
-                mMVMeter.addValueTag(mt_b);
+
+                mMVMeter.addCursor(mt_f, mt_od, mt_b);
             }
         }
         utility helper = new utility();

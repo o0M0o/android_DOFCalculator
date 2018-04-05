@@ -17,17 +17,16 @@
     <wxm.uilib.DistanceMeter.DistanceMeter
         android:id="@+id/evw_meter"
         android:layout_marginTop="2dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_dof_info"
-        app:dmBaseLineBottomPadding="24"
-        app:dmLongLineCount="5"
-        app:dmModeType="5"
+        app:dmMainScaleCount="5"
+        app:dmSubScaleCount="10"
         app:dmPostUnit="m"
         app:dmTextSize="9sp" />
 </android.support.constraint.ConstraintLayout>
