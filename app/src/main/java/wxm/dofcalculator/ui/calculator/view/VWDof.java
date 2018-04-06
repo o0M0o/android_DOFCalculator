@@ -35,7 +35,7 @@ public class VWDof extends ConstraintLayout {
     private final static int        VW_VERTICAL     = 1;
     private final static int        VW_HORIZONTAL   = 2;
 
-    private final static int        SETP_VAL = 20;
+    private final static int        SETP_VAL = 5;
 
     protected DofChangedEvent mDENOFResult;
     protected CameraSettingChangeEvent mCSCameraSetting;
@@ -169,7 +169,7 @@ public class VWDof extends ConstraintLayout {
     }
 
     /**
-     * 刷新Dof
+     * update view
      */
     private void updateDof()    {
         if(null == mCSCameraSetting)    {
@@ -179,7 +179,7 @@ public class VWDof extends ConstraintLayout {
 
         class utility   {
             /**
-             * 更新dof信息
+             * update dof info in header view
              */
             void updateDofInfo()    {
                 mTVFrontDof.setText(String.format(Locale.CHINA, "%.02fm",
@@ -194,33 +194,38 @@ public class VWDof extends ConstraintLayout {
 
 
             /**
-             * 添加游标
+             * add cursor and adjust value range
              */
             void updateDofView()    {
                 mMVMeter.clearCursor();
 
-                int cur_max = (((int)mDENOFResult.getBackDof() / 1000) / SETP_VAL + 2) * SETP_VAL;
-                int cur_min = Math.max(0,
-                                (((int)mDENOFResult.getFrontDof() / 1000) / SETP_VAL - 2) * SETP_VAL);
+                float valBackDof = mDENOFResult.getBackDof() / 1000;
+                float valFrontDof = mDENOFResult.getFrontDof() / 1000;
+                float valObjectDistance = mDENOFResult.getObjectDistance() / 1000;
+
+                // adjust min-max value
+                int cur_max = (((int)valBackDof) / SETP_VAL + 2) * SETP_VAL;
+                int cur_min = Math.max(0, (((int)valFrontDof) / SETP_VAL - 2) * SETP_VAL);
                 HashMap<String, Object> hm = new HashMap<>();
                 hm.put(DistanceMeter.PARA_VAL_MAX, cur_max);
                 hm.put(DistanceMeter.PARA_VAL_MIN, cur_min);
                 mMVMeter.adjustAttribute(hm);
 
+                // add cursors
                 DistanceMeterTag mt_f = new DistanceMeterTag();
                 mt_f.mSZTagName = mSZTagFrontPoint;
                 mt_f.mCRTagColor = mCRDOFFront;
-                mt_f.mTagVal = mDENOFResult.getFrontDof() / 1000;
+                mt_f.mTagVal = valFrontDof;
 
                 DistanceMeterTag mt_od = new DistanceMeterTag();
                 mt_od.mSZTagName = mSZTagObjectDistance;
                 mt_od.mCRTagColor = mCRDOFObjectDistance;
-                mt_od.mTagVal = mDENOFResult.getObjectDistance() / 1000;
+                mt_od.mTagVal = valObjectDistance;
 
                 DistanceMeterTag mt_b = new DistanceMeterTag();
                 mt_b.mSZTagName = mSZTagBackPoint;
                 mt_b.mCRTagColor = mCRDOFBack;
-                mt_b.mTagVal = mDENOFResult.getBackDof() / 1000;
+                mt_b.mTagVal = valBackDof;
 
                 mMVMeter.addCursor(mt_f, mt_od, mt_b);
             }

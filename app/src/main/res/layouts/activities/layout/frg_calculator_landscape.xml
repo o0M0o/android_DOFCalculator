@@ -10,8 +10,8 @@
 
     <wxm.dofcalculator.ui.calculator.view.VWDof
         android:id="@+id/evw_dof"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:emOrientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/eca_adjust"
         app:layout_constraintEnd_toEndOf="parent"
