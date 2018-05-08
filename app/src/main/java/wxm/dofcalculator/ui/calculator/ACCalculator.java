@@ -25,8 +25,8 @@ public class ACCalculator extends ACSwitcherActivity<FrgSupportBaseAdv> {
         if(null == it)
             return;
 
-        int d_id = it.getIntExtra(KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
-        if(GlobalDef.INT_INVAILED_ID == d_id)
+        int d_id = it.getIntExtra(KEY_DEVICE_ID, GlobalDef.INSTANCE.getINVAILD_ID());
+        if(GlobalDef.INSTANCE.getINVAILD_ID() == d_id)
             return;
 
         mFGPortraitHolder = new FrgCalculatorPortrait();

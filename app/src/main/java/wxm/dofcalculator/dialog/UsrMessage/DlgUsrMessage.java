@@ -188,7 +188,7 @@ public class DlgUsrMessage extends DlgOKOrNOBase {
                 param.put(mSZColMsg, mSZMsg);
                 param.put(mSZColAppName,
                         mSZColValAppName + "-"
-                                + PackageUtil.getVerName(getContext(), GlobalDef.PACKAGE_NAME));
+                                + PackageUtil.getVerName(getContext(), GlobalDef.INSTANCE.getPACKAGE_NAME()));
 
                 RequestBody body = RequestBody.create(JSON, param.toString());
 

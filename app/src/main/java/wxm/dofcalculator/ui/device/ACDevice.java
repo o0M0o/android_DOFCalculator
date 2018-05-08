@@ -29,7 +29,7 @@ public class ACDevice extends ACSwitcherActivity<FrgSupportBaseAdv> {
 
     @Override
     protected void leaveActivity()  {
-        int ret_data = GlobalDef.INTRET_GIVEUP;
+        int ret_data = GlobalDef.INSTANCE.getRET_CANCEL();
 
         Intent data = new Intent();
         setResult(ret_data, data);

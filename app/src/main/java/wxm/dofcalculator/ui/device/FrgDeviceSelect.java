@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -32,6 +28,7 @@ import wxm.dofcalculator.define.CameraItem;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
 import wxm.dofcalculator.define.LensItem;
+import wxm.dofcalculator.ui.base.MoreAdapter;
 import wxm.dofcalculator.ui.calculator.ACCalculator;
 import wxm.dofcalculator.utility.ContextUtil;
 
@@ -72,14 +69,13 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
         mBUSure.setVisibility(View.GONE);
         mBUDelete.setVisibility(View.GONE);
 
-        AdapterDevice ap = new AdapterDevice(getActivity(), getAllDeviceInfo(),
-                new String[]{}, new int[]{});
+        AdapterDevice ap = new AdapterDevice(getActivity(), getAllDeviceInfo());
         mLVDevice.setAdapter(ap);
         ap.notifyDataSetChanged();
 
         mBUSure.setOnClickListener(v -> {
             int id = ap.getSelectDeviceID();
-            if(GlobalDef.INT_INVAILED_ID != id) {
+            if(GlobalDef.INSTANCE.getINVAILD_ID() != id) {
                 DeviceItem di = ContextUtil.getDUDevice().getData(id);
                 Intent it = new Intent(getActivity(), ACCalculator.class);
                 it.putExtra(ACCalculator.KEY_DEVICE_ID, di.getID());
@@ -89,7 +85,7 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
 
         mBUDelete.setOnClickListener(v -> {
             int id = ap.getSelectDeviceID();
-            if(GlobalDef.INT_INVAILED_ID != id) {
+            if(GlobalDef.INSTANCE.getINVAILD_ID() != id) {
                 DeviceItem di = ContextUtil.getDUDevice().getData(id);
                 String al_del = String.format(Locale.CHINA,
                         "是否删除设备'%s'", di.getName());
@@ -178,11 +174,14 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
      * adapter for device
      * Created by WangXM on2017/1/23.
      */
-    public class AdapterDevice extends SimpleAdapter {
-        private final static String LOG_TAG = "AdapterDevice";
-        private View.OnClickListener mCLItem = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public class AdapterDevice extends MoreAdapter {
+        AdapterDevice(Context context, List<? extends Map<String, ?>> data) {
+            super(context, data, R.layout.lv_device);
+        }
+
+        @Override
+        protected void loadView(int pos, ViewHolder vhHolder) {
+            vhHolder.getConvertView().setOnClickListener(v -> {
                 boolean os = v.isSelected();
                 for(int i = 0; i < mLVDevice.getChildCount(); ++i)  {
                     View v_c = mLVDevice.getChildAt(i);
@@ -193,43 +192,17 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
                 v.setSelected(!os);
                 mBUSure.setVisibility(!os ? View.VISIBLE : View.GONE);
                 mBUDelete.setVisibility(!os ? View.VISIBLE : View.GONE);
-            }
-        };
+            });
 
-
-        AdapterDevice(Context context, List<? extends Map<String, ?>> data,
-                      String[] from, int[] to) {
-            super(context, data, R.layout.lv_device, from, to);
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            int org_ct = getCount();
-            return org_ct < 1 ? 1 : org_ct;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return position;
-        }
-
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder vh = ViewHolder.get(getActivity(), convertView,
-                    R.layout.lv_device);
-            View rv = vh.getConvertView();
-            rv.setOnClickListener(mCLItem);
-
-            Map<String, String> hm = UtilFun.cast_t(getItem(position));
-            vh.setText(R.id.tv_device_name, hm.get(KEY_DEVICE_NAME));
-            vh.setText(R.id.tv_camera, hm.get(KEY_CAMERA_INFO));
-            vh.setText(R.id.tv_lens, hm.get(KEY_LENS_INFO));
-            return rv;
+            Map<String, String> hm = UtilFun.cast_t(getItem(pos));
+            vhHolder.setText(R.id.tv_device_name, hm.get(KEY_DEVICE_NAME));
+            vhHolder.setText(R.id.tv_camera, hm.get(KEY_CAMERA_INFO));
+            vhHolder.setText(R.id.tv_lens, hm.get(KEY_LENS_INFO));
         }
 
         /**
          * 返回选中设备的ID
-         * @return  若有选中设备返回其ID,否则返回 INT_INVAILED_ID
+         * @return  若有选中设备返回其ID,否则返回 INVAILD_ID
          */
         int getSelectDeviceID()  {
             int hot_pos = -1;
@@ -241,7 +214,7 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
             }
 
             if(-1 == hot_pos)
-                return GlobalDef.INT_INVAILED_ID;
+                return GlobalDef.INSTANCE.getINVAILD_ID();
 
             Map<String, String> hm = UtilFun.cast_t(getItem(hot_pos));
             return Integer.valueOf(hm.get(KEY_DEVICE_ID));

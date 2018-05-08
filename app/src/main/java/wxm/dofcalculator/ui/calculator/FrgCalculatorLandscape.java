@@ -2,9 +2,6 @@ package wxm.dofcalculator.ui.calculator;
 
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,15 +56,15 @@ public class FrgCalculatorLandscape extends FrgSupportBaseAdv {
 
     @Override
     protected void initUI(Bundle savedInstanceState) {
-        int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
-        if(GlobalDef.INT_INVAILED_ID != d_id)   {
+        int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INSTANCE.getINVAILD_ID());
+        if(GlobalDef.INSTANCE.getINVAILD_ID() != d_id)   {
             mDICurDevice = ContextUtil.getDUDevice().getData(d_id);
         }
     }
 
     @Override
     protected void loadUI(Bundle savedInstanceState) {
-        //updateResultUI();
+        updateResultUI();
     }
 
     /**

@@ -157,8 +157,8 @@ public class VWCameraAdjust extends ConstraintLayout {
         if(ct instanceof Activity)  {
             Intent it = ((Activity)ct).getIntent();
             if(null != it) {
-                int d_id = it.getIntExtra(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
-                if(GlobalDef.INT_INVAILED_ID != d_id)   {
+                int d_id = it.getIntExtra(ACCalculator.KEY_DEVICE_ID, GlobalDef.INSTANCE.getINVAILD_ID());
+                if(GlobalDef.INSTANCE.getINVAILD_ID() != d_id)   {
                     DeviceItem di = ContextUtil.getDUDevice().getData(d_id);
                     if(null != di)  {
                         Map<String, Object> mp = new HashMap<>();

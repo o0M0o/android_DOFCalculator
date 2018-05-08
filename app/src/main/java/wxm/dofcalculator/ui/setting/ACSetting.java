@@ -27,7 +27,7 @@ public class ACSetting extends ACSwitcherActivity<TFSettingBase> {
         if(mTFMain != getHotFragment())    {
             switchToFragment(mTFMain);
         } else {
-            int ret_data = GlobalDef.INTRET_GIVEUP;
+            int ret_data = GlobalDef.INSTANCE.getRET_CANCEL();
             Intent data = new Intent();
             setResult(ret_data, data);
             finish();
@@ -69,7 +69,7 @@ public class ACSetting extends ACSwitcherActivity<TFSettingBase> {
                         switchToFragment(mTFMain);
                     }
                 } else  {
-                    int ret_data = GlobalDef.INTRET_SURE;
+                    int ret_data = GlobalDef.INSTANCE.getRET_SURE();
                     Intent data = new Intent();
                     setResult(ret_data, data);
                     finish();

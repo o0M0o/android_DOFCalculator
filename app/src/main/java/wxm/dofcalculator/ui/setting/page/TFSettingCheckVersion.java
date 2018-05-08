@@ -40,11 +40,11 @@ public class TFSettingCheckVersion extends TFSettingBase {
         super.onViewCreated(view, savedInstanceState);
         if (null != view) {
             String s = String.format(Locale.CHINA, "当前版本号 : %d",
-                    PackageUtil.getVerCode(getContext(), GlobalDef.PACKAGE_NAME));
+                    PackageUtil.getVerCode(getContext(), GlobalDef.INSTANCE.getPACKAGE_NAME()));
             mTVVerNumber.setText(s);
 
             s = String.format(Locale.CHINA, "当前版本名 : %s",
-                    PackageUtil.getVerName(getContext(), GlobalDef.PACKAGE_NAME));
+                    PackageUtil.getVerName(getContext(), GlobalDef.INSTANCE.getPACKAGE_NAME()));
             mTVVerName.setText(s);
         }
     }
