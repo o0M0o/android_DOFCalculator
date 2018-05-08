@@ -76,7 +76,7 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
         mBUSure.setOnClickListener(v -> {
             int id = ap.getSelectDeviceID();
             if(GlobalDef.INSTANCE.getINVAILD_ID() != id) {
-                DeviceItem di = ContextUtil.getDUDevice().getData(id);
+                DeviceItem di = ContextUtil.Companion.getDuDevice().getData(id);
                 Intent it = new Intent(getActivity(), ACCalculator.class);
                 it.putExtra(ACCalculator.KEY_DEVICE_ID, di.getID());
                 startActivity(it);
@@ -86,13 +86,13 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
         mBUDelete.setOnClickListener(v -> {
             int id = ap.getSelectDeviceID();
             if(GlobalDef.INSTANCE.getINVAILD_ID() != id) {
-                DeviceItem di = ContextUtil.getDUDevice().getData(id);
+                DeviceItem di = ContextUtil.Companion.getDuDevice().getData(id);
                 String al_del = String.format(Locale.CHINA,
                         "是否删除设备'%s'", di.getName());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(al_del).setTitle("警告")
-                        .setPositiveButton("确认", (dialog, which) -> ContextUtil.getDUDevice().removeData(id))
+                        .setPositiveButton("确认", (dialog, which) -> ContextUtil.Companion.getDuDevice().removeData(id))
                         .setNegativeButton("取消", (dlg, which) -> {});
                 AlertDialog dlg = builder.create();
                 dlg.show();
@@ -115,7 +115,7 @@ public class FrgDeviceSelect extends FrgSupportBaseAdv {
      */
     private List<HashMap<String, String>> getAllDeviceInfo()    {
         LinkedList<HashMap<String, String>> ls_hm = new LinkedList<>();
-        List<DeviceItem> ls_device = ContextUtil.getDUDevice().getAllData();
+        List<DeviceItem> ls_device = ContextUtil.Companion.getDuDevice().getAllData();
         for(DeviceItem di : ls_device)  {
             CameraItem ci = di.getCamera();
             LensItem   li = di.getLens();

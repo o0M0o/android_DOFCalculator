@@ -34,10 +34,10 @@ public class PreferencesUtil {
      * @return   颜色配置
      */
     public static HashMap<String, Integer> loadChartColor()     {
-        SharedPreferences param = ContextUtil.getInstance()
+        SharedPreferences param = ContextUtil.Companion.getInstance()
                 .getSharedPreferences(PROPERTIES_NAME, Context.MODE_PRIVATE);
 
-        Context ct = ContextUtil.getInstance();
+        Context ct = ContextUtil.Companion.getInstance();
         String sb = SET_PAY_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.sienna)) +
                 " " + SET_INCOME_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.teal)) +
                 " " + SET_BUDGET_UESED_COLOR + ":" + String.valueOf(UiUtil.getColor(ct, R.color.sienna)) +
@@ -53,7 +53,7 @@ public class PreferencesUtil {
      * @param ccs  配色配置
      */
     public static void saveChartColor(HashMap<String, Integer> ccs)     {
-        SharedPreferences param = ContextUtil.getInstance()
+        SharedPreferences param = ContextUtil.Companion.getInstance()
                 .getSharedPreferences(PROPERTIES_NAME, Context.MODE_PRIVATE);
 
         String pr = parseChartColorsToString(ccs);

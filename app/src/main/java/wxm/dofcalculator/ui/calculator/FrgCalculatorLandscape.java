@@ -58,7 +58,7 @@ public class FrgCalculatorLandscape extends FrgSupportBaseAdv {
     protected void initUI(Bundle savedInstanceState) {
         int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INSTANCE.getINVAILD_ID());
         if(GlobalDef.INSTANCE.getINVAILD_ID() != d_id)   {
-            mDICurDevice = ContextUtil.getDUDevice().getData(d_id);
+            mDICurDevice = ContextUtil.Companion.getDuDevice().getData(d_id);
         }
     }
 

@@ -159,7 +159,7 @@ public class VWCameraAdjust extends ConstraintLayout {
             if(null != it) {
                 int d_id = it.getIntExtra(ACCalculator.KEY_DEVICE_ID, GlobalDef.INSTANCE.getINVAILD_ID());
                 if(GlobalDef.INSTANCE.getINVAILD_ID() != d_id)   {
-                    DeviceItem di = ContextUtil.getDUDevice().getData(d_id);
+                    DeviceItem di = ContextUtil.Companion.getDuDevice().getData(d_id);
                     if(null != di)  {
                         Map<String, Object> mp = new HashMap<>();
                         mp.put(TuneWheel.PARA_VAL_MIN, di.getLens().getMinFocal());
@@ -188,8 +188,8 @@ public class VWCameraAdjust extends ConstraintLayout {
         dlg_od.addDialogListener(new DlgOKOrNOBase.DialogResultListener() {
             @Override
             public void onDialogPositiveResult(DialogFragment dialogFragment) {
-                mODMin = dlg_od.getODMin();
-                mODMax = dlg_od.getODMax();
+                mODMin = dlg_od.getOdMin();
+                mODMax = dlg_od.getOdMax();
                 updateObjectDistanceRange(mSBODStep.getCurTxt().equals(TAG_DECIMETER));
 
                 EventBus.getDefault().post(

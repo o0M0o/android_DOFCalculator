@@ -38,7 +38,7 @@ public class FrgStart extends FrgSupportBaseAdv {
 
     @Override
     protected void initUI(Bundle bundle) {
-        mBTDeviceSelect.setVisibility(0 == ContextUtil.getDUDevice().getCount()
+        mBTDeviceSelect.setVisibility(0 == ContextUtil.Companion.getDuDevice().getCount()
                         ? View.GONE : View.VISIBLE);
     }
 

@@ -115,14 +115,14 @@ public class FrgDeviceAdd extends FrgSupportBaseAdv implements IFFrgEdit {
 
         CameraItem ci = getCameraItem();
         LensItem   li = getLensItem();
-        if(ContextUtil.getDUCamera().createData(ci)
-                && ContextUtil.getDULens().createData(li))  {
+        if(ContextUtil.Companion.getDuCamera().createData(ci)
+                && ContextUtil.Companion.getDuLens().createData(li))  {
             DeviceItem di = new DeviceItem();
             di.setName(mETDeviceName.getText().toString());
             di.setCamera(ci);
             di.setLens(li);
 
-            return ContextUtil.getDUDevice().createData(di);
+            return ContextUtil.Companion.getDuDevice().createData(di);
         }
 
         return false;
