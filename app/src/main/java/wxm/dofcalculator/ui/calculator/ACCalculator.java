@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
-import wxm.androidutil.Switcher.ACRxSwitcherActivity;
+import wxm.androidutil.FrgUtility.FrgSupportBaseAdv;
 import wxm.androidutil.Switcher.ACSwitcherActivity;
 import wxm.dofcalculator.define.GlobalDef;
 
@@ -13,12 +12,12 @@ import wxm.dofcalculator.define.GlobalDef;
  * UI for device
  * Created by WangXM on2017/3/12.
  */
-public class ACCalculator extends ACSwitcherActivity<FrgUtilitySupportBase> {
+public class ACCalculator extends ACSwitcherActivity<FrgSupportBaseAdv> {
     // for invoke parameter
     public final static String KEY_DEVICE_ID  = "device_id";
 
-    private FrgUtilitySupportBase  mFGPortraitHolder;
-    private FrgUtilitySupportBase  mFGLandscapeHolder;
+    private FrgSupportBaseAdv  mFGPortraitHolder;
+    private FrgSupportBaseAdv  mFGLandscapeHolder;
 
     @Override
     protected void setupFragment(Bundle savedInstanceState)    {
@@ -37,15 +36,20 @@ public class ACCalculator extends ACSwitcherActivity<FrgUtilitySupportBase> {
         mFGLandscapeHolder.setArguments(arg);
         mFGPortraitHolder.setArguments(arg);
 
-        addFragment(mFGPortraitHolder);
-        addFragment(mFGLandscapeHolder);
+        if(Configuration.ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+            addFragment(mFGLandscapeHolder);
+            addFragment(mFGPortraitHolder);
+        } else  {
+            addFragment(mFGPortraitHolder);
+            addFragment(mFGLandscapeHolder);
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         // TODO Auto-generated method stub
         super.onConfigurationChanged(newConfig);
-        getHotFragment().refreshUI();
+        getHotFragment().reInitUI();
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {

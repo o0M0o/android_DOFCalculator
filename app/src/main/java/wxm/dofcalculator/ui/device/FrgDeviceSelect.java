@@ -23,8 +23,8 @@ import java.util.Map;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
-import wxm.androidutil.util.FastViewHolder;
+import wxm.androidutil.FrgUtility.FrgSupportBaseAdv;
+import wxm.androidutil.ViewHolder.ViewHolder;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.db.DBDataChangeEvent;
@@ -39,8 +39,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * frg for device select
  * Created by WangXM on2017/3/11.
  */
-public class FrgDeviceSelect
-        extends FrgUtilitySupportBase {
+public class FrgDeviceSelect extends FrgSupportBaseAdv {
     private final static String  KEY_DEVICE_NAME = "device_name";
     private final static String  KEY_DEVICE_ID   = "device_id";
     private final static String  KEY_CAMERA_INFO = "camera_info";
@@ -58,24 +57,18 @@ public class FrgDeviceSelect
     @BindArray(R.array.sensor_size)
     String[]    mSASensorSize;
 
-    public FrgDeviceSelect() {
-        super();
-        EventBus.getDefault().register(this);
+    @Override
+    protected int getLayoutID() {
+        return R.layout.frg_device_select;
     }
 
     @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
+    protected boolean isUseEventBus() {
+        return true;
     }
 
     @Override
-    protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        return layoutInflater.inflate(R.layout.frg_device_select, viewGroup, false);
-    }
-
-    @Override
-    protected void loadUI(Bundle savedInstanceState) {
+    protected void initUI(Bundle savedInstanceState) {
         mBUSure.setVisibility(View.GONE);
         mBUDelete.setVisibility(View.GONE);
 
@@ -204,8 +197,8 @@ public class FrgDeviceSelect
         };
 
 
-        public AdapterDevice(Context context, List<? extends Map<String, ?>> data,
-                                 String[] from, int[] to) {
+        AdapterDevice(Context context, List<? extends Map<String, ?>> data,
+                      String[] from, int[] to) {
             super(context, data, R.layout.lv_device, from, to);
         }
 
@@ -222,7 +215,7 @@ public class FrgDeviceSelect
 
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            FastViewHolder vh = FastViewHolder.get(getActivity(), convertView,
+            ViewHolder vh = ViewHolder.get(getActivity(), convertView,
                     R.layout.lv_device);
             View rv = vh.getConvertView();
             rv.setOnClickListener(mCLItem);
@@ -238,7 +231,7 @@ public class FrgDeviceSelect
          * 返回选中设备的ID
          * @return  若有选中设备返回其ID,否则返回 INT_INVAILED_ID
          */
-        public int getSelectDeviceID()  {
+        int getSelectDeviceID()  {
             int hot_pos = -1;
             for(int i = 0; i < mLVDevice.getChildCount(); ++i)  {
                 if(mLVDevice.getChildAt(i).isSelected())    {

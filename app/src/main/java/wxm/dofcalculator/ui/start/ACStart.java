@@ -43,7 +43,7 @@ public class ACStart extends AppCompatActivity
     public void onConfigurationChanged(Configuration newConfig) {
         // TODO Auto-generated method stub
         super.onConfigurationChanged(newConfig);
-        mFGStart.refreshUI();
+        mFGStart.reInitUI();
     }
 
 

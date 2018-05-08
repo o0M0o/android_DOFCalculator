@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
+import wxm.androidutil.FrgUtility.FrgSupportBaseAdv;
 import wxm.dofcalculator.R;
 
 import wxm.dofcalculator.ui.device.ACDevice;
@@ -21,7 +19,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * first frg for app
  * Created by WangXM on2017/3/11.
  */
-public class FrgStart extends FrgUtilitySupportBase {
+public class FrgStart extends FrgSupportBaseAdv {
     @BindView(R.id.bt_device_add)
     Button mBTDeviceAdd;
 
@@ -29,15 +27,17 @@ public class FrgStart extends FrgUtilitySupportBase {
     Button mBTDeviceSelect;
 
     @Override
-    protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        LOG_TAG = "FrgStart";
-        View rootView = layoutInflater.inflate(R.layout.frg_start, viewGroup, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    protected int getLayoutID() {
+        return R.layout.frg_start;
     }
 
     @Override
-    protected void loadUI(Bundle bundle) {
+    protected boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    protected void initUI(Bundle bundle) {
         mBTDeviceSelect.setVisibility(0 == ContextUtil.getDUDevice().getCount()
                         ? View.GONE : View.VISIBLE);
     }

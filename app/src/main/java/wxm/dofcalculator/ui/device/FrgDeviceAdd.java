@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -17,8 +14,7 @@ import java.math.BigDecimal;
 import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
+import wxm.androidutil.FrgUtility.FrgSupportBaseAdv;
 import wxm.androidutil.util.UtilFun;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.CameraItem;
@@ -31,16 +27,14 @@ import wxm.dofcalculator.utility.ContextUtil;
  * frg for device add
  * Created by WangXM on2017/3/11.
  */
-public class FrgDeviceAdd
-        extends FrgUtilitySupportBase
-        implements IFFrgEdit {
+public class FrgDeviceAdd extends FrgSupportBaseAdv implements IFFrgEdit {
     // for device
     @BindView(R.id.et_device_name)
     TextInputEditText   mETDeviceName;
 
     // for camera
     @BindView(R.id.et_camera_name)
-    TextInputEditText   mETCamraName;
+    TextInputEditText mETCameraName;
 
     @BindView(R.id.sp_sensor_size)
     Spinner             mSPSensorSize;
@@ -89,12 +83,17 @@ public class FrgDeviceAdd
     String[]    mSASensorSize;
 
     @Override
-    protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        return layoutInflater.inflate(R.layout.frg_device_add, viewGroup, false);
+    protected int getLayoutID() {
+        return R.layout.frg_device_add;
     }
 
     @Override
-    protected void loadUI(Bundle savedInstanceState) {
+    protected boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    protected void initUI(Bundle savedInstanceState) {
         String[] org_arr = new String[mSASensorSize.length];
         for(int i = 0; i < org_arr.length; ++i) {
             String org = mSASensorSize[i];
@@ -156,13 +155,13 @@ public class FrgDeviceAdd
      * @return      检查结果
      */
     private boolean checkCameraParameter()   {
-        String c_name = mETCamraName.getText().toString();
+        String c_name = mETCameraName.getText().toString();
         int ss_idx = mSPSensorSize.getSelectedItemPosition();
 
         Activity ac = getActivity();
         if(UtilFun.StringIsNullOrEmpty(c_name)) {
-            mETCamraName.setError(mSZNeedCameraName);
-            mETCamraName.requestFocus();
+            mETCameraName.setError(mSZNeedCameraName);
+            mETCameraName.requestFocus();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(ac);
             builder.setMessage(mSZNeedCameraName).setTitle(mSZWarn);
@@ -256,7 +255,7 @@ public class FrgDeviceAdd
     private CameraItem getCameraItem()  {
         CameraItem ci = new CameraItem();
 
-        ci.setName(mETCamraName.getText().toString());
+        ci.setName(mETCameraName.getText().toString());
         ci.setFilmSize(Math.round(getSensorSize().floatValue()));
         ci.setFilmName(getFilmName());
         return ci;

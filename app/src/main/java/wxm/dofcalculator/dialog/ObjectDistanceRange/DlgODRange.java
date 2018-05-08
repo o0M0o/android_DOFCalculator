@@ -1,5 +1,7 @@
 package wxm.dofcalculator.dialog.ObjectDistanceRange;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -47,11 +49,13 @@ public class DlgODRange extends DlgOKOrNOBase {
     }
 
     @Override
-    protected View InitDlgView() {
-        InitDlgTitle("修改物距范围",  "接受", "放弃");
-        View vw = View.inflate(getActivity(), R.layout.dlg_od_range, null);
-        ButterKnife.bind(this, vw);
-        return vw;
+    protected void initDlgView(@Nullable Bundle bundle) {
+    }
+
+    @Override
+    protected View createDlgView(@Nullable Bundle bundle) {
+        initDlgTitle("修改物距范围",  "接受", "放弃");
+        return View.inflate(getActivity(), R.layout.dlg_od_range, null);
     }
 
     /**

@@ -1,14 +1,14 @@
 package wxm.dofcalculator.ui.base;
 
 /**
- * 编辑类Frgament的接口定义
- * Created by WangXM on2017/3/13.
+ * fragment interface for edit
+ * Created by WangXM on 2017/3/13.
  */
 public interface IFFrgEdit {
     /**
-     * 接受数据时调用
+     * when accept, invoke this
      *
-     * @return   若成功返回true
+     * @return   true if all ok
      */
     boolean onAccept();
 }

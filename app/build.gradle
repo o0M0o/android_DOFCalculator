@@ -1,18 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     signingConfigs {
-        defkey {
-            keyAlias 'defkey'
-            keyPassword 'hugo99505'
-            storeFile file('E:/backup/appkey/andriodapp-key.jks')
-            storePassword 'hugo99505'
+        YYBKey {
+            keyAlias        project.YYB_KEY_ALIAS
+            keyPassword     project.YYB_KEY_PWD
+            storeFile       file(project.YYB_FILE_PATH)
+            storePassword   project.YYB_STORE_PWD
         }
-        longTimeKey {
-            keyAlias 'andriodapp-key-longtime'
-            keyPassword 'w789065'
-            storeFile file('E:/backup/appkey/andriodapp-key-longtime.jks')
-            storePassword 'w127865'
+        KuAnKey {
+            keyAlias        project.KUAN_KEY_ALIAS
+            keyPassword     project.KUAN_KEY_PWD
+            storeFile       file(project.KUAN_FILE_PATH)
+            storePassword   project.KUAN_STORE_PWD
         }
     }
 
@@ -20,12 +21,11 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "wxm.dofcalculator"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.03"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.longTimeKey
 
         flavorDimensions "versionCode"
     }
@@ -58,20 +58,19 @@ android {
     }
 
     productFlavors {
-        yyb_DOFCalculator {
-            signingConfig signingConfigs.longTimeKey
+        YYB_keepaccount {
+            signingConfig signingConfigs.YYBKey
+        }
+
+        KuAn_keepaccount {
+            signingConfig signingConfigs.KuAnKey
         }
     }
 
 
     android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                //这里修改apk文件名
-                def fileName = "${variant.productFlavors[0].name}-${defaultConfig.versionName}-${releaseTime() }.apk"
-                output.outputFileName = fileName
-            }
+        variant.outputs.all {
+            outputFileName = "${variant.name}-${variant.versionName}-${releaseTime()}.apk"
         }
     }
 
@@ -86,22 +85,25 @@ static def releaseTime() {
 }
 
 dependencies {
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.jakewharton:butterknife:8.8.0'
     implementation 'com.squareup.okhttp3:okhttp:3.7.0'
-    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'io.reactivex:rxjava:1.1.1'
     implementation 'com.trello:rxlifecycle:0.5.0'
     implementation 'com.trello:rxlifecycle-components:0.5.0'
+
     implementation project(':androidutil')
     implementation project(':uilib')
 }
@@ -111,4 +113,9 @@ configurations.all {
     resolutionStrategy {
         force 'com.android.support:support-annotations:24.2.1'
     }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }

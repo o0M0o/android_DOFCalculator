@@ -2,7 +2,6 @@ package wxm.dofcalculator.ui.calculator;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.math.BigDecimal;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import wxm.androidutil.FrgUtility.FrgUtilitySupportBase;
+import wxm.androidutil.FrgUtility.FrgSupportBaseAdv;
 import wxm.dofcalculator.R;
 import wxm.dofcalculator.define.DeviceItem;
 import wxm.dofcalculator.define.GlobalDef;
@@ -29,7 +27,7 @@ import wxm.dofcalculator.utility.ContextUtil;
  * first frg for app
  * Created by WangXM on2017/3/11.
  */
-public class FrgCalculatorLandscape extends FrgUtilitySupportBase {
+public class FrgCalculatorLandscape extends FrgSupportBaseAdv {
     @BindView(R.id.evw_dof)
     VWDof mEVWDof;
 
@@ -37,17 +35,6 @@ public class FrgCalculatorLandscape extends FrgUtilitySupportBase {
     VWCameraAdjust mEVWCamera;
 
     private DeviceItem mDICurDevice;
-
-    public FrgCalculatorLandscape() {
-        super();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
 
     /**
      * 设置变化处理器
@@ -61,15 +48,21 @@ public class FrgCalculatorLandscape extends FrgUtilitySupportBase {
     }
 
     @Override
-    protected View inflaterView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        View rootView = layoutInflater.inflate(R.layout.frg_calculator_landscape, viewGroup, false);
+    protected int getLayoutID() {
+        return R.layout.frg_calculator_landscape;
+    }
 
+    @Override
+    protected boolean isUseEventBus() {
+        return true;
+    }
+
+    @Override
+    protected void initUI(Bundle savedInstanceState) {
         int d_id = getArguments().getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INT_INVAILED_ID);
         if(GlobalDef.INT_INVAILED_ID != d_id)   {
             mDICurDevice = ContextUtil.getDUDevice().getData(d_id);
         }
-
-        return rootView;
     }
 
     @Override
