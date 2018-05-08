@@ -105,5 +105,12 @@ class ContextUtil : Application() {
         fun getDimension(@DimenRes resId : Int): Float   {
             return instance.resources.getDimension(resId)
         }
+
+        /**
+         * get string array
+         */
+        fun getStrArray(@ArrayRes resId : Int): Array<String> {
+            return instance.resources.getStringArray(resId)
+        }
     }
 }

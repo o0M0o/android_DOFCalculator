@@ -24,7 +24,7 @@ import wxm.dofcalculator.ui.setting.ACSetting
  * Created by WangXM on2017/3/12.
  */
 class ACStart : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private var mFGStart: FrgStart? = null
+    private var mFGStart: FrgStart = FrgStart()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class ACStart : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onConfigurationChanged(newConfig: Configuration) {
         // TODO Auto-generated method stub
         super.onConfigurationChanged(newConfig)
-        mFGStart!!.reInitUI()
+        mFGStart.reInitUI()
     }
 
 
@@ -88,7 +88,6 @@ class ACStart : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
 
         // load fragment
         if (null == savedInstanceState) {
-            mFGStart = FrgStart()
             val ft = supportFragmentManager.beginTransaction()
             ft.add(R.id.fl_holder, mFGStart)
             ft.commit()
