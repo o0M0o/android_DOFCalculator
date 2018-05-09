@@ -110,13 +110,12 @@ class VWDof : ConstraintLayout {
      * update view
      */
     private fun updateDof() {
-        if (null == mCSCameraSetting) {
-            mDENOFResult = null
-        } else  {
-            val lensFocal = mCSCameraSetting!!.lensFocal
-            val lensAperture = mCSCameraSetting!!.lensAperture
-            val pixelArea = mCSCameraSetting!!.cameraCOC
-            val fOd = mCSCameraSetting!!.objectDistance.toFloat()
+        mDENOFResult = null
+        mCSCameraSetting?.let {
+            val lensFocal = it.lensFocal
+            val lensAperture = it.lensAperture
+            val pixelArea = it.cameraCOC
+            val fOd = it.objectDistance.toFloat()
 
             //hyperFocal = (focal * focal) / (aperture * CoC) + focal;
             val ff = BigDecimal(lensFocal * lensFocal)
@@ -147,7 +146,9 @@ class VWDof : ConstraintLayout {
             }
 
             mDENOFResult = DofChangedEvent(Math.min(dofNear, fOd), fOd, Math.max(dofFar, fOd))
+        }
 
+        if (null != mDENOFResult && null == mCSCameraSetting) {
             updateDofInfo()
             updateDofView()
         }
@@ -157,16 +158,14 @@ class VWDof : ConstraintLayout {
      * update dof info in header view
      */
     private fun updateDofInfo() {
-        mCSCameraSetting?.let {
-            mTVFrontDof.text = String.format(Locale.CHINA, "%.02fm",
-                    mDENOFResult!!.frontDofInMeter)
-            mTVObjectDistance.text = String.format(Locale.CHINA, "%.02fm",
-                    mDENOFResult!!.objectDistanceInMeter)
-            mTVBackDof.text = String.format(Locale.CHINA, "%.02fm",
-                    mDENOFResult!!.backDofInMeter)
+        mTVFrontDof.text = String.format(Locale.CHINA, "%.02fm",
+                mDENOFResult!!.frontDofInMeter)
+        mTVObjectDistance.text = String.format(Locale.CHINA, "%.02fm",
+                mDENOFResult!!.objectDistanceInMeter)
+        mTVBackDof.text = String.format(Locale.CHINA, "%.02fm",
+                mDENOFResult!!.backDofInMeter)
 
-            mTVDrive.text = it.device.name
-        }
+        mTVDrive.text = mCSCameraSetting!!.device.name
     }
 
     /**
@@ -207,11 +206,11 @@ class VWDof : ConstraintLayout {
     }
 
     companion object {
-        private val VW_VERTICAL = 1
-        private val VW_HORIZONTAL = 2
+        private const val VW_VERTICAL = 1
+        private const val VW_HORIZONTAL = 2
 
-        private val SETP_VAL = 5
+        private const val SETP_VAL = 5
 
-        private val DEF_SZ = "--"
+        private const val DEF_SZ = "--"
     }
 }

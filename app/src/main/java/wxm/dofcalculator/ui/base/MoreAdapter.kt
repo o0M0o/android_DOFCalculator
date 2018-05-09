@@ -25,7 +25,7 @@ abstract class MoreAdapter(protected val context: Context, data: List<Map<String
         return position
     }
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         return ViewHolder.get(context, convertView, getChildViewLayout(position)).let {
             loadView(position, it)
             it.convertView
@@ -44,7 +44,7 @@ abstract class MoreAdapter(protected val context: Context, data: List<Map<String
      * @param pos           child view pos
      * @return              layout-id
      */
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
     @LayoutRes
     protected fun getChildViewLayout(pos: Int): Int {
         return mLRSelfDef

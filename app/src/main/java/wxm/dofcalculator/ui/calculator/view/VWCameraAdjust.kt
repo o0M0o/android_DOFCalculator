@@ -17,6 +17,7 @@ import wxm.androidutil.Dialog.DlgOKOrNOBase
 import wxm.dofcalculator.R
 import wxm.dofcalculator.define.GlobalDef
 import wxm.dofcalculator.dialog.ObjectDistanceRange.DlgODRange
+import wxm.dofcalculator.ui.base.EventHelper
 import wxm.dofcalculator.ui.calculator.ACCalculator
 import wxm.dofcalculator.ui.calculator.event.AttrChangedEvent
 import wxm.dofcalculator.ui.calculator.event.ObjectDistanceRangeChangeEvent
@@ -107,7 +108,7 @@ class VWCameraAdjust : ConstraintLayout {
 
         // for lens focal
         mTWLFTuneWheel.setValueChangeListener { value, _ ->
-            mTVLFVal.text = "${value}mm"
+            mTVLFVal.text = String.format(Locale.CHINA, "${value}mm");
             EventBus.getDefault().post(AttrChangedEvent(0))
         }
 
@@ -131,14 +132,21 @@ class VWCameraAdjust : ConstraintLayout {
             EventBus.getDefault().post(AttrChangedEvent(0))
         }
         updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
+
+        EventHelper.setOnClickOperator(this,
+                intArrayOf(R.id.sb_ob_range, R.id.sb_ob_step),
+                {v ->
+                    when(v.id)  {
+                        R.id.sb_ob_range ->  onChangeODRange()
+                        R.id.sb_ob_step ->  onChangeODStep()
+                    }
+                })
     }
 
     /**
      * 切换物距范围
-     * @param v     参数
      */
-    @OnClick(R.id.sb_ob_range)
-    fun onChangeODRange(v: View) {
+    private fun onChangeODRange() {
         DlgODRange().let {
             it.addDialogListener(object : DlgOKOrNOBase.DialogResultListener {
                 override fun onDialogPositiveResult(dialogFragment: DialogFragment) {
@@ -159,10 +167,8 @@ class VWCameraAdjust : ConstraintLayout {
 
     /**
      * 切换object distance 步进值
-     * @param v     para
      */
-    @OnClick(R.id.sb_ob_step)
-    fun onChangeODStep(v: View) {
+    private fun onChangeODStep() {
         updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
     }
 

@@ -31,6 +31,7 @@ class FrgCalculatorPortrait : FrgSupportBaseAdv() {
      * 设置变化处理器
      * @param event     事件参数
      */
+    @Suppress("UNUSED_PARAMETER", "unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAttrChangeEvent(event: AttrChangedEvent) {
         if (isVisible) {

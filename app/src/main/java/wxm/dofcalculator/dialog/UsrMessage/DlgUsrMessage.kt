@@ -6,8 +6,10 @@ import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Message
+import android.support.annotation.RequiresApi
 import android.support.design.widget.TextInputEditText
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -33,12 +35,13 @@ import java.io.IOException
  * send user message
  * Created by WangXM on2017/1/9.
  */
+@RequiresApi(Build.VERSION_CODES.CUPCAKE)
 class DlgUsrMessage : DlgOKOrNOBase() {
     private lateinit var mETUsrMessage: TextInputEditText
 
     private var mProgressStatus = 0
-    private var mHDProgress: LocalMsgHandler? = null
-    private var mPDDlg: ProgressDialog? = null
+    private lateinit var mHDProgress: LocalMsgHandler
+    private lateinit var mPDDlg: ProgressDialog
 
     private val mSZUrlPost: String = ContextUtil.getString(R.string.url_post_send_message)
     private val mSZColUsr: String = ContextUtil.getString(R.string.col_usr)
@@ -100,23 +103,23 @@ class DlgUsrMessage : DlgOKOrNOBase() {
 
             mProgressStatus = 0
 
-            mPDDlg!!.max = 100
+            mPDDlg.max = 100
             // 设置对话框的标题
-            mPDDlg!!.setTitle("发送消息")
+            mPDDlg.setTitle("发送消息")
             // 设置对话框 显示的内容
-            mPDDlg!!.setMessage("发送进度")
+            mPDDlg.setMessage("发送进度")
             // 设置对话框不能用“取消”按钮关闭
-            mPDDlg!!.setCancelable(true)
-            mPDDlg!!.setButton(DialogInterface.BUTTON_NEGATIVE, "取消") { dialogInterface, i -> }
+            mPDDlg.setCancelable(true)
+            mPDDlg.setButton(DialogInterface.BUTTON_NEGATIVE, "取消") { _, _ -> }
 
             // 设置对话框的进度条风格
-            mPDDlg!!.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-            mPDDlg!!.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+            mPDDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            mPDDlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
             // 设置对话框的进度条是否显示进度
-            mPDDlg!!.isIndeterminate = false
+            mPDDlg.isIndeterminate = false
 
-            mPDDlg!!.incrementProgressBy(-mPDDlg!!.progress)
-            mPDDlg!!.show()
+            mPDDlg.incrementProgressBy(-mPDDlg.progress)
+            mPDDlg.show()
         }
 
         override fun onCancelled() {
@@ -139,16 +142,16 @@ class DlgUsrMessage : DlgOKOrNOBase() {
                 mProgressStatus = 50
                 val m = Message()
                 m.what = MSG_PROGRESS_UPDATE
-                mHDProgress!!.sendMessage(m)
+                mHDProgress.sendMessage(m)
 
                 val request = Request.Builder()
-                        .url(mSZUrlPost!!).post(body).build()
+                        .url(mSZUrlPost).post(body).build()
                 client.newCall(request).execute()
 
                 mProgressStatus = 100
                 val m1 = Message()
                 m1.what = MSG_PROGRESS_UPDATE
-                mHDProgress!!.sendMessage(m1)
+                mHDProgress.sendMessage(m1)
             } catch (e: JSONException) {
                 e.printStackTrace()
             } catch (e: IOException) {
@@ -161,7 +164,7 @@ class DlgUsrMessage : DlgOKOrNOBase() {
 
         override fun onPostExecute(bret: Boolean?) {
             super.onPostExecute(bret)
-            mPDDlg!!.dismiss()
+            mPDDlg.dismiss()
         }
     }
 
@@ -172,7 +175,7 @@ class DlgUsrMessage : DlgOKOrNOBase() {
         override fun processMsg(m: Message, home: DlgUsrMessage) {
             when (m.what) {
                 MSG_PROGRESS_UPDATE -> {
-                    home.mPDDlg!!.progress = home.mProgressStatus
+                    home.mPDDlg.progress = home.mProgressStatus
                 }
 
                 else -> Log.e(LOG_TAG, String.format("msg(%s) can not process", m.toString()))

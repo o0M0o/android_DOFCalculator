@@ -71,7 +71,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
         mLVDevice.adapter = ap
         ap.notifyDataSetChanged()
 
-        mBUSure.setOnClickListener { v ->
+        mBUSure.setOnClickListener { _ ->
             val id = ap.selectDeviceID
             if (GlobalDef.INVAILD_ID != id) {
                 val di = ContextUtil.duDevice.getData(id)
@@ -84,14 +84,13 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
         mBUDelete.setOnClickListener { _ ->
             val id = ap.selectDeviceID
             if (GlobalDef.INVAILD_ID != id) {
-                val di = ContextUtil.duDevice.getData(id)
-                val al_del = String.format(Locale.CHINA,
-                        "是否删除设备'%s'", di.name)
+                val alDel = String.format(Locale.CHINA,
+                        "是否删除设备'%s'",  ContextUtil.duDevice.getData(id).name)
 
                 val builder = AlertDialog.Builder(activity)
-                builder.setMessage(al_del).setTitle("警告")
-                        .setPositiveButton("确认") { dialog, which -> ContextUtil.duDevice.removeData(id) }
-                        .setNegativeButton("取消") { dlg, which -> }
+                builder.setMessage(alDel).setTitle("警告")
+                        .setPositiveButton("确认") { _, _ -> ContextUtil.duDevice.removeData(id) }
+                        .setNegativeButton("取消") { _, _ -> }
                 val dlg = builder.create()
                 dlg.show()
             }
@@ -102,6 +101,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
      * 过滤视图事件
      * @param event     事件
      */
+    @Suppress("unused", "UNUSED_PARAMETER")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFilterShowEvent(event: DBDataChangeEvent) {
         loadUI(null)
