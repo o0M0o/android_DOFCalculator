@@ -121,17 +121,18 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
     }
 
     override fun initUI(savedInstanceState: Bundle?) {
-        val org_arr = arrayOfNulls<String>(mSASensorSize.size)
-        for (i in org_arr.indices) {
-            val org = mSASensorSize[i]
-            org_arr[i] = org.substring(0, org.indexOf("|"))
+        val arrSensor = ArrayList<String>(mSASensorSize.size).apply {
+            mSASensorSize.forEach {
+                add(it.substring(0, it.indexOf("|")))
+            }
         }
 
         // for sensor size
-        val ap_sensor_size = ArrayAdapter<CharSequence>(activity,
-                android.R.layout.simple_spinner_item, org_arr)
-        ap_sensor_size.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        mSPSensorSize.adapter = ap_sensor_size
+        ArrayAdapter<CharSequence>(activity, android.R.layout.simple_spinner_item,
+                arrSensor.toTypedArray()).let {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mSPSensorSize.adapter = it
+        }
     }
 
 

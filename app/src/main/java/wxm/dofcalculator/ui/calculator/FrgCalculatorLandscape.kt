@@ -10,6 +10,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.math.BigDecimal
 
 import butterknife.BindView
+import kotterknife.bindView
 import wxm.androidutil.FrgUtility.FrgSupportBaseAdv
 import wxm.dofcalculator.R
 import wxm.dofcalculator.define.DeviceItem
@@ -25,13 +26,10 @@ import wxm.dofcalculator.utility.ContextUtil
  * Created by WangXM on2017/3/11.
  */
 class FrgCalculatorLandscape : FrgSupportBaseAdv() {
-    @BindView(R.id.evw_dof)
-    internal var mEVWDof: VWDof? = null
+    private val mEVWDof: VWDof by bindView(R.id.evw_dof)
+    private val mEVWCamera: VWCameraAdjust by bindView(R.id.eca_adjust)
 
-    @BindView(R.id.eca_adjust)
-    internal var mEVWCamera: VWCameraAdjust? = null
-
-    private var mDICurDevice: DeviceItem? = null
+    private lateinit var mDICurDevice: DeviceItem
 
     /**
      * 设置变化处理器
@@ -41,7 +39,7 @@ class FrgCalculatorLandscape : FrgSupportBaseAdv() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAttrChangeEvent(event: AttrChangedEvent) {
         if (isVisible) {
-            updateResultUI()
+            loadUI(null)
         }
     }
 
@@ -54,27 +52,19 @@ class FrgCalculatorLandscape : FrgSupportBaseAdv() {
     }
 
     override fun initUI(savedInstanceState: Bundle?) {
-        val d_id = arguments.getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INVAILD_ID)
-        if (GlobalDef.INVAILD_ID != d_id) {
-            mDICurDevice = ContextUtil.duDevice.getData(d_id)
+        val dId = arguments.getInt(ACCalculator.KEY_DEVICE_ID, GlobalDef.INVAILD_ID)
+        if (GlobalDef.INVAILD_ID != dId) {
+            mDICurDevice = ContextUtil.duDevice.getData(dId)
         }
+
+        loadUI(savedInstanceState)
     }
 
     override fun loadUI(savedInstanceState: Bundle?) {
-        updateResultUI()
-    }
-
-    /**
-     * 更新结果UI
-     */
-    protected fun updateResultUI() {
-        val sz_lf_hot = mEVWCamera!!.curLensFocal
-        val sz_la_hot = mEVWCamera!!.curLensAperture
-        val od = mEVWCamera!!.curObjectDistance
-
-        val lf_hot = Integer.valueOf(sz_lf_hot.substring(0, sz_lf_hot.indexOf("mm")))
-        val aperture = BigDecimal(sz_la_hot.substring(sz_la_hot.indexOf("F") + 1))
-
-        EventBus.getDefault().post(CameraSettingChangeEvent(lf_hot, aperture, od, mDICurDevice!!))
+        EventBus.getDefault().post(
+                CameraSettingChangeEvent(
+                        Integer.valueOf(mEVWCamera.curLensFocal.removeSuffix("mm")),
+                        BigDecimal(mEVWCamera.curLensAperture.removePrefix("F")),
+                        mEVWCamera.curObjectDistance, mDICurDevice))
     }
 }

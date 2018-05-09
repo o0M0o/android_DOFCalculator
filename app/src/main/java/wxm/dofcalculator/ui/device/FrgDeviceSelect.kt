@@ -17,6 +17,7 @@ import wxm.dofcalculator.R
 import wxm.dofcalculator.db.DBDataChangeEvent
 import wxm.dofcalculator.define.CameraItem
 import wxm.dofcalculator.define.GlobalDef
+import wxm.dofcalculator.ui.base.EventHelper
 import wxm.dofcalculator.ui.base.MoreAdapter
 import wxm.dofcalculator.ui.calculator.ACCalculator
 import wxm.dofcalculator.utility.ContextUtil
@@ -67,34 +68,10 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
         mBUSure.visibility = View.GONE
         mBUDelete.visibility = View.GONE
 
-        val ap = AdapterDevice(activity, allDeviceInfo)
-        mLVDevice.adapter = ap
-        ap.notifyDataSetChanged()
-
-        mBUSure.setOnClickListener { _ ->
-            val id = ap.selectDeviceID
-            if (GlobalDef.INVAILD_ID != id) {
-                val di = ContextUtil.duDevice.getData(id)
-                val it = Intent(activity, ACCalculator::class.java)
-                it.putExtra(ACCalculator.KEY_DEVICE_ID, di.id)
-                startActivity(it)
-            }
-        }
-
-        mBUDelete.setOnClickListener { _ ->
-            val id = ap.selectDeviceID
-            if (GlobalDef.INVAILD_ID != id) {
-                val alDel = String.format(Locale.CHINA,
-                        "是否删除设备'%s'",  ContextUtil.duDevice.getData(id).name)
-
-                val builder = AlertDialog.Builder(activity)
-                builder.setMessage(alDel).setTitle("警告")
-                        .setPositiveButton("确认") { _, _ -> ContextUtil.duDevice.removeData(id) }
-                        .setNegativeButton("取消") { _, _ -> }
-                val dlg = builder.create()
-                dlg.show()
-            }
-        }
+        mLVDevice.adapter = AdapterDevice(activity, allDeviceInfo)
+        EventHelper.setOnClickOperator(view!!,
+                intArrayOf(R.id.bt_sure, R.id.bt_delete),
+                { v -> onDelOrSelect(v) })
     }
 
     /**
@@ -106,6 +83,34 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
     fun onFilterShowEvent(event: DBDataChangeEvent) {
         loadUI(null)
     }
+
+    private fun onDelOrSelect(v: View) {
+        when (v.id) {
+            R.id.bt_sure -> {
+                val id = (mLVDevice.adapter as AdapterDevice).selectDeviceID
+                if (GlobalDef.INVAILD_ID != id) {
+                    Intent(activity, ACCalculator::class.java).let {
+                        it.putExtra(ACCalculator.KEY_DEVICE_ID, id)
+                        startActivity(it)
+                    }
+                }
+            }
+
+            R.id.bt_delete -> {
+                val id = (mLVDevice.adapter as AdapterDevice).selectDeviceID
+                if (GlobalDef.INVAILD_ID != id) {
+                    val alDel = String.format(Locale.CHINA,
+                            "是否删除设备'%s'", ContextUtil.duDevice.getData(id).name)
+
+                    AlertDialog.Builder(activity).setMessage(alDel).setTitle("警告")
+                            .setPositiveButton("确认") { _, _ -> ContextUtil.duDevice.removeData(id) }
+                            .setNegativeButton("取消") { _, _ -> }
+                            .create().show()
+                }
+            }
+        }
+    }
+
 
     /**
      * 获取相机传感器尺寸的名字
@@ -137,35 +142,50 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
          */
         internal val selectDeviceID: Int
             get() {
-                for (i in 0 until mLVDevice.childCount) {
-                    if (mLVDevice.getChildAt(i).isSelected) {
+                var sId = GlobalDef.INVAILD_ID
+                forEachChildView { v, pos ->
+                    if (v.isSelected) {
                         @Suppress("UNCHECKED_CAST")
-                        return Integer.valueOf((getItem(i) as Map<String, String>)[KEY_DEVICE_ID])
+                        sId = Integer.valueOf((getItem(pos) as Map<String, String>)[KEY_DEVICE_ID])
+                        false
+                    } else {
+                        true
                     }
                 }
 
-                return GlobalDef.INVAILD_ID
-
+                return sId
             }
 
         override fun loadView(pos: Int, vhHolder: ViewHolder) {
-            vhHolder.convertView.setOnClickListener { v ->
-                val os = v.isSelected
-                for (i in 0 until mLVDevice.childCount) {
-                    val vc = mLVDevice.getChildAt(i)
-                    if (v !== vc)
-                        mLVDevice.getChildAt(i).isSelected = false
+            if (null == vhHolder.getSelfTag(SELF_TAG_ID)) {
+                vhHolder.setSelfTag(SELF_TAG_ID, SELF_TAG_VAL)
+
+                vhHolder.convertView.isSelected = false
+                vhHolder.convertView.setOnClickListener { v ->
+                    val os = v.isSelected
+                    if (!os) {
+                        forEachChildView { view, _ ->
+                            if (v !== view && view.isSelected) {
+                                view.isSelected = false
+                            }
+                            true
+                        }
+                    }
+
+                    v.isSelected = !os
+                    (if (!os) View.VISIBLE else View.GONE).let {
+                        mBUSure.visibility = it
+                        mBUDelete.visibility = it
+                    }
                 }
 
-                v.isSelected = !os
-                mBUSure.visibility = if (!os) View.VISIBLE else View.GONE
-                mBUDelete.visibility = if (!os) View.VISIBLE else View.GONE
+                UtilFun.cast_t<Map<String, String>>(getItem(pos)).let {
+                    vhHolder.setText(R.id.tv_device_name, it[KEY_DEVICE_NAME])
+                    vhHolder.setText(R.id.tv_camera, it[KEY_CAMERA_INFO])
+                    vhHolder.setText(R.id.tv_lens, it[KEY_LENS_INFO])
+                    Unit
+                }
             }
-
-            val hm = UtilFun.cast_t<Map<String, String>>(getItem(pos))
-            vhHolder.setText(R.id.tv_device_name, hm[KEY_DEVICE_NAME])
-            vhHolder.setText(R.id.tv_camera, hm[KEY_CAMERA_INFO])
-            vhHolder.setText(R.id.tv_lens, hm[KEY_LENS_INFO])
         }
     }
 
@@ -174,5 +194,8 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
         private const val KEY_DEVICE_ID = "device_id"
         private const val KEY_CAMERA_INFO = "camera_info"
         private const val KEY_LENS_INFO = "lens_info"
+
+        private const val SELF_TAG_ID = 1
+        private const val SELF_TAG_VAL = "USED"
     }
 }

@@ -81,6 +81,7 @@ class VWDof : ConstraintLayout {
      * camera setting变化处理器
      * @param event     事件参数
      */
+    @Suppress("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCameraSettingChange(event: CameraSettingChangeEvent) {
         mCSCameraSetting = event
@@ -148,24 +149,26 @@ class VWDof : ConstraintLayout {
             mDENOFResult = DofChangedEvent(Math.min(dofNear, fOd), fOd, Math.max(dofFar, fOd))
         }
 
-        if (null != mDENOFResult && null == mCSCameraSetting) {
-            updateDofInfo()
-            updateDofView()
-        }
+        updateDofInfo()
+        updateDofView()
     }
 
     /**
      * update dof info in header view
      */
     private fun updateDofInfo() {
-        mTVFrontDof.text = String.format(Locale.CHINA, "%.02fm",
-                mDENOFResult!!.frontDofInMeter)
-        mTVObjectDistance.text = String.format(Locale.CHINA, "%.02fm",
-                mDENOFResult!!.objectDistanceInMeter)
-        mTVBackDof.text = String.format(Locale.CHINA, "%.02fm",
-                mDENOFResult!!.backDofInMeter)
+        mDENOFResult?.let {
+            mTVFrontDof.text = String.format(Locale.CHINA, "%.02fm",
+                    it.frontDofInMeter)
+            mTVObjectDistance.text = String.format(Locale.CHINA, "%.02fm",
+                    it.objectDistanceInMeter)
+            mTVBackDof.text = String.format(Locale.CHINA, "%.02fm",
+                    it.backDofInMeter)
+        }
 
-        mTVDrive.text = mCSCameraSetting!!.device.name
+        mCSCameraSetting?.let {
+            mTVDrive.text = it.device.name
+        }
     }
 
     /**
@@ -174,35 +177,37 @@ class VWDof : ConstraintLayout {
     private fun updateDofView() {
         mMVMeter.clearCursor()
 
-        val backDof = mDENOFResult!!.backDofInMeter
-        val frontDof = mDENOFResult!!.frontDofInMeter
-        val objectDistance = mDENOFResult!!.objectDistanceInMeter
+        mDENOFResult?.let {
+            val backDof = it.backDofInMeter
+            val frontDof = it.frontDofInMeter
+            val objectDistance = it.objectDistanceInMeter
 
-        // adjust min-max value
-        mMVMeter.adjustAttribute(HashMap<String, Any>().apply {
-            put(DistanceMeter.PARA_VAL_MAX,
-                    (backDof.toInt() / SETP_VAL + 2) * SETP_VAL)
-            put(DistanceMeter.PARA_VAL_MIN,
-                    Math.max(0, (frontDof.toInt() / SETP_VAL - 2) * SETP_VAL))
-        })
+            // adjust min-max value
+            mMVMeter.adjustAttribute(HashMap<String, Any>().apply {
+                put(DistanceMeter.PARA_VAL_MAX,
+                        (backDof.toInt() / SETP_VAL + 2) * SETP_VAL)
+                put(DistanceMeter.PARA_VAL_MIN,
+                        Math.max(0, (frontDof.toInt() / SETP_VAL - 2) * SETP_VAL))
+            })
 
-        // add cursors
-        mMVMeter.addCursor(
-                DistanceMeterTag().apply {
-                    mSZTagName = mSZTagFrontPoint
-                    mCRTagColor = mCRDOFFront
-                    mTagVal = frontDof
-                },
-                DistanceMeterTag().apply {
-                    mSZTagName = mSZTagObjectDistance
-                    mCRTagColor = mCRDOFObjectDistance
-                    mTagVal = objectDistance
-                },
-                DistanceMeterTag().apply {
-                    mSZTagName = mSZTagBackPoint
-                    mCRTagColor = mCRDOFBack
-                    mTagVal = backDof
-                })
+            // add cursors
+            mMVMeter.addCursor(
+                    DistanceMeterTag().apply {
+                        mSZTagName = mSZTagFrontPoint
+                        mCRTagColor = mCRDOFFront
+                        mTagVal = frontDof
+                    },
+                    DistanceMeterTag().apply {
+                        mSZTagName = mSZTagObjectDistance
+                        mCRTagColor = mCRDOFObjectDistance
+                        mTagVal = objectDistance
+                    },
+                    DistanceMeterTag().apply {
+                        mSZTagName = mSZTagBackPoint
+                        mCRTagColor = mCRDOFBack
+                        mTagVal = backDof
+                    })
+        }
     }
 
     companion object {

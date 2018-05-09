@@ -7,7 +7,7 @@
             <stroke android:width="2px" android:color="#a2b5cd" />
         </shape>
     </item>
-    <item>
+    <item android:state_selected="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/white" />
             <corners android:radius="2dp" />

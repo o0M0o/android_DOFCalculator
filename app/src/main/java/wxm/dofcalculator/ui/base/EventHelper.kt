@@ -7,6 +7,7 @@ import android.view.View
  * @author      WangXM
  * @version     create：2018/4/24
  */
+@Suppress("MemberVisibilityCanBePrivate")
 object EventHelper {
     /**
      * set on-click-listener [listener] for views in [vwChildId] with parent view [vwParent]
