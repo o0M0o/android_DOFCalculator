@@ -42,7 +42,7 @@ class VWCameraAdjust : ConstraintLayout {
 
     private val mSBODStep: TwoStateButton by bindView(R.id.sb_ob_step)
 
-    private val TAG_DECIMETER: String = ContextUtil.getString(R.string.tag_decimeter)
+    private lateinit var TAG_DECIMETER: String
 
     private var mAttrOrentation = VW_VERTICAL
 
@@ -98,6 +98,8 @@ class VWCameraAdjust : ConstraintLayout {
      * 初始化UI元件
      */
     private fun initUIComponent() {
+        TAG_DECIMETER = context.getString(R.string.tag_decimeter)
+
         // for lens aperture
         mTWLATuneWheel.setValueChangeListener { _, valTag ->
             mTVLAVal.text = valTag

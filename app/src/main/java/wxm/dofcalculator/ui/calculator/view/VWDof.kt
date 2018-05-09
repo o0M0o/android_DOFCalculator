@@ -2,6 +2,7 @@ package wxm.dofcalculator.ui.calculator.view
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -35,35 +36,24 @@ class VWDof : ConstraintLayout {
     private val mTVObjectDistance: TextView by bindView(R.id.tv_objecet_distance)
     private val mTVBackDof: TextView by bindView(R.id.tv_back_dof)
 
-    private val mCRDOFFront: Int = ContextUtil.getColor(R.color.rosybrown)
-    private val mCRDOFObjectDistance: Int = ContextUtil.getColor(R.color.red_ff725f)
-    private val mCRDOFBack: Int = ContextUtil.getColor(R.color.orangered)
+    private var mCRDOFFront: Int = Color.BLACK
+    private var mCRDOFObjectDistance: Int = Color.BLACK
+    private var mCRDOFBack: Int = Color.BLACK
 
-    private val mSZTagFrontPoint: String = ContextUtil.getString(R.string.tag_front_point)
-    private val mSZTagObjectDistance: String = ContextUtil.getString(R.string.tag_object_distance)
-    private val mSZTagBackPoint: String = ContextUtil.getString(R.string.tag_back_point)
+    private lateinit var mSZTagFrontPoint: String
+    private lateinit var mSZTagObjectDistance: String
+    private lateinit var mSZTagBackPoint: String
 
     private var mAttrOrentation = VW_VERTICAL
 
     constructor(context: Context) : super(context) {
         setWillNotDraw(false)
-
-        val vid = if (mAttrOrentation == VW_VERTICAL) R.layout.vw_dof_v else R.layout.vw_dof_h
-        LayoutInflater.from(context).inflate(vid, this)
+        initUI(context, null)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         setWillNotDraw(false)
-
-        val array = context.obtainStyledAttributes(attrs, R.styleable.VWDof)
-        try {
-            mAttrOrentation = array.getInt(R.styleable.VWDof_emOrientation, VW_VERTICAL)
-        } finally {
-            array.recycle()
-        }
-
-        val vid = if (mAttrOrentation == VW_VERTICAL) R.layout.vw_dof_v else R.layout.vw_dof_h
-        LayoutInflater.from(context).inflate(vid, this)
+        initUI(context, attrs)
     }
 
     override fun onAttachedToWindow() {
@@ -106,6 +96,25 @@ class VWDof : ConstraintLayout {
         }
     }
 
+    private fun initUI(context: Context, attrs: AttributeSet?)    {
+        val array = context.obtainStyledAttributes(attrs, R.styleable.VWDof)
+        try {
+            mAttrOrentation = array.getInt(R.styleable.VWDof_emOrientation, VW_VERTICAL)
+        } finally {
+            array.recycle()
+        }
+
+        val vid = if (mAttrOrentation == VW_VERTICAL) R.layout.vw_dof_v else R.layout.vw_dof_h
+        LayoutInflater.from(context).inflate(vid, this)
+
+        mCRDOFFront = context.getColor(R.color.teal)
+        mCRDOFObjectDistance = context.getColor(R.color.salmon)
+        mCRDOFBack = context.getColor(R.color.red_ff725f_half)
+
+        mSZTagFrontPoint = context.getString(R.string.tag_front_point)
+        mSZTagObjectDistance = context.getString(R.string.tag_object_distance)
+        mSZTagBackPoint = context.getString(R.string.tag_back_point)
+    }
 
     /**
      * update view
@@ -192,20 +201,14 @@ class VWDof : ConstraintLayout {
 
             // add cursors
             mMVMeter.addCursor(
-                    DistanceMeterTag().apply {
-                        mSZTagName = mSZTagFrontPoint
+                    DistanceMeterTag(mSZTagFrontPoint, frontDof).apply {
                         mCRTagColor = mCRDOFFront
-                        mTagVal = frontDof
                     },
-                    DistanceMeterTag().apply {
-                        mSZTagName = mSZTagObjectDistance
+                    DistanceMeterTag(mSZTagObjectDistance, objectDistance).apply {
                         mCRTagColor = mCRDOFObjectDistance
-                        mTagVal = objectDistance
                     },
-                    DistanceMeterTag().apply {
-                        mSZTagName = mSZTagBackPoint
+                    DistanceMeterTag(mSZTagBackPoint, backDof).apply {
                         mCRTagColor = mCRDOFBack
-                        mTagVal = backDof
                     })
         }
     }

@@ -29,6 +29,5 @@
         app:dmSubScaleCount="10"
         app:dmMainScaleHeight="16dp"
         app:dmSubScaleHeight="10dp"
-        app:dmPostUnit="m"
         app:dmTextSize="9sp" />
 </android.support.constraint.ConstraintLayout>

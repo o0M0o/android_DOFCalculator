@@ -58,11 +58,11 @@ android {
     }
 
     productFlavors {
-        YYB_keepaccount {
+        YYB_DOFCalculator{
             signingConfig signingConfigs.YYBKey
         }
 
-        KuAn_keepaccount {
+        KuAn_DOFCalculator{
             signingConfig signingConfigs.KuAnKey
         }
     }

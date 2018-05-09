@@ -18,7 +18,7 @@
         android:id="@+id/evw_meter"
         android:layout_marginTop="4dp"
         android:layout_width="0dp"
-        android:layout_height="86dp"
+        android:layout_height="96dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +26,8 @@
         app:dmMainScaleCount="5"
         app:dmSubScaleCount="10"
         app:dmTagHeight="10dp"
-        app:dmMainScaleHeight="24dp"
-        app:dmSubScaleHeight="16dp"
-        app:dmPostUnit="m"
-        app:dmTextSize="9sp" />
+        app:dmTagWidth="16dp"
+        app:dmMainScaleHeight="36dp"
+        app:dmSubScaleHeight="24dp"
+        app:dmTextSize="12sp" />
 </android.support.constraint.ConstraintLayout>
