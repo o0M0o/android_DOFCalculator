@@ -109,7 +109,7 @@ class VWDof : ConstraintLayout {
 
         mCRDOFFront = context.getColor(R.color.teal)
         mCRDOFObjectDistance = context.getColor(R.color.salmon)
-        mCRDOFBack = context.getColor(R.color.red_ff725f_half)
+        mCRDOFBack = context.getColor(R.color.teal)
 
         mSZTagFrontPoint = context.getString(R.string.tag_front_point)
         mSZTagObjectDistance = context.getString(R.string.tag_object_distance)

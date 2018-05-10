@@ -8,9 +8,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.TextView
-import butterknife.OnClick
 import kotterknife.bindView
 import org.greenrobot.eventbus.EventBus
 import wxm.androidutil.Dialog.DlgOKOrNOBase
@@ -101,18 +99,27 @@ class VWCameraAdjust : ConstraintLayout {
         TAG_DECIMETER = context.getString(R.string.tag_decimeter)
 
         // for lens aperture
-        mTWLATuneWheel.setValueChangeListener { _, valTag ->
-            mTVLAVal.text = valTag
-            EventBus.getDefault().post(AttrChangedEvent(0))
-        }
+        mTWLATuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
+            override fun onValueChange(value: Int, valTag: String) {
 
-        mTWLATuneWheel.setTranslateTag { tagVal -> LENS_APERTURE_ARR[tagVal] }
+                mTVLAVal.text = valTag
+                EventBus.getDefault().post(AttrChangedEvent(0))
+            }
+        })
+
+        mTWLATuneWheel.setTranslateTag(object : TuneWheel.TagTranslate {
+            override fun translateTWTag(tagVal: Int): String {
+                return LENS_APERTURE_ARR[tagVal]
+            }
+        })
 
         // for lens focal
-        mTWLFTuneWheel.setValueChangeListener { value, _ ->
-            mTVLFVal.text = String.format(Locale.CHINA, "${value}mm");
-            EventBus.getDefault().post(AttrChangedEvent(0))
-        }
+        mTWLFTuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
+            override fun onValueChange(value: Int, valTag: String) {
+                mTVLFVal.text = String.format(Locale.CHINA, "${value}mm");
+                EventBus.getDefault().post(AttrChangedEvent(0))
+            }
+        })
 
         if (context is Activity) {
             (context as Activity).intent?.let {
@@ -129,18 +136,20 @@ class VWCameraAdjust : ConstraintLayout {
         }
 
         // for object distance
-        mTWODTuneWheel.setValueChangeListener { _, valTag ->
-            mTVODVal.text = valTag
-            EventBus.getDefault().post(AttrChangedEvent(0))
-        }
+        mTWODTuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
+            override fun onValueChange(value: Int, valTag: String) {
+                mTVODVal.text = valTag
+                EventBus.getDefault().post(AttrChangedEvent(0))
+            }
+        })
         updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
 
         EventHelper.setOnClickOperator(this,
                 intArrayOf(R.id.sb_ob_range, R.id.sb_ob_step),
-                {v ->
-                    when(v.id)  {
-                        R.id.sb_ob_range ->  onChangeODRange()
-                        R.id.sb_ob_step ->  onChangeODStep()
+                { v ->
+                    when (v.id) {
+                        R.id.sb_ob_range -> onChangeODRange()
+                        R.id.sb_ob_step -> onChangeODStep()
                     }
                 })
     }
@@ -178,24 +187,23 @@ class VWCameraAdjust : ConstraintLayout {
      * 设置物距最小，最大值
      */
     private fun updateObjectDistanceRange(decimeter: Boolean) {
-        mTWODTuneWheel.setTranslateTag(
-                { tagVal ->
-                    if (decimeter) {
-                        when (tagVal) {
-                            OB_MIN_VAL -> mODMin.toDouble()
-                            OB_MAX_VAL -> mODMax.toDouble()
-                            else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
-                        }
-                    } else {
-                        when (tagVal) {
-                            0 -> mODMin.toDouble()
-                            OB_MAX_VAL -> mODMax.toDouble()
-                            else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
-                        }
-                    }.let {
-                        String.format(Locale.CHINA, if (it > 1) "%.00fm" else "%.02fm", it)
-                    }
-                })
+        mTWODTuneWheel.setTranslateTag(object : TuneWheel.TagTranslate {
+            override fun translateTWTag(tagVal: Int): String = if (decimeter) {
+                when (tagVal) {
+                    OB_MIN_VAL -> mODMin.toDouble()
+                    OB_MAX_VAL -> mODMax.toDouble()
+                    else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
+                }
+            } else {
+                when (tagVal) {
+                    0 -> mODMin.toDouble()
+                    OB_MAX_VAL -> mODMax.toDouble()
+                    else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
+                }
+            }.let {
+                String.format(Locale.CHINA, if (it > 1) "%.00fm" else "%.02fm", it)
+            }
+        })
 
         mTVODVal.text = mTWODTuneWheel.curValueTag
     }
