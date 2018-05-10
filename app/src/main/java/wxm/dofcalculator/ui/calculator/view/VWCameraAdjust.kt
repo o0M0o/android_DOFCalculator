@@ -192,13 +192,15 @@ class VWCameraAdjust : ConstraintLayout {
                 when (tagVal) {
                     OB_MIN_VAL -> mODMin.toDouble()
                     OB_MAX_VAL -> mODMax.toDouble()
-                    else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
+                    else -> tagVal.toDouble()
+                    //else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
                 }
             } else {
                 when (tagVal) {
                     0 -> mODMin.toDouble()
                     OB_MAX_VAL -> mODMax.toDouble()
-                    else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
+                    else -> tagVal.toDouble()
+                    //else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
                 }
             }.let {
                 String.format(Locale.CHINA, if (it > 1) "%.00fm" else "%.02fm", it)
