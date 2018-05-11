@@ -49,6 +49,7 @@
 
     <string name="tag_front_point">近点</string>
     <string name="tag_object_distance">物距</string>
+    <string name="tag_object">物体</string>
     <string name="tag_back_point">远点</string>
     <string name="bt_change_object_distance">调整范围</string>
     <string name="hint_object_distance_min">物距最小值(单位m)</string>

@@ -14,7 +14,6 @@ import org.greenrobot.eventbus.ThreadMode
 import wxm.dofcalculator.R
 import wxm.dofcalculator.ui.calculator.event.CameraSettingChangeEvent
 import wxm.dofcalculator.ui.calculator.event.DofChangedEvent
-import wxm.dofcalculator.utility.ContextUtil
 import wxm.uilib.DistanceMeter.DistanceMeter
 import wxm.uilib.DistanceMeter.DistanceMeterTag
 import java.math.BigDecimal
@@ -33,7 +32,7 @@ class VWDof : ConstraintLayout {
     private val mCLDofInfo: ConstraintLayout by bindView(R.id.cl_dof_info)
     private val mTVFrontDof: TextView by bindView(R.id.tv_front_dof)
     private val mTVDrive: TextView by bindView(R.id.tv_drive)
-    private val mTVObjectDistance: TextView by bindView(R.id.tv_objecet_distance)
+    private val mTVFocalLength: TextView by bindView(R.id.tv_focal_length)
     private val mTVBackDof: TextView by bindView(R.id.tv_back_dof)
 
     private var mCRDOFFront: Int = Color.BLACK
@@ -41,7 +40,7 @@ class VWDof : ConstraintLayout {
     private var mCRDOFBack: Int = Color.BLACK
 
     private lateinit var mSZTagFrontPoint: String
-    private lateinit var mSZTagObjectDistance: String
+    private lateinit var mSZTagObject: String
     private lateinit var mSZTagBackPoint: String
 
     private var mAttrOrentation = VW_VERTICAL
@@ -85,7 +84,7 @@ class VWDof : ConstraintLayout {
                 mMVMeter.clearCursor()
 
                 mTVFrontDof.text = DEF_SZ
-                mTVObjectDistance.text = DEF_SZ
+                mTVFocalLength.text = DEF_SZ
                 mTVBackDof.text = DEF_SZ
 
                 mTVDrive.text = if (mCSCameraSetting == null)
@@ -112,7 +111,7 @@ class VWDof : ConstraintLayout {
         mCRDOFBack = context.getColor(R.color.teal)
 
         mSZTagFrontPoint = context.getString(R.string.tag_front_point)
-        mSZTagObjectDistance = context.getString(R.string.tag_object_distance)
+        mSZTagObject = context.getString(R.string.tag_object)
         mSZTagBackPoint = context.getString(R.string.tag_back_point)
     }
 
@@ -169,8 +168,8 @@ class VWDof : ConstraintLayout {
         mDENOFResult?.let {
             mTVFrontDof.text = String.format(Locale.CHINA, "%.02fm",
                     it.frontDofInMeter)
-            mTVObjectDistance.text = String.format(Locale.CHINA, "%.02fm",
-                    it.objectDistanceInMeter)
+            mTVFocalLength.text = String.format(Locale.CHINA, "%.02fm",
+                    it.focalLengthInMeter)
             mTVBackDof.text = String.format(Locale.CHINA, "%.02fm",
                     it.backDofInMeter)
         }
@@ -204,7 +203,7 @@ class VWDof : ConstraintLayout {
                     DistanceMeterTag(mSZTagFrontPoint, frontDof).apply {
                         mCRTagColor = mCRDOFFront
                     },
-                    DistanceMeterTag(mSZTagObjectDistance, objectDistance).apply {
+                    DistanceMeterTag(mSZTagObject, objectDistance).apply {
                         mCRTagColor = mCRDOFObjectDistance
                     },
                     DistanceMeterTag(mSZTagBackPoint, backDof).apply {

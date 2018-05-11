@@ -64,11 +64,6 @@ class VWCameraAdjust : ConstraintLayout {
         }
 
     constructor(context: Context) : super(context) {
-        val vid = if (mAttrOrentation == VW_VERTICAL)
-            R.layout.vw_camera_adjust_v
-        else
-            R.layout.vw_camera_adjust_h
-        LayoutInflater.from(getContext()).inflate(vid, this)
         initUIComponent()
     }
 
@@ -80,11 +75,6 @@ class VWCameraAdjust : ConstraintLayout {
             array.recycle()
         }
 
-        val vid = if (mAttrOrentation == VW_VERTICAL)
-            R.layout.vw_camera_adjust_v
-        else
-            R.layout.vw_camera_adjust_h
-        LayoutInflater.from(getContext()).inflate(vid, this)
         initUIComponent()
     }
 
@@ -96,14 +86,20 @@ class VWCameraAdjust : ConstraintLayout {
      * 初始化UI元件
      */
     private fun initUIComponent() {
+        (if (mAttrOrentation == VW_VERTICAL) R.layout.vw_camera_adjust_v
+        else R.layout.vw_camera_adjust_h).let {
+            LayoutInflater.from(context).inflate(it, this)
+        }
+
         TAG_DECIMETER = context.getString(R.string.tag_decimeter)
 
         // for lens aperture
         mTWLATuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
             override fun onValueChange(value: Int, valTag: String) {
-
-                mTVLAVal.text = valTag
-                EventBus.getDefault().post(AttrChangedEvent(0))
+                if (valTag != mTVLAVal.text) {
+                    mTVLAVal.text = valTag
+                    EventBus.getDefault().post(AttrChangedEvent(0))
+                }
             }
         })
 
@@ -116,9 +112,16 @@ class VWCameraAdjust : ConstraintLayout {
         // for lens focal
         mTWLFTuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
             override fun onValueChange(value: Int, valTag: String) {
-                mTVLFVal.text = String.format(Locale.CHINA, "${value}mm");
-                EventBus.getDefault().post(AttrChangedEvent(0))
+                val tag = value.toString()
+                if (tag != mTVLFVal.text.removeSuffix("mm")) {
+                    mTVLFVal.text = String.format(Locale.CHINA, "%smm", tag)
+                    EventBus.getDefault().post(AttrChangedEvent(0))
+                }
             }
+        })
+
+        mTWLFTuneWheel.setTranslateTag(object : TuneWheel.TagTranslate {
+            override fun translateTWTag(tagVal: Int): String = String.format(Locale.CHINA, "%d", tagVal)
         })
 
         if (context is Activity) {
@@ -138,11 +141,25 @@ class VWCameraAdjust : ConstraintLayout {
         // for object distance
         mTWODTuneWheel.setValueChangeListener(object : TuneWheel.OnValueChangeListener {
             override fun onValueChange(value: Int, valTag: String) {
-                mTVODVal.text = valTag
-                EventBus.getDefault().post(AttrChangedEvent(0))
+                if (valTag != mTVODVal.text) {
+                    mTVODVal.text = valTag
+                    EventBus.getDefault().post(AttrChangedEvent(0))
+                }
             }
         })
-        updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
+        mTWODTuneWheel.setTranslateTag(object : TuneWheel.TagTranslate {
+            override fun translateTWTag(tagVal: Int): String {
+                return when (tagVal) {
+                    0 -> mODMin.toDouble()
+                    OB_MAX_VAL -> mODMax.toDouble()
+                    else -> (mODMin + tagVal * (((mODMax - mODMin).toDouble() / 100))).let {
+                        if (mSBODStep.curTxt == TAG_DECIMETER) it / 10 else it
+                    }
+                }.let {
+                    String.format(Locale.CHINA, "%.01fm", it)
+                }
+            }
+        })
 
         EventHelper.setOnClickOperator(this,
                 intArrayOf(R.id.sb_ob_range, R.id.sb_ob_step),
@@ -163,7 +180,7 @@ class VWCameraAdjust : ConstraintLayout {
                 override fun onDialogPositiveResult(dialogFragment: DialogFragment) {
                     mODMin = it.odMin
                     mODMax = it.odMax
-                    updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
+                    mTWODTuneWheel.invalidate()
 
                     EventBus.getDefault().post(
                             ObjectDistanceRangeChangeEvent(mODMin, mODMax))
@@ -180,35 +197,8 @@ class VWCameraAdjust : ConstraintLayout {
      * 切换object distance 步进值
      */
     private fun onChangeODStep() {
-        updateObjectDistanceRange(mSBODStep.curTxt == TAG_DECIMETER)
     }
 
-    /**
-     * 设置物距最小，最大值
-     */
-    private fun updateObjectDistanceRange(decimeter: Boolean) {
-        mTWODTuneWheel.setTranslateTag(object : TuneWheel.TagTranslate {
-            override fun translateTWTag(tagVal: Int): String = if (decimeter) {
-                when (tagVal) {
-                    OB_MIN_VAL -> mODMin.toDouble()
-                    OB_MAX_VAL -> mODMax.toDouble()
-                    else -> tagVal.toDouble()
-                    //else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
-                }
-            } else {
-                when (tagVal) {
-                    0 -> mODMin.toDouble()
-                    OB_MAX_VAL -> mODMax.toDouble()
-                    else -> tagVal.toDouble()
-                    //else -> mODMin + (mODMax - mODMin) * (Math.pow(INDEX_NUM, tagVal.toDouble()) / INDEX_MAX)
-                }
-            }.let {
-                String.format(Locale.CHINA, if (it > 1) "%.00fm" else "%.02fm", it)
-            }
-        })
-
-        mTVODVal.text = mTWODTuneWheel.curValueTag
-    }
 
     companion object {
         private const val VW_VERTICAL = 1

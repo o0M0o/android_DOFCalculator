@@ -49,7 +49,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
                     hm[KEY_DEVICE_ID] = it.id.toString()
                     hm[KEY_DEVICE_NAME] = it.name!!
                     hm[KEY_CAMERA_INFO] = "${ci.filmName}"
-                    hm[KEY_LENS_INFO] = "${li.minFocal}-${li.maxFocal}mm 焦距"
+                    hm[KEY_LENS_INFO] = "${li.minFocal}-${li.maxFocal}mm"
 
                     add(hm)
                 }

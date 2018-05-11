@@ -19,4 +19,7 @@ data class DofChangedEvent(
 
     val backDofInMeter
         get() = backDof / 1000
+
+    val focalLengthInMeter: Float
+        get() = (backDof - frontDof) / 1000
 }
