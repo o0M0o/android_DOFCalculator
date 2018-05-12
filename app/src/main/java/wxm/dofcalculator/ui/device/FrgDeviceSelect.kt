@@ -15,7 +15,6 @@ import wxm.androidutil.ViewHolder.ViewHolder
 import wxm.androidutil.util.UtilFun
 import wxm.dofcalculator.R
 import wxm.dofcalculator.db.DBDataChangeEvent
-import wxm.dofcalculator.define.CameraItem
 import wxm.dofcalculator.define.GlobalDef
 import wxm.dofcalculator.ui.base.EventHelper
 import wxm.dofcalculator.ui.base.MoreAdapter
@@ -47,6 +46,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
                     val hm = HashMap<String, String>()
                     hm[KEY_DEVICE_ID] = it.id.toString()
                     hm[KEY_DEVICE_NAME] = it.name!!
+                    hm[KEY_CAMERA_NAME] = it.camera!!.name!!
                     hm[KEY_CAMERA_INFO] = "${ci.filmName}"
                     hm[KEY_LENS_INFO] = "${li.minFocal}-${li.maxFocal}mm"
 
@@ -173,7 +173,8 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
 
                 UtilFun.cast_t<Map<String, String>>(getItem(pos)).let {
                     vhHolder.setText(R.id.tv_device_name, it[KEY_DEVICE_NAME])
-                    vhHolder.setText(R.id.tv_camera, it[KEY_CAMERA_INFO])
+                    vhHolder.setText(R.id.tv_camera, it[KEY_CAMERA_NAME])
+                    vhHolder.setText(R.id.tv_sensor, it[KEY_CAMERA_INFO])
                     vhHolder.setText(R.id.tv_lens, it[KEY_LENS_INFO])
                     Unit
                 }
@@ -183,6 +184,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
 
     companion object {
         private const val KEY_DEVICE_NAME = "device_name"
+        private const val KEY_CAMERA_NAME = "camera_name"
         private const val KEY_DEVICE_ID = "device_id"
         private const val KEY_CAMERA_INFO = "camera_info"
         private const val KEY_LENS_INFO = "lens_info"

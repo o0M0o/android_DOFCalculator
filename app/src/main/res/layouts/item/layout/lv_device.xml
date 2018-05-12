@@ -16,27 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_camera"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="12dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_camera"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tv_device_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="12dp"
             android:text="device"
             android:textColor="@color/text_fit"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_camera"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
@@ -57,6 +46,17 @@
         app:layout_constraintTop_toBottomOf="@id/vw_line">
 
         <ImageView
+            android:id="@+id/iv_camera"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_camera"
+            app:layout_constraintBottom_toTopOf="@id/iv_sensor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/iv_sensor"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -65,7 +65,7 @@
             android:src="@drawable/ic_sensor"
             app:layout_constraintBottom_toTopOf="@id/iv_lens"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/iv_camera" />
 
         <ImageView
             android:id="@+id/iv_lens"
@@ -80,6 +80,18 @@
 
         <TextView
             android:id="@+id/tv_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Cannon"
+            android:textColor="@color/text_fit"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_camera"
+            app:layout_constraintStart_toEndOf="@id/iv_camera"
+            app:layout_constraintTop_toTopOf="@id/iv_camera" />
+
+        <TextView
+            android:id="@+id/tv_sensor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -100,7 +112,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_lens"
             app:layout_constraintStart_toEndOf="@id/iv_lens"
-            app:layout_constraintTop_toBottomOf="@id/tv_camera" />
+            app:layout_constraintTop_toBottomOf="@id/tv_sensor" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
