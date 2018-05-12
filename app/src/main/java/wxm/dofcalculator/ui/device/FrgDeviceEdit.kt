@@ -1,9 +1,11 @@
 package wxm.dofcalculator.ui.device
 
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -13,6 +15,7 @@ import wxm.androidutil.util.UtilFun
 import wxm.dofcalculator.R
 import wxm.dofcalculator.define.CameraItem
 import wxm.dofcalculator.define.DeviceItem
+import wxm.dofcalculator.define.GlobalDef
 import wxm.dofcalculator.define.LensItem
 import wxm.dofcalculator.ui.base.IFFrgEdit
 import wxm.dofcalculator.utility.ContextUtil
@@ -22,7 +25,7 @@ import java.math.BigDecimal
  * frg for device add
  * Created by WangXM on2017/3/11.
  */
-class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
+class FrgDeviceEdit : FrgSupportBaseAdv(), IFFrgEdit {
     // for device
     private val mETDeviceName: TextInputEditText by bindView(R.id.et_device_name)
 
@@ -39,7 +42,7 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
     private val mSZNeedDeviceName: String = ContextUtil.getString(R.string.error_need_device_name)
 
     // for camera sz
-    private val mSZWarn: String = ContextUtil.getString(R.string.sz_warn)
+    private val mSZWarn: String = ContextUtil.getString(R.string.warn)
     private val mSZNeedCameraName: String = ContextUtil.getString(R.string.error_need_camera_name)
     private val mSZNeedCameraSensorSize: String = ContextUtil.getString(R.string.error_need_camera_sensor_size)
 
@@ -51,6 +54,9 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
 
     // for sensor
     private val mSASensorSize: Array<String> = ContextUtil.getStrArray(R.array.sensor_size)
+
+    // for edit data
+    private lateinit var mEditData: DeviceItem
 
     /**
      * 根据录入数据生成Camraitem
@@ -88,13 +94,13 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
      */
     private val sensorSize: BigDecimal
         get() {
-            val idx = mSPSensorSize.selectedItemPosition
-            if (AdapterView.INVALID_POSITION != idx) {
-                val sel_ss = mSASensorSize[idx]
-                return BigDecimal(sel_ss.substring(sel_ss.indexOf("|") + 1))
+            return mSPSensorSize.selectedItemPosition.let {
+                if (AdapterView.INVALID_POSITION != it) {
+                    getSensorSize(mSASensorSize[it])
+                } else {
+                    BigDecimal.ZERO
+                }
             }
-
-            return BigDecimal.ZERO
         }
 
     /**
@@ -103,13 +109,11 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
      */
     private val filmName: String
         get() {
-            val idx = mSPSensorSize.selectedItemPosition
-            if (AdapterView.INVALID_POSITION != idx) {
-                val org = mSASensorSize[idx]
-                return org.substring(0, org.indexOf("|"))
+            return mSPSensorSize.selectedItemPosition.let {
+                if (AdapterView.INVALID_POSITION != it) {
+                    return getSensorName(mSASensorSize[it])
+                } else ""
             }
-
-            return ""
         }
 
     override fun getLayoutID(): Int {
@@ -121,17 +125,64 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
     }
 
     override fun initUI(savedInstanceState: Bundle?) {
-        val arrSensor = ArrayList<String>(mSASensorSize.size).apply {
-            mSASensorSize.forEach {
-                add(it.substring(0, it.indexOf("|")))
-            }
+        activity.intent.getIntExtra(ACDevice.KEY_DEVICE_ID, GlobalDef.INVAILD_ID).let {
+            mEditData = ContextUtil.duDevice.getData(it)
         }
 
         // for sensor size
-        ArrayAdapter<CharSequence>(activity, android.R.layout.simple_spinner_item,
-                arrSensor.toTypedArray()).let {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            mSPSensorSize.adapter = it
+        ArrayList<String>(mSASensorSize.size).apply {
+            mSASensorSize.forEach {
+                add(getSensorName(it))
+            }
+        }.let {
+            ArrayAdapter<CharSequence>(activity, android.R.layout.simple_spinner_item,
+                    it.toTypedArray()).let {
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                mSPSensorSize.adapter = it
+            }
+        }
+
+        // init value
+        mETDeviceName.setText(mEditData.name)
+
+        mETCameraName.setText(mEditData.camera!!.name!!)
+        for (i in 0 until mSPSensorSize.childCount) {
+            if (getSensorName(mSASensorSize[i]) == mEditData.camera!!.filmName!!) {
+                mSPSensorSize.setSelection(i)
+                break
+            }
+        }
+
+        mETLensName.setText(mEditData.lens!!.name)
+        mETLensMinFocal.setText((mEditData.lens!!.minFocal).toString())
+        mETLensMaxFocal.setText((mEditData.lens!!.maxFocal).toString())
+
+        view!!.let {
+            { v: View, hasFocus: Boolean ->
+                val vwHome = it
+                it.scrollY = if (hasFocus) {
+                    val vwHomeTop = Rect().let {
+                        vwHome.getGlobalVisibleRect(it)
+                        it.top
+                    }
+
+                    Rect().let {
+                        v.getGlobalVisibleRect(it)
+                        it.top - vwHomeTop - SCROLL_TOP_MARGIN
+                    }
+                } else 0
+            }.let {
+                mETLensName.setOnFocusChangeListener(it)
+                mETLensMinFocal.setOnFocusChangeListener(it)
+                mETLensMaxFocal.setOnFocusChangeListener(it)
+                Unit
+            }
+        }
+
+        view!!.setOnClickListener { v ->
+            if (0 != v.scrollY) {
+                activity.currentFocus?.clearFocus()
+            }
         }
     }
 
@@ -141,20 +192,35 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
             return false
 
         val ci = cameraItem
-        val li = lensItem
-        if (ContextUtil.duCamera.createData(ci) && ContextUtil.duLens.createData(li)) {
-            val di = DeviceItem()
-            di.name = mETDeviceName.text.toString()
-            di.camera = ci
-            di.lens = li
+        ci.id = mEditData.camera!!.id
 
-            return ContextUtil.duDevice.createData(di)
+        val li = lensItem
+        li.id = mEditData.lens!!.id
+
+        if (ContextUtil.duCamera.modifyData(ci) && ContextUtil.duLens.modifyData(li)) {
+            DeviceItem().let {
+                it.id = mEditData.id
+                it.name = mETDeviceName.text.toString()
+                it.camera = ci
+                it.lens = li
+                return ContextUtil.duDevice.modifyData(it)
+            }
         }
 
         return false
     }
 
-    private fun showWarnAlert(szInfo: String)   {
+    private fun getSensorName(sz: String): String {
+        return sz.substring(0, sz.indexOf("|"))
+    }
+
+    private fun getSensorSize(sz: String): BigDecimal {
+        return sz.let {
+            BigDecimal(it.substring(it.indexOf("|") + 1))
+        }
+    }
+
+    private fun showWarnAlert(szInfo: String) {
         AlertDialog.Builder(activity).setTitle(mSZWarn).setMessage(szInfo)
                 .create().show()
     }
@@ -237,5 +303,9 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
         }
 
         return true
+    }
+
+    companion object {
+        private const val SCROLL_TOP_MARGIN = 60
     }
 }

@@ -14,7 +14,6 @@
         android:id="@+id/til_device_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:paddingBottom="2dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
@@ -35,7 +34,6 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/rl_camera"
-        android:background="@color/beige"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -70,10 +68,10 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_film_size"
+            android:background="@color/white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@color/white"
+            android:layout_marginTop="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/til_camera_name">
@@ -85,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tv_sensor_size"
-                android:textColor="@color/text_fit"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,7 +103,6 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_lens"
-        android:background="@color/beige"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -143,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/til_lens_name"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="1dp"
             android:layout_marginEnd="2dp"
             android:background="@color/white"
             android:paddingBottom="2dp"
@@ -170,7 +167,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/til_lens_min_focal"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="1dp"
             android:layout_marginStart="2dp"
             android:background="@color/white"
             android:paddingBottom="2dp"

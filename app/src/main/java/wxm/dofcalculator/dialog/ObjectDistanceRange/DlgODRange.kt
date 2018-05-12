@@ -18,8 +18,8 @@ class DlgODRange : DlgOKOrNOBase() {
     private lateinit var mTTODMin: TextInputEditText
     private lateinit var mTTODMax: TextInputEditText
 
-    private val SZ_ERROR: String = ContextUtil.getString(R.string.sz_error)
-    private val SZ_SURE: String = ContextUtil.getString(R.string.sz_sure)
+    private val SZ_ERROR: String = ContextUtil.getString(R.string.error)
+    private val SZ_SURE: String = ContextUtil.getString(R.string.sure)
 
     /**
      * 得到最小物距（单位mm)

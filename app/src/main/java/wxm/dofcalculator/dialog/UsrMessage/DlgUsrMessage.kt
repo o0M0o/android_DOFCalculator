@@ -50,7 +50,7 @@ class DlgUsrMessage : DlgOKOrNOBase() {
     private val mSZColValAppName: String = ContextUtil.getString(R.string.col_val_app_name)
     private val mSZUsrMessage: String = ContextUtil.getString(R.string.cn_usr_message)
     private val mSZAccept: String = ContextUtil.getString(R.string.cn_accept)
-    private val mSZGiveUp: String = ContextUtil.getString(R.string.cn_giveup)
+    private val mSZGiveUp: String = ContextUtil.getString(R.string.cn_cancel)
 
     override fun initDlgView(bundle: Bundle?) {
         mETUsrMessage = findDlgChildView(R.id.et_usr_message)!!

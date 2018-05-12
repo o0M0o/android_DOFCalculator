@@ -29,6 +29,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/bt_shape"
         android:text="@string/hint_sure"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lv_device" />
@@ -42,8 +43,24 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/bt_shape"
         android:text="@string/hint_delete"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bt_sure"
+        app:layout_constraintTop_toBottomOf="@id/lv_device" />
+
+
+    <Button
+        android:id="@+id/bt_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bt_shape"
+        android:text="@string/hint_edit"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bt_delete"
         app:layout_constraintTop_toBottomOf="@id/lv_device" />
 
 </android.support.constraint.ConstraintLayout>

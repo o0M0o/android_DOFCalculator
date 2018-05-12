@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_reject_1"
         android:orderInCategory="100"
         app:showAsAction="ifRoom|withText"
-        android:title="@string/cn_giveup"/>
+        android:title="@string/cn_cancel"/>
 
     <item
         android:id="@+id/mi_save"

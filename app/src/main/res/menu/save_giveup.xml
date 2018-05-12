@@ -12,5 +12,5 @@
         android:orderInCategory="901"
         app:showAsAction="ifRoom"
         android:id="@+id/mi_giveup"
-        android:title="@string/cn_giveup" />
+        android:title="@string/cn_cancel" />
 </menu>

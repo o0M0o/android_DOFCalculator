@@ -25,10 +25,11 @@
     <string name="cn_feedback">反馈</string>
 
     <string name="cn_accept">确认</string>
-    <string name="cn_giveup">放弃</string>
+    <string name="cn_cancel">放弃</string>
     <string name="cn_save">保存</string>
 
-    <string name="sz_warn">警告</string>
+    <string name="warn">警告</string>
+    <string name="error_need_device_id">需要设备数据ID</string>
     <string name="error_need_device_name">请输入设备名</string>
 
     <string name="error_need_camera_name">请输入相机名</string>
@@ -40,8 +41,11 @@
     <string name="error_need_max_focal">镜头最大焦距</string>
     <string name="error_focal_range_mess">镜头最大焦距小于最小焦距</string>
     <string name="hint_device_name">设备名</string>
+
     <string name="hint_sure">确定</string>
     <string name="hint_delete">删除</string>
+    <string name="hint_edit">修改</string>
+
     <string name="label_calculator">计算</string>
     <string name="tv_lens_focal">焦距</string>
     <string name="tv_lens_aperture">光圈</string>
@@ -55,9 +59,9 @@
     <string name="hint_object_distance_min">物距最小值(单位m)</string>
     <string name="hint_object_distance_max">物距最大值(单位m)</string>
 
-    <string name="sz_error">错误</string>
+    <string name="error">错误</string>
 
-    <string name="sz_sure">确认</string>
+    <string name="sure">确认</string>
     <string name="bt_change_object_distance_step">修改物距调步值</string>
     <string name="tag_od_meter">步值米</string>
     <string name="tag_od_decimeter">步值分米</string>

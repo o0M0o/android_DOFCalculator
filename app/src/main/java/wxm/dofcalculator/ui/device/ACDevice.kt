@@ -1,5 +1,6 @@
 package wxm.dofcalculator.ui.device
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -30,6 +31,15 @@ class ACDevice : ACSwitcherActivity<FrgSupportBaseAdv>() {
             when (mInvokeType) {
                 VAL_DEVICE_ADD -> addFragment(FrgDeviceAdd())
                 VAL_DEVICE_SELECTED -> addFragment(FrgDeviceSelect())
+                VAL_DEVICE_EDIT -> {
+                    if(GlobalDef.INVAILD_ID == it.getIntExtra(KEY_DEVICE_ID, GlobalDef.INVAILD_ID)) {
+                        android.support.v7.app.AlertDialog.Builder(this)
+                                .setTitle(R.string.error).setMessage(R.string.error_need_device_id)
+                                .create().show()
+                    } else {
+                        addFragment(FrgDeviceEdit())
+                    }
+                }
             }
         }
     }
@@ -42,9 +52,10 @@ class ACDevice : ACSwitcherActivity<FrgSupportBaseAdv>() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (VAL_DEVICE_ADD == mInvokeType) {
-            val inflater = menuInflater
-            inflater.inflate(R.menu.device_edit, menu)
+        menuInflater.let {
+            if (VAL_DEVICE_ADD == mInvokeType || VAL_DEVICE_EDIT == mInvokeType) {
+                it.inflate(R.menu.device_edit, menu)
+            }
         }
         return true
     }
@@ -73,7 +84,9 @@ class ACDevice : ACSwitcherActivity<FrgSupportBaseAdv>() {
         const val KEY_INVOKE_TYPE = "invoke_type"
         const val VAL_DEVICE_ADD = 1
         const val VAL_DEVICE_SELECTED = 2
+        const val VAL_DEVICE_EDIT = 3
 
+        const val KEY_DEVICE_ID = "device_id"
         private const val VAL_NULL = -1
     }
 }

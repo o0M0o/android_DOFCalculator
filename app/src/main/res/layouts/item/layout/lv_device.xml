@@ -4,24 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="2dp"
-    android:layout_marginStart="2dp"
     android:background="@drawable/lv_device_shape"
-    android:paddingBottom="2dp"
+    android:paddingBottom="6dp"
     android:paddingEnd="4dp"
     android:paddingStart="4dp"
-    android:paddingTop="2dp"
-    tools:context="wxm.dofcalculator.ui.device.ACDevice">
+    android:paddingTop="6dp">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cc_camera"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_camera"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_camera"
@@ -36,7 +34,7 @@
             android:layout_marginStart="24dp"
             android:text="device"
             android:textColor="@color/text_fit"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_camera"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +48,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:background="@color/red_ff725f_half"
-        app:layout_constraintTop_toBottomOf="@id/cc_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/cc_camera" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,8 +58,8 @@
 
         <ImageView
             android:id="@+id/iv_sensor"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_sensor"
@@ -71,8 +69,8 @@
 
         <ImageView
             android:id="@+id/iv_lens"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginStart="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_lens"
@@ -87,7 +85,7 @@
             android:layout_marginStart="12dp"
             android:text="APS"
             android:textColor="@color/text_fit"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_sensor"
             app:layout_constraintStart_toEndOf="@id/iv_sensor"
             app:layout_constraintTop_toTopOf="@id/iv_sensor" />
@@ -99,7 +97,7 @@
             android:layout_marginStart="12dp"
             android:text="40-120mm"
             android:textColor="@color/text_fit"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/iv_lens"
             app:layout_constraintStart_toEndOf="@id/iv_lens"
             app:layout_constraintTop_toBottomOf="@id/tv_camera" />

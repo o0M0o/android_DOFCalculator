@@ -39,7 +39,7 @@ class FrgDeviceAdd : FrgSupportBaseAdv(), IFFrgEdit {
     private val mSZNeedDeviceName: String = ContextUtil.getString(R.string.error_need_device_name)
 
     // for camera sz
-    private val mSZWarn: String = ContextUtil.getString(R.string.sz_warn)
+    private val mSZWarn: String = ContextUtil.getString(R.string.warn)
     private val mSZNeedCameraName: String = ContextUtil.getString(R.string.error_need_camera_name)
     private val mSZNeedCameraSensorSize: String = ContextUtil.getString(R.string.error_need_camera_sensor_size)
 

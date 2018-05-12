@@ -31,8 +31,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
     private val mLVDevice: ListView by bindView(R.id.lv_device)
     private val mBUSure: Button by bindView(R.id.bt_sure)
     private val mBUDelete: Button by bindView(R.id.bt_delete)
-
-    private val mSASensorSize: Array<String> = ContextUtil.getStrArray(R.array.sensor_size)
+    private val mBUModify: Button by bindView(R.id.bt_edit)
 
     /**
      * 获取所有device信息
@@ -67,10 +66,11 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
     override fun initUI(savedInstanceState: Bundle?) {
         mBUSure.visibility = View.GONE
         mBUDelete.visibility = View.GONE
+        mBUModify.visibility = View.GONE
 
         mLVDevice.adapter = AdapterDevice(activity, allDeviceInfo)
         EventHelper.setOnClickOperator(view!!,
-                intArrayOf(R.id.bt_sure, R.id.bt_delete),
+                intArrayOf(R.id.bt_sure, R.id.bt_delete, R.id.bt_edit),
                 { v -> onDelOrSelect(v) })
     }
 
@@ -81,7 +81,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
     @Suppress("unused", "UNUSED_PARAMETER")
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFilterShowEvent(event: DBDataChangeEvent) {
-        loadUI(null)
+        initUI(null)
     }
 
     private fun onDelOrSelect(v: View) {
@@ -108,27 +108,18 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
                             .create().show()
                 }
             }
+
+            R.id.bt_edit -> {
+                val id = (mLVDevice.adapter as AdapterDevice).selectDeviceID
+                if (GlobalDef.INVAILD_ID != id) {
+                    Intent(activity, ACDevice::class.java).let {
+                        it.putExtra(ACDevice.KEY_INVOKE_TYPE,  ACDevice.VAL_DEVICE_EDIT)
+                        it.putExtra(ACDevice.KEY_DEVICE_ID,  id)
+                        startActivity(it)
+                    }
+                }
+            }
         }
-    }
-
-
-    /**
-     * 获取相机传感器尺寸的名字
-     * @param ci        cameraitem
-     * @return          名字
-     */
-    private fun getCameraSensorSizeName(ci: CameraItem): String {
-        var ret = ""
-        val arr = resources.getStringArray(R.array.sensor_size)
-        when (ci.filmSize) {
-            135 -> ret = arr[0]
-            85 -> ret = arr[1]
-            65 -> ret = arr[2]
-            55 -> ret = arr[3]
-            35 -> ret = arr[4]
-        }
-
-        return ret
     }
 
     /**
@@ -176,6 +167,7 @@ class FrgDeviceSelect : FrgSupportBaseAdv() {
                     (if (!os) View.VISIBLE else View.GONE).let {
                         mBUSure.visibility = it
                         mBUDelete.visibility = it
+                        mBUModify.visibility = it
                     }
                 }
 
