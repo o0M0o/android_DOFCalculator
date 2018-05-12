@@ -99,7 +99,7 @@
             app:twCurValue="25"
             app:twLineDivider="12dp"
             app:twLongLineLength="24dp"
-            app:twMaxValue="100"
+            app:twMaxValue="50"
             app:twMinValue="0"
             app:twOrientation="vertical"
             app:twShortLineCount="4"

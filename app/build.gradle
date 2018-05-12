@@ -23,8 +23,8 @@ android {
         applicationId "wxm.dofcalculator"
         minSdkVersion 24
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.03"
+        versionCode 4
+        versionName "1.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         flavorDimensions "versionCode"
@@ -109,7 +109,6 @@ dependencies {
     implementation project(':androidutil')
     implementation project(':uilib')
 }
-
 
 configurations.all {
     resolutionStrategy {
